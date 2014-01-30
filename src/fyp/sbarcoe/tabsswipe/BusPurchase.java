@@ -1,5 +1,8 @@
 package fyp.sbarcoe.tabsswipe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import info.androidhive.tabsswipe.R;
 import info.androidhive.tabsswipe.R.layout;
 import info.androidhive.tabsswipe.R.menu;
@@ -9,13 +12,32 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
-public class BusPurchase extends Activity {
-
+public class BusPurchase extends Activity 
+{	
+	Spinner ticketType, stages ;
+	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) 
+	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_bus_purchase);
+		setContentView(R.layout.activity_bus_purchase);	
+		
+		ticketType = (Spinner) findViewById(R.id.spinner1);
+		stages = (Spinner) findViewById(R.id.spinner2);
+		
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+		R.array.ticket_type, android.R.layout.simple_spinner_item);				
+		ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
+		R.array.stages, android.R.layout.simple_spinner_item);	
+		
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		
+		ticketType.setAdapter(adapter);	
+		stages.setAdapter(adapter2);			
 	}
 
 	@Override
