@@ -77,20 +77,20 @@ public class MainActivity extends FragmentActivity implements
 		super.onOptionsItemSelected(item);
 		switch(item.getItemId())
 		{
-		case R.id.about:
-			aboutMenuItem();
+		case R.id.help:
+			helpMenuItem();
 			break;
-		case R.id.settings:
-		    settingMenuItem();
+		case R.id.favourites:
+		    favouriteMenuItem();
 		    break;
 		}
 		return true;
 	}
-	private void aboutMenuItem() 
+	private void helpMenuItem() 
 	{
 		new AlertDialog.Builder(this)
-		.setTitle("About")
-		.setMessage("This is About Dialog")
+		.setTitle("Help")
+		.setMessage("This is Help Dialog")
 		.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -101,11 +101,11 @@ public class MainActivity extends FragmentActivity implements
 		}).show();		
 	}
 	
-	private void settingMenuItem() 
+	private void favouriteMenuItem() 
 	{		
 		new AlertDialog.Builder(this)
-		.setTitle("Settings")
-		.setMessage("This is Settings Dialog")
+		.setTitle("Favourites")
+		.setMessage("This is Favourites Dialog")
 		.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 			
 			@Override

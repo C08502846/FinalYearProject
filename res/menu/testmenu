@@ -1,13 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
-        android:id="@+id/about"
-        android:title="About"
+        android:id="@+id/help"
+        android:title="Help"
         android:orderInCategory="1"
         android:showAsAction="ifRoom" />
         
         <item
-        android:id="@+id/settings"
-        android:title="Settings"
+        android:id="@+id/favourites"
+        android:icon="@drawable/ic_action_favorite_dark"
         android:orderInCategory="2"
         android:showAsAction="ifRoom" />  
 </menu>
