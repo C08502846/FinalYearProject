@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".LuasPurchase" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tvCBalLuas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current Balance: €2.50"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/tvLuasLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Luas Line" />
+
+        <Spinner
+            android:id="@+id/spinnerLuasLine"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvFromLuas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From Stop:" />
+        
+        <Spinner
+            android:id="@+id/spinnerLuasFrom"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        
+        <TextView
+            android:id="@+id/tvToLuas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To Stop:" />
+        
+        <Spinner
+            android:id="@+id/spinnerLuasTo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        
+        <TextView
+            android:id="@+id/tvCostLuas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cost: €1.80"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Buy" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calculate Fare" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    
+</RelativeLayout>

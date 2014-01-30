@@ -26,6 +26,10 @@
             android:name="fyp.sbarcoe.tabsswipe.BusPurchase"
             android:label="@string/title_activity_bus_purchase" >
         </activity>
+        <activity
+            android:name="fyp.sbarcoe.tabsswipe.LuasPurchase"
+            android:label="@string/title_activity_luas_purchase" >
+        </activity>
     </application>
 
 </manifest>
