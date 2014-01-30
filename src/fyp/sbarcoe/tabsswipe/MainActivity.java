@@ -3,11 +3,15 @@ package fyp.sbarcoe.tabsswipe;
 import info.androidhive.tabsswipe.R;
 import info.androidhive.tabsswipe.adapter.TabsPagerAdapter;
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -19,7 +23,8 @@ public class MainActivity extends FragmentActivity implements
 	private String[] tabs = { "Buy New", "Top Up", "Validate", "Favs" };
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) 
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
@@ -33,9 +38,10 @@ public class MainActivity extends FragmentActivity implements
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);		
 
 		// Adding Tabs
-		for (String tab_name : tabs) {
+		for (String tab_name : tabs) 
+		{
 			actionBar.addTab(actionBar.newTab().setText(tab_name)
-					.setTabListener(this));
+					.setTabListener(this));			
 		}
 
 		/**
@@ -59,7 +65,56 @@ public class MainActivity extends FragmentActivity implements
 			}
 		});
 	}
-
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.testmenu, menu);
+		return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		super.onOptionsItemSelected(item);
+		switch(item.getItemId())
+		{
+		case R.id.about:
+			aboutMenuItem();
+			break;
+		case R.id.settings:
+		    settingMenuItem();
+		    break;
+		}
+		return true;
+	}
+	private void aboutMenuItem() 
+	{
+		new AlertDialog.Builder(this)
+		.setTitle("About")
+		.setMessage("This is About Dialog")
+		.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) 
+			{
+									
+			}
+		}).show();		
+	}
+	
+	private void settingMenuItem() 
+	{		
+		new AlertDialog.Builder(this)
+		.setTitle("Settings")
+		.setMessage("This is Settings Dialog")
+		.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) 
+			{
+									
+			}
+		}).show();
+	}
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 	}
