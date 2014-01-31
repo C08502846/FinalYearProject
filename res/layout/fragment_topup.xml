@@ -3,14 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ff8400" >
-    
-    <TextView android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Top Up"
-        android:textSize="20dp"
-        android:layout_centerInParent="true"/>
-    
+    android:background="#ff8400" >       
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tvTopUpBal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Account Balance: €1.50"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tvTopUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Top Up By:"
+            android:textSize="20dp" />
+
+        <Spinner
+            android:id="@+id/spinnerTopUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+    
+     <Button
+            android:id="@+id/buttonTopUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Buy"
+            android:layout_centerInParent="true"/>
+
+ </RelativeLayout>

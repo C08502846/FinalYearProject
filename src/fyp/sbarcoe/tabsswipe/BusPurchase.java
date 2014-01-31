@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -24,6 +25,7 @@ public class BusPurchase extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bus_purchase);	
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		ticketType = (Spinner) findViewById(R.id.spinner1);
 		stages = (Spinner) findViewById(R.id.spinner2);
@@ -58,8 +60,11 @@ public class BusPurchase extends Activity
 		case R.id.favourites:
 		    settingMenuItem();
 		    break;
+		case android.R.id.home:
+	        NavUtils.navigateUpFromSameTask(this);
+	        return true;
 		}
-		return true;
+		return super.onOptionsItemSelected(item);
 	}
 	private void aboutMenuItem() 
 	{

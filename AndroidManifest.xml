@@ -24,11 +24,14 @@
         </activity>
         <activity
             android:name="fyp.sbarcoe.tabsswipe.BusPurchase"
-            android:label="@string/title_activity_bus_purchase" >
+            android:label="@string/title_activity_bus_purchase" 
+            android:parentActivityName="com.example.myfirstapp.MainActivity" >
+            
         </activity>
         <activity
             android:name="fyp.sbarcoe.tabsswipe.LuasPurchase"
-            android:label="@string/title_activity_luas_purchase" >
+            android:label="@string/title_activity_luas_purchase"
+            android:parentActivityName="com.example.myfirstapp.MainActivity" >
         </activity>
     </application>
 

@@ -11,7 +11,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class TabsPagerAdapter extends FragmentPagerAdapter 
 {
 
-	public TabsPagerAdapter(FragmentManager fm) {
+	public TabsPagerAdapter(FragmentManager fm) 
+	{
 		super(fm);
 	}
 
@@ -32,9 +33,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter
 			// Movies fragment activity
 			return new Favourites();
 		}
-
-		return null;
-	}
+		return null;	}
 
 	@Override
 	public int getCount() {

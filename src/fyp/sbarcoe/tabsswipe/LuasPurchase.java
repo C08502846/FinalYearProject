@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -64,8 +65,11 @@ public class LuasPurchase extends Activity
 		case R.id.favourites:
 		    settingMenuItem();
 		    break;
+		case android.R.id.home:
+	        NavUtils.navigateUpFromSameTask(this);
+	        return true;			
 		}
-		return true;
+		return super.onOptionsItemSelected(item);
 	}
 	private void aboutMenuItem() 
 	{
