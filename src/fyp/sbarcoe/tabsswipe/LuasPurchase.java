@@ -14,32 +14,48 @@ import android.widget.Spinner;
 public class LuasPurchase extends Activity 
 {	
 	Spinner luasLine, luasFrom, luasTo ;
+	ArrayAdapter<String> reg_adp ;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_luas_purchase);	
+		DBManager myDB = new DBManager(this);
+		myDB.open();
+		String[] result = myDB.getStopNames() ;	
 		
+		for(int i = 0 ; i<result.length;i++)
+		{
+			System.out.println(result[i] +"\n");
+		}		
+		int i = R.array.luas_from  ;
+		System.out.println("i ====== " +i);
+		myDB.close();
 		
 		luasLine = (Spinner) findViewById(R.id.spinnerLuasLine);
 		luasFrom = (Spinner) findViewById(R.id.spinnerLuasFrom);
 		luasTo = (Spinner) findViewById(R.id.spinnerLuasTo);
 		
+		reg_adp=new ArrayAdapter<String> (this,android.R.layout.simple_dropdown_item_1line,result);
+		
+	    reg_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+	    luasTo.setAdapter(reg_adp);
+		
 		ArrayAdapter<CharSequence> luasLineAdapter = ArrayAdapter.createFromResource(this,
 		R.array.luas_line, android.R.layout.simple_spinner_item);				
 		ArrayAdapter<CharSequence> luasFromAdapter = ArrayAdapter.createFromResource(this,
 		R.array.luas_from, android.R.layout.simple_spinner_item);	
-		ArrayAdapter<CharSequence> luasToAdapter = ArrayAdapter.createFromResource(this,
-		R.array.luas_to, android.R.layout.simple_spinner_item);	
+		//ArrayAdapter<CharSequence> luasToAdapter = ArrayAdapter.createFromResource(this,
+		//R.array.luas_to, android.R.layout.simple_spinner_item);	
 		
 		luasLineAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		luasFromAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		luasToAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		//luasToAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		luasLine.setAdapter(luasLineAdapter);	
 		luasFrom.setAdapter(luasFromAdapter);	
-		luasTo.setAdapter(luasToAdapter);	
+		//luasTo.setAdapter(luasToAdapter);	
 				
 	}
 

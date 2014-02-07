@@ -1,5 +1,10 @@
 package fyp.sbarcoe.tabsswipe;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 import info.androidhive.tabsswipe.R;
 import info.androidhive.tabsswipe.adapter.TabsPagerAdapter;
 import android.app.ActionBar;
@@ -20,23 +25,19 @@ public class MainActivity extends FragmentActivity implements
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
+	
+	String stopName ;
+	int stopZone ;
+	
 	// Tab titles
 	private String[] tabs = { "Buy New", "Top Up", "Validate", "Favs" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
-	{
+	{		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
-		DBManager myDB = new DBManager(this);
-		myDB.open();
-		//myDB.populateLuasData();
-		myDB.addLuasStops("SG", 1);
-		myDB.addLuasStops("Har", 1);
-		myDB.addLuasStops("Char", 1);
-		myDB.addLuasStops("Ran", 1);
-		myDB.close();	
+		setContentView(R.layout.activity_main);		
+		//insertStops();
 
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
@@ -57,10 +58,12 @@ public class MainActivity extends FragmentActivity implements
 		/**
 		 * on swiping the viewpager make respective tab selected
 		 * */
-		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() 
+		{
 
 			@Override
-			public void onPageSelected(int position) {
+			public void onPageSelected(int position) 
+			{
 				// on changing the page
 				// make respected tab selected
 				actionBar.setSelectedNavigationItem(position);
@@ -95,6 +98,39 @@ public class MainActivity extends FragmentActivity implements
 		    break;		
 		}
 		return true;
+	}
+	public void insertStops()
+	{
+		DBManager myDB = new DBManager(this);
+		myDB.open();
+		
+		//myDB.populateLuasData();		
+		//myDB.addLuasStops(stopName, stopZone)		
+		
+		myDB.addLuasStops("Stephens Green", 1);
+		myDB.addLuasStops("Harcourt", 1);
+		myDB.addLuasStops("Charlemont", 1);
+		myDB.addLuasStops("Ranelagh", 2);
+		myDB.addLuasStops("Beechwood", 2);
+		myDB.addLuasStops("Cowper", 2);
+		myDB.addLuasStops("Milltown", 2);
+		myDB.addLuasStops("Windy Arbour", 2);
+		myDB.addLuasStops("Dundrum", 2);
+		myDB.addLuasStops("Balally", 3);
+		myDB.addLuasStops("Kilmacud", 3);
+		myDB.addLuasStops("Stilorgan", 3);
+		myDB.addLuasStops("Sandyford", 3);
+		myDB.addLuasStops("Central Park", 4);
+		myDB.addLuasStops("Glencairn", 4);
+		myDB.addLuasStops("The Gallops", 4);
+		myDB.addLuasStops("Leopardstown Valley", 4);
+		myDB.addLuasStops("Ballyogan", 4);
+		myDB.addLuasStops("Carrickmines", 5);
+		myDB.addLuasStops("Laughanstown", 5);
+		myDB.addLuasStops("Cherrywood", 5);
+		myDB.addLuasStops("Brides Glen", 5);
+		
+		myDB.close();	
 	}
 	private void helpMenuItem() 
 	{

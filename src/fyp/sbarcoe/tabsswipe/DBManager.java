@@ -23,8 +23,8 @@ public class DBManager
 		    KEY_STOP_NAME + " TEXT NOT NULL, " +	
 	        KEY_STOP_ZONE + " INTEGER NOT NULL);" ;	
 	
-	private static final String INSERT_DATA = "INSERT INTO LuasStop VALUES(1, 'Stephens Green', 1);";
-	private static final String INSERT_DATA1 = "INSERT INTO LuasStop VALUES(2, 'Harcourt', 1);";
+	//private static final String INSERT_DATA = "INSERT INTO LuasStop VALUES(1, 'Stephens Green', 1);";
+	//private static final String INSERT_DATA1 = "INSERT INTO LuasStop VALUES(2, 'Harcourt', 1);";
 	/*private static final String INSERT_DATA2 = "INSERT INTO LuasStop ( StopName, StopZone ) VALUES " +
 			"( 'Stephens Green', 1 ), " +
 			"( 'Harcourt', 1 )" +
@@ -47,7 +47,7 @@ public class DBManager
 		{
 			db.execSQL(CREATE_DATABASE);
 			//db.execSQL(INSERT_DATA);			
-			System.out.println("Chaa!") ;
+			System.out.println("Database Created!") ;
 			Log.w("myApp", "no network");				
 		}
 
@@ -88,6 +88,20 @@ public class DBManager
 		cv.put(KEY_STOP_NAME, stopName);
 		cv.put(KEY_STOP_ZONE, zone);
 		return myDB.insert(DATABASE_TABLE, null, cv);			
+	}
+	public String[] getStopNames() 
+	{
+		String[] columns = new String[]{KEY_STOP_NAME};
+		Cursor c = myDB.query(DATABASE_TABLE, columns, null, null, null, null, null);
+		ArrayList<String> stopNames = new ArrayList<String>();
+		while(c.moveToNext())
+		        {			
+			        stopNames.add(c.getString(0));
+		        }
+		String[] stopsReturn = (String[]) stopNames.toArray(new String[stopNames.size()]);
+
+		return stopsReturn;
+		
 	}
 	public static String[] getBusTicketType()
 	{
