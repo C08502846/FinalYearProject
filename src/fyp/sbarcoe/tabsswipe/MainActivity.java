@@ -28,6 +28,15 @@ public class MainActivity extends FragmentActivity implements
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		DBManager myDB = new DBManager(this);
+		myDB.open();
+		//myDB.populateLuasData();
+		myDB.addLuasStops("SG", 1);
+		myDB.addLuasStops("Har", 1);
+		myDB.addLuasStops("Char", 1);
+		myDB.addLuasStops("Ran", 1);
+		myDB.close();	
 
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);

@@ -1,11 +1,6 @@
 package fyp.sbarcoe.tabsswipe;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import info.androidhive.tabsswipe.R;
-import info.androidhive.tabsswipe.R.layout;
-import info.androidhive.tabsswipe.R.menu;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,6 +20,7 @@ public class LuasPurchase extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_luas_purchase);	
+		
 		
 		luasLine = (Spinner) findViewById(R.id.spinnerLuasLine);
 		luasFrom = (Spinner) findViewById(R.id.spinnerLuasFrom);

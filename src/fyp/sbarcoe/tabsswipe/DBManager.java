@@ -12,20 +12,27 @@ public class DBManager
 {
 	
 	public static final String KEY_ROWID = "_id";
-	public static final String KEY_TICKET_TYPE = "assign_title";
-	public static final String KEY_STAGE= "assign_module";
+	public static final String KEY_STOP_NAME= "StopName";
+	public static final String KEY_STOP_ZONE= "StopZone";
 	
 	private static final String DATABASE_NAME = "LeapMe";
-	static final String DATABASE_TABLE = "DublinBus";
+	static final String DATABASE_TABLE = "LuasStop";
 	private static final int DATABASE_VERSION= 1;
-	private static final String CREATE_DATABASE= "CREATE TABLE " + DATABASE_TABLE + " (" +
+	private static final String CREATE_DATABASE = "CREATE TABLE " + DATABASE_TABLE + " (" +
             KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-		    KEY_TICKET_TYPE + " TEXT NOT NULL, " + 
-		    KEY_STAGE + " TEXT NOT NULL, " ;	
+		    KEY_STOP_NAME + " TEXT NOT NULL, " +	
+	        KEY_STOP_ZONE + " INTEGER NOT NULL);" ;	
+	
+	private static final String INSERT_DATA = "INSERT INTO LuasStop VALUES(1, 'Stephens Green', 1);";
+	private static final String INSERT_DATA1 = "INSERT INTO LuasStop VALUES(2, 'Harcourt', 1);";
+	/*private static final String INSERT_DATA2 = "INSERT INTO LuasStop ( StopName, StopZone ) VALUES " +
+			"( 'Stephens Green', 1 ), " +
+			"( 'Harcourt', 1 )" +
+			"( 'Charlemont', 1)";*/
 	
 	private DbHelper myHelper;
 	private final Context myContext ;
-	private SQLiteDatabase myDB;
+	private static SQLiteDatabase myDB;
 	
 	private static class DbHelper extends SQLiteOpenHelper
 	{
@@ -38,10 +45,10 @@ public class DBManager
 		@Override
 		public void onCreate(SQLiteDatabase db) 
 		{
-			db.execSQL(CREATE_DATABASE);			
-			Log.w("myApp", "no network");
-			populateBusData();
-			populateLuasData();
+			db.execSQL(CREATE_DATABASE);
+			//db.execSQL(INSERT_DATA);			
+			System.out.println("Chaa!") ;
+			Log.w("myApp", "no network");				
 		}
 
 		@Override
@@ -61,7 +68,7 @@ public class DBManager
 	public DBManager open()
 	{
 		myHelper = new DbHelper(myContext);
-		myDB = myHelper.getWritableDatabase();
+		myDB = myHelper.getWritableDatabase();		
 		return this;
 	}
 	
@@ -70,13 +77,17 @@ public class DBManager
 		myHelper.close(); // To close DbHelper
 	}
 	
-	public static void populateBusData()
+	public void populateBusData()
 	{
+		//db.execSQL("INSERT INTO ...");	
 		// Insert INTO DublinBus KEY_TICKET_TYPE, KEY_STAGES
 	}
-	public static void populateLuasData()
+	public long addLuasStops(String stopName, int zone)
 	{
-		// Insert INTO Luas KEY_STOPS, KEY_ZONE
+		ContentValues cv = new ContentValues();
+		cv.put(KEY_STOP_NAME, stopName);
+		cv.put(KEY_STOP_ZONE, zone);
+		return myDB.insert(DATABASE_TABLE, null, cv);			
 	}
 	public static String[] getBusTicketType()
 	{

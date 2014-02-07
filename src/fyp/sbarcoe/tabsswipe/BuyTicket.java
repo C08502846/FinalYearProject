@@ -24,14 +24,12 @@ public class BuyTicket extends Fragment
 		dart = (ImageButton) rootView.findViewById(R.id.dart);
 		
 		dubBus.setOnClickListener(new View.OnClickListener() {public void onClick(View v)
-		{
-			System.out.println("Dublin Bus");
+		{			
 			Intent i = new Intent(getActivity(), BusPurchase.class);
 		    startActivity(i);
 		}}); 
 		luas.setOnClickListener(new View.OnClickListener() {public void onClick(View v)
-		{
-			System.out.println("Luas");
+		{			
 			Intent i = new Intent(getActivity(), LuasPurchase.class);
 			startActivity(i);
 		}}); 
