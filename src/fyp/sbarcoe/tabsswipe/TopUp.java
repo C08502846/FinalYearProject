@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class TopUp extends Fragment 
 {
@@ -19,7 +20,7 @@ public class TopUp extends Fragment
 	{		
 		View rootView = inflater.inflate(R.layout.fragment_topup, container, false);	
 		
-		topUp = (Spinner) rootView.findViewById(R.id.spinnerTopUp);		
+		topUp = (Spinner) rootView.findViewById(R.id.spinnerTopUp);				
 		
 		ArrayAdapter<CharSequence> topUpAdapter = ArrayAdapter.createFromResource(getActivity(),
 				R.array.top_up, android.R.layout.simple_spinner_item);	

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:orientation="vertical" >
+        android:orientation="vertical" >    
 
         <TextView
             android:id="@+id/tvTopUpBal"
@@ -19,6 +19,7 @@
             android:textSize="20dp"
             android:textColor="#FFFFFF"
             android:paddingBottom="40dp" />
+        
 
         <TextView
             android:id="@+id/tvTopUp"

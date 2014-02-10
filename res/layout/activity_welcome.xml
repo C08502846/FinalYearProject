@@ -25,24 +25,37 @@
             android:layout_marginTop="15dp"
             android:text="Welcome to Leap Me."
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textColor="#FFFFFF" />
 
         <ImageView
             android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/logo1"
-            android:gravity="center" />
+            android:gravity="center"
+            android:src="@drawable/logo1" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tvIDis"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="36dp"
             android:layout_marginRight="25dp"
             android:text="Your ID is: "
             android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
+        
+        <TextView
+            android:id="@+id/tvID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="36dp"
+            android:layout_marginRight="25dp"
+            android:text=""
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/continueB"
