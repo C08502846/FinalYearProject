@@ -23,13 +23,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Current Balance: €2.50"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ticket Type" />
+            android:text="Ticket Type"
+            android:textColor="#FFFFFF" />
 
         <Spinner
             android:id="@+id/spinner1"
@@ -40,7 +42,8 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Number of Stages" />
+            android:text="Number of Stages"
+            android:textColor="#FFFFFF" />
         
         <Spinner
             android:id="@+id/spinner2"
@@ -51,7 +54,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cost: €1.80"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Buy" />
-
+            
             <Button
                 android:id="@+id/button2"
                 android:layout_width="wrap_content"

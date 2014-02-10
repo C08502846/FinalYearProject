@@ -23,24 +23,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Current Balance: €2.50"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
 
         <TextView
             android:id="@+id/tvLuasLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Luas Line" />
+            android:text="Luas Line"
+            android:textColor="#FFFFFF" />
 
         <Spinner
             android:id="@+id/spinnerLuasLine"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF" />
 
         <TextView
             android:id="@+id/tvFromLuas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="From Stop:" />
+            android:text="From Stop:"
+            android:textColor="#FFFFFF" />
         
         <Spinner
             android:id="@+id/spinnerLuasFrom"
@@ -51,7 +55,8 @@
             android:id="@+id/tvToLuas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="To Stop:" />
+            android:text="To Stop:"
+            android:textColor="#FFFFFF" />
         
         <Spinner
             android:id="@+id/spinnerLuasTo"
@@ -63,7 +68,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cost: €1.80"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,12 +88,6 @@
                 android:text="Calculate Fare" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvTest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
 
     </LinearLayout>
     

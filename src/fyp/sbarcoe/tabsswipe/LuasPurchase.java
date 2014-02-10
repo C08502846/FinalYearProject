@@ -14,7 +14,7 @@ import android.widget.Spinner;
 public class LuasPurchase extends Activity 
 {	
 	Spinner luasLine, luasFrom, luasTo ;
-	ArrayAdapter<String> reg_adp ;
+	ArrayAdapter<String> luas_adp ;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -29,32 +29,33 @@ public class LuasPurchase extends Activity
 		{
 			System.out.println(result[i] +"\n");
 		}		
-		int i = R.array.luas_from  ;
-		System.out.println("i ====== " +i);
 		myDB.close();
 		
 		luasLine = (Spinner) findViewById(R.id.spinnerLuasLine);
 		luasFrom = (Spinner) findViewById(R.id.spinnerLuasFrom);
 		luasTo = (Spinner) findViewById(R.id.spinnerLuasTo);
 		
-		reg_adp=new ArrayAdapter<String> (this,android.R.layout.simple_dropdown_item_1line,result);
+		luas_adp = new ArrayAdapter<String> (this,android.R.layout.simple_dropdown_item_1line,result);
+		luas_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 		
-	    reg_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-	    luasTo.setAdapter(reg_adp);
+	    luasTo.setAdapter(luas_adp);
+	    luasFrom.setAdapter(luas_adp);    	    
 		
 		ArrayAdapter<CharSequence> luasLineAdapter = ArrayAdapter.createFromResource(this,
-		R.array.luas_line, android.R.layout.simple_spinner_item);				
-		ArrayAdapter<CharSequence> luasFromAdapter = ArrayAdapter.createFromResource(this,
-		R.array.luas_from, android.R.layout.simple_spinner_item);	
+		R.array.luas_line, android.R.layout.simple_spinner_item);			
+		
+//		ArrayAdapter<CharSequence> luasFromAdapter = ArrayAdapter.createFromResource(this,
+//		R.array.luas_from, android.R.layout.simple_spinner_item);
+		
 		//ArrayAdapter<CharSequence> luasToAdapter = ArrayAdapter.createFromResource(this,
 		//R.array.luas_to, android.R.layout.simple_spinner_item);	
 		
 		luasLineAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		luasFromAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		//luasFromAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		//luasToAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		luasLine.setAdapter(luasLineAdapter);	
-		luasFrom.setAdapter(luasFromAdapter);	
+		//luasFrom.setAdapter(luasFromAdapter);	
 		//luasTo.setAdapter(luasToAdapter);	
 				
 	}
