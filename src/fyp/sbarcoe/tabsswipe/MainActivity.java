@@ -12,7 +12,10 @@ import android.app.AlertDialog;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
@@ -29,6 +32,9 @@ public class MainActivity extends FragmentActivity implements
 	String stopName ;
 	int stopZone ;
 	
+	SharedPreferences mPrefs;
+    final String welcomeScreenShownPref = "welcomeScreenShown";
+    
 	// Tab titles
 	private String[] tabs = { "Buy New", "Top Up", "Validate", "Favs" };
 
@@ -36,7 +42,19 @@ public class MainActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) 
 	{		
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);		
+		setContentView(R.layout.activity_main);	
+		
+		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+		 // second argument is the default to use if the preference can't be found
+	    Boolean welcomeScreenShown = mPrefs.getBoolean(welcomeScreenShownPref, false);
+	    if (!welcomeScreenShown) 
+	    {	        
+	    	final Intent i = new Intent(getApplicationContext(), Welcome.class);
+		    startActivity(i);		    
+	    	SharedPreferences.Editor editor = mPrefs.edit();
+	        editor.putBoolean(welcomeScreenShownPref, true);
+	        editor.commit(); // Very important to save the preference
+	    }
 		//insertStops();
 
 		// Initilization

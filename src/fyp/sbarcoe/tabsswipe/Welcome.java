@@ -1,13 +1,14 @@
 package fyp.sbarcoe.tabsswipe;
 
+import info.androidhive.tabsswipe.R;
+
 import java.util.Random;
 
-import info.androidhive.tabsswipe.R;
-import info.androidhive.tabsswipe.R.layout;
-import info.androidhive.tabsswipe.R.menu;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -18,13 +19,14 @@ public class Welcome extends Activity
     Button continueB ; 
     TextView id, id2 ; 
     int idGen ;
-    String idGenStr ;
+    String idGenStr ;    
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{	
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_welcome);
+		setContentView(R.layout.activity_welcome);				
+		
 		id = (TextView) findViewById(R.id.tvID);
 		id2 = (TextView) findViewById(R.id.tvIDis);
 		
@@ -41,12 +43,14 @@ public class Welcome extends Activity
 		//id.setText(idGenStr);
 		id2.append(idGenStr);
 		continueB = (Button) findViewById(R.id.continueB);	
+				
 		continueB.setOnClickListener(new View.OnClickListener() 
 		{
             public void onClick(View v) 
             {
             	final Intent i = new Intent(getApplicationContext(), MainActivity.class);
     		    startActivity(i);
+    		    finish();
             }
         });
 		
@@ -54,12 +58,12 @@ public class Welcome extends Activity
 
 	private void registerUser() 
 	{
-		// TODO Auto-generated method stub		
+		
 	}
 
 	private void checkIfExists() 
 	{
-		// TODO Auto-generated method stub		
+			
 	}
 
 	@Override
