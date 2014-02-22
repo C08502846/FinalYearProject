@@ -21,24 +21,21 @@ public class TabsPagerAdapter extends FragmentPagerAdapter
 
 		switch (index) {
 		case 0:
-			// Top Rated fragment activity
+			// Buy Ticket fragment activity
 			return new BuyTicket();
 		case 1:
-			// Games fragment activity
+			// TopUp fragment activity
 			return new TopUp();
 		case 2:
-			// Movies fragment activity
-			return new Validate();
-		case 3:
-			// Movies fragment activity
-			return new Favourites();
+			// Validate fragment activity
+			return new Validate();		
 		}
 		return null;	}
 
 	@Override
 	public int getCount() {
 		// get item count - equal to number of tabs
-		return 4;
+		return 3;
 	}
 
 }

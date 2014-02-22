@@ -36,7 +36,7 @@ public class MainActivity extends FragmentActivity implements
     final String welcomeScreenShownPref = "welcomeScreenShown";
     
 	// Tab titles
-	private String[] tabs = { "Buy New", "Top Up", "Validate", "Favs" };
+	private String[] tabs = { "Buy New", "Top Up", "Validate" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -52,8 +52,8 @@ public class MainActivity extends FragmentActivity implements
 	    	final Intent i = new Intent(getApplicationContext(), Welcome.class);
 		    startActivity(i);		    
 	    	SharedPreferences.Editor editor = mPrefs.edit();
-	        editor.putBoolean(welcomeScreenShownPref, true);
-	        editor.commit(); // Very important to save the preference
+	        //editor.putBoolean(welcomeScreenShownPref, true);
+	        //editor.commit(); // Very important to save the preference
 	    }
 		//insertStops();
 

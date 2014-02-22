@@ -2,69 +2,130 @@ package fyp.sbarcoe.tabsswipe;
 
 import info.androidhive.tabsswipe.R;
 
+import java.util.ArrayList;
 import java.util.Random;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Welcome extends Activity 
 {
     Button continueB ; 
-    TextView id, id2 ; 
     int idGen ;
-    String idGenStr ;    
-    
+    EditText email, pw ;
+    boolean successReturn ;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{	
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);				
-		
-		id = (TextView) findViewById(R.id.tvID);
-		id2 = (TextView) findViewById(R.id.tvIDis);
-		
-		idGen = createID() ;
-		checkIfExists() ;
-		registerUser() ;
-		
-		StringBuilder sb = new StringBuilder();
-		sb.append("");
-		sb.append(idGen);
-		idGenStr = sb.toString();
-		System.out.println(idGenStr) 
-		;
-		//id.setText(idGenStr);
-		id2.append(idGenStr);
-		continueB = (Button) findViewById(R.id.continueB);	
-				
+		email = (EditText) findViewById(R.id.email);
+		pw = (EditText) findViewById(R.id.pw);		
+
+		continueB = (Button) findViewById(R.id.continueB);					
 		continueB.setOnClickListener(new View.OnClickListener() 
 		{
+			
             public void onClick(View v) 
-            {
-            	final Intent i = new Intent(getApplicationContext(), MainActivity.class);
-    		    startActivity(i);
-    		    finish();
+            { 
+            	new LongOperation().execute("");     		
+            	//registerUser(email1, pw1);            	
+            	//Toast.makeText(getApplicationContext(), "Please try again.", Toast.LENGTH_SHORT).show();
+            	    
             }
         });
 		
 	}
-
-	private void registerUser() 
-	{
+	private class LongOperation extends AsyncTask<String, Void, String> {
 		
-	}
+		private ProgressDialog mDialog = new ProgressDialog(Welcome.this);
 
-	private void checkIfExists() 
-	{
-			
-	}
+        @Override
+        protected String doInBackground(String... params) 
+        {
+        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+            
+            // define the parameter        
+            postParameters.add(new BasicNameValuePair("email", email.getText().toString()));
+            postParameters.add(new BasicNameValuePair("pw", pw.getText().toString()));
+
+            String response = null;
+            String result = null ;
+            boolean success = false ;
+                
+            // call executeHttpPost method passing necessary parameters 
+            try 
+             {
+              response = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/insert2.php", postParameters);
+               //response = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/registerUser.php", postParameters);
+               // store the result returned by PHP script that runs MySQL query
+                result = response.toString();  
+              }
+              catch (Exception e) 
+              {
+                   Log.e("log_tag","Error in http connection!!" + e.toString());               
+              	   Toast.makeText(getApplicationContext(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
+              }
+				return response; 
+        }
+
+        @Override
+        protected void onPostExecute(String result) 
+        {
+            //TextView txt = (TextView) findViewById(R.id.output);
+           // txt.setText("Executed"); // txt.setText(result);
+            // might want to change "executed" for the returned string passed
+            // into onPostExecute() but that is upto you
+        
+            mDialog.dismiss();
+
+        	 if (result.contains("Success"))
+             {
+             	Toast.makeText(getApplicationContext(), "Registered.", Toast.LENGTH_SHORT).show();
+                System.out.println("woohoo!");            	
+             	final Intent i = new Intent(getApplicationContext(), MainActivity.class);
+             	startActivity(i);
+             	finish();
+             }
+             else if(result.contains("Exists"))
+             {
+             	Toast.makeText(getApplicationContext(), "User Already Exists.", Toast.LENGTH_SHORT).show();
+                 System.out.println("Exists");
+             }
+             else
+             {
+            	 Toast.makeText(getApplicationContext(), "No Result.", Toast.LENGTH_SHORT).show();
+             }
+        }
+
+        @Override
+        protected void onPreExecute() 
+        {
+        	mDialog.setMessage("Registering...");
+            mDialog.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) 
+        {
+        	
+        }
+    }	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) 
@@ -76,7 +137,7 @@ public class Welcome extends Activity
 	public int createID()
 	{
 		Random r = new Random();
-		int i1 = r.nextInt(10000-0);
+		int i1 = r.nextInt(100000-0);
 		return i1;		
 	}
 
