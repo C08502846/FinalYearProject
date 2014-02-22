@@ -52,10 +52,10 @@ public class MainActivity extends FragmentActivity implements
 	    	final Intent i = new Intent(getApplicationContext(), Welcome.class);
 		    startActivity(i);		    
 	    	SharedPreferences.Editor editor = mPrefs.edit();
-	        //editor.putBoolean(welcomeScreenShownPref, true);
-	        //editor.commit(); // Very important to save the preference
+	        editor.putBoolean(welcomeScreenShownPref, true);
+	        editor.commit(); // Very important to save the preference
 	    }
-		//insertStops();
+		insertStops();
 
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);

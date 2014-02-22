@@ -43,7 +43,21 @@ public class Welcome extends Activity
 			
             public void onClick(View v) 
             { 
-            	new LongOperation().execute("");     		
+                boolean fieldsEntered = false ;
+                
+                String email1 = email.getText().toString(); 
+                String pw1 = pw.getText().toString(); 
+               
+                if (email1.isEmpty() || pw1.isEmpty() )
+                {
+               	    Toast.makeText(getApplicationContext(), "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                	new LongOperation().execute(""); 
+                }    
+                                 
+                
             	//registerUser(email1, pw1);            	
             	//Toast.makeText(getApplicationContext(), "Please try again.", Toast.LENGTH_SHORT).show();
             	    
@@ -117,7 +131,8 @@ public class Welcome extends Activity
         protected void onPreExecute() 
         {
         	mDialog.setMessage("Registering...");
-            mDialog.show();
+            mDialog.show();       
+            
         }
 
         @Override
