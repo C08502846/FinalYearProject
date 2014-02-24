@@ -1,9 +1,5 @@
 package fyp.sbarcoe.tabsswipe;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 
 import info.androidhive.tabsswipe.R;
 import info.androidhive.tabsswipe.adapter.TabsPagerAdapter;
@@ -17,7 +13,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,7 +50,8 @@ public class MainActivity extends FragmentActivity implements
 	        editor.putBoolean(welcomeScreenShownPref, true);
 	        editor.commit(); // Very important to save the preference
 	    }
-		insertStops();
+		//insertStops();
+
 
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
@@ -97,7 +93,8 @@ public class MainActivity extends FragmentActivity implements
 		});
 	}
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu) 
+	{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.testmenu, menu);
 		return true;

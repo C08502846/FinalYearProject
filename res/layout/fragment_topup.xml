@@ -40,7 +40,7 @@
     </LinearLayout>
     
      <Button
-            android:id="@+id/buttonTopUp"
+            android:id="@+id/bTopUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Buy"

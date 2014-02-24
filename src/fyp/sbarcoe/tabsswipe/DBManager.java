@@ -14,14 +14,21 @@ public class DBManager
 	public static final String KEY_ROWID = "_id";
 	public static final String KEY_STOP_NAME= "StopName";
 	public static final String KEY_STOP_ZONE= "StopZone";
+	public static final String KEY_EMAIL= "Email";
+	public static final String KEY_PASSWORD= "Password";
 	
 	private static final String DATABASE_NAME = "LeapMe";
-	static final String DATABASE_TABLE = "LuasStop";
+	static final String DATABASE_TABLE_LUAS = "LuasStop";
+	static final String DATABASE_TABLE_USER = "User";
 	private static final int DATABASE_VERSION= 1;
-	private static final String CREATE_DATABASE = "CREATE TABLE " + DATABASE_TABLE + " (" +
+	private static final String CREATE_DATABASE = "CREATE TABLE " + DATABASE_TABLE_LUAS + " (" +
             KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		    KEY_STOP_NAME + " TEXT NOT NULL, " +	
 	        KEY_STOP_ZONE + " INTEGER NOT NULL);" ;	
+
+	private static final String CREATE_USER_TABLE = "CREATE TABLE " +DATABASE_TABLE_USER+ " (" +
+	KEY_EMAIL+ " STRING PRIMARY KEY, " +
+	KEY_PASSWORD + " TEXT NOT NULL); ";
 	
 	//private static final String INSERT_DATA = "INSERT INTO LuasStop VALUES(1, 'Stephens Green', 1);";
 	//private static final String INSERT_DATA1 = "INSERT INTO LuasStop VALUES(2, 'Harcourt', 1);";
@@ -46,6 +53,7 @@ public class DBManager
 		public void onCreate(SQLiteDatabase db) 
 		{
 			db.execSQL(CREATE_DATABASE);
+			db.execSQL(CREATE_USER_TABLE);
 			//db.execSQL(INSERT_DATA);			
 			System.out.println("Database Created!") ;
 			Log.w("myApp", "no network");				
@@ -55,7 +63,7 @@ public class DBManager
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) 
 		{
 			// To Upgrade Database
-			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_LUAS);
 			onCreate(db);			
 		}		
 	}
@@ -87,12 +95,12 @@ public class DBManager
 		ContentValues cv = new ContentValues();
 		cv.put(KEY_STOP_NAME, stopName);
 		cv.put(KEY_STOP_ZONE, zone);
-		return myDB.insert(DATABASE_TABLE, null, cv);			
+		return myDB.insert(DATABASE_TABLE_LUAS, null, cv);			
 	}
 	public String[] getStopNames() 
 	{
 		String[] columns = new String[]{KEY_STOP_NAME};
-		Cursor c = myDB.query(DATABASE_TABLE, columns, null, null, null, null, null);
+		Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, null, null, null, null, null);
 		ArrayList<String> stopNames = new ArrayList<String>();
 		while(c.moveToNext())
 		        {			
@@ -120,6 +128,14 @@ public class DBManager
 	public static void getLuasZone()
 	{
 		
+	}
+
+	public void insertLocalUser(String email, String password) 
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(KEY_EMAIL, email);
+		cv.put(KEY_PASSWORD, password);
+		myDB.insert(DATABASE_TABLE_USER, null, cv);	
 	}
 	
 }

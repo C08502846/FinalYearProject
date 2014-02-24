@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -14,12 +15,13 @@ public class TopUp extends Fragment
 {
 	
 	Spinner topUp ;
+	TextView testData ;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{		
 		View rootView = inflater.inflate(R.layout.fragment_topup, container, false);	
-		
+	
 		topUp = (Spinner) rootView.findViewById(R.id.spinnerTopUp);				
 		
 		ArrayAdapter<CharSequence> topUpAdapter = ArrayAdapter.createFromResource(getActivity(),

@@ -25,10 +25,6 @@ public class LuasPurchase extends Activity
 		myDB.open();
 		String[] result = myDB.getStopNames() ;	
 		
-		for(int i = 0 ; i<result.length;i++)
-		{
-			System.out.println(result[i] +"\n");
-		}		
 		myDB.close();
 		
 		luasLine = (Spinner) findViewById(R.id.spinnerLuasLine);
