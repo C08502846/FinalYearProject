@@ -50,7 +50,7 @@ public class Welcome extends Activity
                 }
                 else
                 {
-                	new LongOperation().execute("");   
+                	new RegisterUser().execute("");   
                 }                                  
                 
             	//registerUser(email1, pw1);            	
@@ -59,7 +59,8 @@ public class Welcome extends Activity
         });
 		
 	}
-	private class LongOperation extends AsyncTask<String, Void, String> {
+	private class RegisterUser extends AsyncTask<String, Void, String> 
+	{
 		
 		private ProgressDialog mDialog = new ProgressDialog(Welcome.this);
 

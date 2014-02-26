@@ -20,21 +20,21 @@
 
         <TextView
             android:id="@+id/tvPaymentOption"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Please enter your card details or select Paypal to top up your account"
+            android:text="Please enter your card details"
             android:textColor="#FFFFFF" />
 
         <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
+            android:id="@+id/imageCards"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/cards" />
 
         <TextView
             android:id="@+id/tvPaymentOption"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:gravity="center"
@@ -54,7 +54,7 @@
 
         <TextView
             android:id="@+id/textView1"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Expiry Date:" />
 
@@ -79,7 +79,7 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/etCV2"
+            android:id="@+id/cv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -90,13 +90,13 @@
             android:id="@+id/buttonPayment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Submit" />
+            android:text="Add Card" />
 
-        <ImageButton
-            android:id="@+id/paypal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/paypal_logo" />
+<!--         <ImageButton -->
+<!--             android:id="@+id/paypal" -->
+<!--             android:layout_width="match_parent" -->
+<!--             android:layout_height="match_parent" -->
+<!--             android:src="@drawable/paypal_logo" /> -->
 
     </LinearLayout>
 
