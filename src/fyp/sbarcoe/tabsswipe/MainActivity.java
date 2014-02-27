@@ -41,17 +41,17 @@ public class MainActivity extends FragmentActivity implements
 		
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		 // second argument is the default to use if the preference can't be found
-//	    Boolean welcomeScreenShown = mPrefs.getBoolean(welcomeScreenShownPref, false);
-//	    if (!welcomeScreenShown) 
-//	    {	        
-//	    	final Intent i = new Intent(getApplicationContext(), Welcome.class);
-//		    startActivity(i);		    
-//	    	SharedPreferences.Editor editor = mPrefs.edit();
-//	        editor.putBoolean(welcomeScreenShownPref, true);
-//	        editor.commit(); // Very important to save the preference
-//	        finish();
-//	    }
-		//insertStops();
+	    Boolean welcomeScreenShown = mPrefs.getBoolean(welcomeScreenShownPref, false);
+	    if (!welcomeScreenShown) 
+	    {	        
+	    	final Intent i = new Intent(getApplicationContext(), Welcome.class);
+		    startActivity(i);		    
+	    	SharedPreferences.Editor editor = mPrefs.edit();
+	        editor.putBoolean(welcomeScreenShownPref, true);
+	        editor.commit(); // Very important to save the preference
+	        finish();
+	    }
+		insertStops();
 
 
 		// Initilization

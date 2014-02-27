@@ -41,6 +41,7 @@ public class Payment extends Activity implements OnItemSelectedListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_payment);
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+		
 		Submit = (Button) findViewById(R.id.buttonPayment);
 		spinMonth = (Spinner) findViewById(R.id.spinMonth);
 		spinYear = (Spinner) findViewById(R.id.spinYear);
@@ -56,18 +57,13 @@ public class Payment extends Activity implements OnItemSelectedListener
 		ArrayAdapter<Integer> monthAdapter = new ArrayAdapter<Integer>(this,android.R.layout.simple_list_item_activated_1, months);
 		spinMonth.setAdapter(monthAdapter);
 		ArrayAdapter<Integer> yearAdapter = new ArrayAdapter<Integer>(this,android.R.layout.select_dialog_item, years);
-		spinYear.setAdapter(yearAdapter);	
-	
+		spinYear.setAdapter(yearAdapter);		
 		
 		Submit.setOnClickListener(new View.OnClickListener() 
 		{			
             public void onClick(View v) 
-            {        
-            	
+            {                    	
             	new RegisterCard().execute("");  
-            	final Intent i = new Intent(getApplicationContext(), MainActivity.class);
-    		    startActivity(i);
-    		    finish();
             }
 		});
 //		payPal.setOnClickListener(new View.OnClickListener() {public void onClick(View v)
@@ -124,17 +120,16 @@ public class Payment extends Activity implements OnItemSelectedListener
             //TextView txt = (TextView) findViewById(R.id.output);
            // txt.setText("Executed"); // txt.setText(result);
             // might want to change "executed" for the returned string passed
-            // into onPostExecute() but that is upto you
-        	
-            mDialog.dismiss();
+            // into onPostExecute() but that is upto you   	
+        	 mDialog.dismiss();
 
         	 if  (result.contains("Success"))
              {
-             	Toast.makeText(getApplicationContext(), "Card Added", Toast.LENGTH_SHORT).show(); 
+             	Toast.makeText(getApplicationContext(), "Card Added", Toast.LENGTH_SHORT).show();              	
              	
              	//insertLocalUserData(email.getText().toString(), pw.getText().toString());
              	
-             	final Intent i = new Intent(getApplicationContext(), Payment.class);
+             	final Intent i = new Intent(getApplicationContext(), MainActivity.class);
              	startActivity(i);
              	finish();
              }

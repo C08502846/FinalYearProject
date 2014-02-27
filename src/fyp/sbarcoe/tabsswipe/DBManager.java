@@ -117,18 +117,18 @@ public class DBManager
 		String childTicket = "Child" ;		
 		return ticketType;
 	}
-	public static void getBusStage()
-	{
-		
+	public String getEmail()
+	{		
+		String[] columns = new String[]{KEY_EMAIL};
+		Cursor c = myDB.query(DATABASE_TABLE_USER, columns, null, null, null, null, null);
+		String rTitle = "" ;
+		while(c.moveToNext())
+		{
+			rTitle = c.getString(0);
+		}
+		return rTitle;
 	}
-	public static void getLuasLine()
-	{
-		
-	}
-	public static void getLuasZone()
-	{
-		
-	}
+
 
 	public void insertLocalUser(String email, String password) 
 	{

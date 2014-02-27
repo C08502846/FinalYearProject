@@ -44,14 +44,15 @@
         <item>Dundrum</item>
     </string-array>
     <string-array name="top_up">
-        <item>€5</item>
-        <item>€10</item>
-        <item>€20</item>
-        <item>€50</item>
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>50</item>
     </string-array>
 
     <string name="title_activity_welcome">Welcome</string>
     <string name="title_activity_payment">Payment</string>
+
     <integer-array name="spinMonth">
         <item>01</item>
         <item>02</item>
@@ -64,7 +65,24 @@
         <item>09</item>
         <item>10</item>
         <item>11</item>
-        <item>12</item>        
+        <item>12</item>
     </integer-array>
+
+    <string name="title_activity_stripe_payment">StripePayment</string>
+    
+     <string name="appName">Stripe Payments Example</string>
+
+    <string name="addPayment">Add Payment Method</string>
+    <string name="paymentMethods">Payment Methods</string>
+
+    <string name="endingIn">Card ending in </string>
+    <string name="progressMessage">Creating Token&#8230;</string>
+    <string name="validationErrors">Validation Errors</string>
+
+    <string name="cardNumber">Card Number</string>
+    <string name="save">Save</string>
+    <string name="cvc">CVC</string>
+
+    <string name="ok">OK</string>
 
 </resources>

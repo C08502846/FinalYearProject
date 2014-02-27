@@ -143,6 +143,7 @@ public class Welcome extends Activity
 		myDB.close();
 		
     }
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) 
 	{
