@@ -16,6 +16,7 @@ public class DBManager
 	public static final String KEY_STOP_ZONE= "StopZone";
 	public static final String KEY_EMAIL= "Email";
 	public static final String KEY_PASSWORD= "Password";
+	public static final String KEY_BALANCE= "Balance";
 	
 	private static final String DATABASE_NAME = "LeapMe";
 	static final String DATABASE_TABLE_LUAS = "LuasStop";
@@ -28,7 +29,8 @@ public class DBManager
 
 	private static final String CREATE_USER_TABLE = "CREATE TABLE " +DATABASE_TABLE_USER+ " (" +
 	KEY_EMAIL+ " STRING PRIMARY KEY, " +
-	KEY_PASSWORD + " TEXT NOT NULL); ";
+	KEY_PASSWORD + " TEXT NOT NULL); "+
+	KEY_BALANCE + " TEXT NULL); ";
 	
 	//private static final String INSERT_DATA = "INSERT INTO LuasStop VALUES(1, 'Stephens Green', 1);";
 	//private static final String INSERT_DATA1 = "INSERT INTO LuasStop VALUES(2, 'Harcourt', 1);";
@@ -120,7 +122,10 @@ public class DBManager
 	public String getEmail()
 	{		
 		String[] columns = new String[]{KEY_EMAIL};
-		Cursor c = myDB.query(DATABASE_TABLE_USER, columns, null, null, null, null, null);
+		String selectQuery = "SELECT Email FROM User";
+
+		Cursor c = myDB.rawQuery(selectQuery, null);
+		//Cursor c = myDB.query(DATABASE_TABLE_USER, columns, "Select Email From User", null, null, null, null);
 		String rTitle = "" ;
 		while(c.moveToNext())
 		{
@@ -128,7 +133,6 @@ public class DBManager
 		}
 		return rTitle;
 	}
-
 
 	public void insertLocalUser(String email, String password) 
 	{

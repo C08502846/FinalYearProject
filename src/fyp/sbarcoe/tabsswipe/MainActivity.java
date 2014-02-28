@@ -51,7 +51,7 @@ public class MainActivity extends FragmentActivity implements
 	        editor.commit(); // Very important to save the preference
 	        finish();
 	    }
-		insertStops();
+		//insertStops();
 
 
 		// Initilization

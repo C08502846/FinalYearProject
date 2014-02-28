@@ -53,7 +53,6 @@ public class Payment extends Activity implements OnItemSelectedListener
 
 		Integer[] months = new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12};
 		Integer[] years = new Integer[]{2014, 2015, 2016, 2017, 2018, 2019, 2020};
-		
 		ArrayAdapter<Integer> monthAdapter = new ArrayAdapter<Integer>(this,android.R.layout.simple_list_item_activated_1, months);
 		spinMonth.setAdapter(monthAdapter);
 		ArrayAdapter<Integer> yearAdapter = new ArrayAdapter<Integer>(this,android.R.layout.select_dialog_item, years);
@@ -90,12 +89,13 @@ public class Payment extends Activity implements OnItemSelectedListener
         protected String doInBackground(String... params) 
         {
         	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-            
+    		String localEmail = getEmail();
             // define the parameter        cardnumber, expmonth, expyear, cv
             postParameters.add(new BasicNameValuePair("cardnumber", cardNumber.getText().toString()));
             postParameters.add(new BasicNameValuePair("expmonth", monthValue));
             postParameters.add(new BasicNameValuePair("expyear", yearValue));
             postParameters.add(new BasicNameValuePair("cv", cv.getText().toString()));
+            postParameters.add(new BasicNameValuePair("email", localEmail));            
 
             String response = null;
             String result = null ;
@@ -149,8 +149,18 @@ public class Payment extends Activity implements OnItemSelectedListener
         	mDialog.setMessage("Registering Card Details...");
             mDialog.show();             
         }
+
 	  
     }
+    private String getEmail() 
+	{
+		DBManager myDB = new DBManager(getApplicationContext());
+		myDB.open();	
+		String emailReturn ;
+		emailReturn = myDB.getEmail();	
+		myDB.close();
+		return emailReturn;
+	}
     @Override
     public boolean onCreateOptionsMenu(Menu menu) 
     {
@@ -171,5 +181,6 @@ public class Payment extends Activity implements OnItemSelectedListener
 		// TODO Auto-generated method stub
 		
 	}
+	
 
 }
