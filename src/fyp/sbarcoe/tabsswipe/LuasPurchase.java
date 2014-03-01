@@ -10,11 +10,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class LuasPurchase extends Activity 
 {	
 	Spinner luasLine, luasFrom, luasTo ;
 	ArrayAdapter<String> luas_adp ;
+	String returnString, result;
+	TextView userBal ;
+
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -24,7 +29,8 @@ public class LuasPurchase extends Activity
 		DBManager myDB = new DBManager(this);
 		myDB.open();
 		String[] result = myDB.getStopNames() ;	
-		
+		userBal = (TextView) findViewById(R.id.curBal);
+
 		myDB.close();
 		
 		luasLine = (Spinner) findViewById(R.id.spinnerLuasLine);

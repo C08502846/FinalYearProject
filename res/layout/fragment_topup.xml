@@ -15,7 +15,7 @@
             android:id="@+id/tvTopUpBal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Account Balance: €1.50"
+            android:text="Account Balance:"
             android:textSize="20dp"
             android:textColor="#FFFFFF"
             android:paddingBottom="40dp" />

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 import info.androidhive.tabsswipe.R;
@@ -26,7 +29,8 @@ import android.widget.Toast;
 
 public class TopUp extends Fragment implements OnItemSelectedListener
 {
-	String topUpAmt ;
+	String topUpAmt, currentBal, returnString ;
+	String result2 ;
 	Spinner topUp ;
 	TextView userBal ;
 	Button topUpButton ;
@@ -46,18 +50,17 @@ public class TopUp extends Fragment implements OnItemSelectedListener
 		
 		topUp.setAdapter(topUpAdapter);	
 		userBal = (TextView) rootView.findViewById(R.id.tvTopUpBal);
-
-
+		
+    	new GetBal().execute("");  
 
 		topUpButton.setOnClickListener(new View.OnClickListener() {public void onClick(View v)
 		{				
 			String localEmail = getEmail();
-	   	  //Toast.makeText(getActivity(), "Email: "+localEmail, Toast.LENGTH_SHORT).show();	   	    
 	   	    //deductFunds(localEmail, topUpInt);
+			// new validateCV2().execute("");
         	new deductFromCard().execute("");  
-
+        	//new getUserBal().execute("");  
 	   	   // topUpUser() ;
-
 		}
 
 		});
@@ -82,41 +85,33 @@ public class TopUp extends Fragment implements OnItemSelectedListener
             postParameters.add(new BasicNameValuePair("email", getEmail()));
             postParameters.add(new BasicNameValuePair("topUpAmt", topUpAmtConv));
 
-            String response = null;
-            String result = null ;
+            String response1 = null;
            // boolean success = false ;
                 
             // call executeHttpPost method passing necessary parameters 
             try 
              {
-            	response = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/deductCard.php", postParameters);                         
-            	result = response.toString();  
-              }
+            	response1 = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/deductCard.php", postParameters);                         
+            	String result = response1.toString(); 
+             }
               catch (Exception e) 
               {
                    Log.e("log_tag","Error in http connection!!" + e.toString());               
               	   Toast.makeText(getActivity(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
               }
-			  return response; 
+			  return response1; 
         }
         @Override
         protected void onPostExecute(String result) 
-        {
-            //TextView txt = (TextView) findViewById(R.id.output);
-           // txt.setText("Executed"); // txt.setText(result);
-            // might want to change "executed" for the returned string passed
-            // into onPostExecute() but that is upto you   	
+        {          
         	 mDialog.dismiss();
-
+        	 //String remoteBal = Get Balance from Remote
+        	 // updateLocalBal() ; 
+        	 
         	 if  (result.contains("Success"))
              {
-             	Toast.makeText(getActivity(), "You have topped up by "+"€"+topUpAmt+"", Toast.LENGTH_SHORT).show();
-             	
-             	
-             	//insertLocalUserData(email.getText().toString(), pw.getText().toString());
-             	
-             	//final Intent i = new Intent(getActivity(), MainActivity.class);
-             	//startActivity(i);
+             	Toast.makeText(getActivity(), "You have topped up by "+"€"+topUpAmt+"", Toast.LENGTH_LONG).show(); 
+            	new GetBal().execute("");
              }
              else if(result.contains("NoFunds"))
              {
@@ -131,11 +126,73 @@ public class TopUp extends Fragment implements OnItemSelectedListener
         @Override
         protected void onPreExecute() 
         {
-        	mDialog.setMessage("Registering Card Details...");
+        	mDialog.setMessage("Topping up account...");
             mDialog.show();             
         }
+}
+	class GetBal extends AsyncTask<String, Void, String> 
+	{
+		
+		private ProgressDialog mDialog = new ProgressDialog(getActivity());
 
+        @Override
+        protected String doInBackground(String... params) 
+        {
+        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 
+            // define the parameter        cardnumber, expmonth, expyear, cv
+            postParameters.add(new BasicNameValuePair("email", getEmail()));
+
+            String response2 = null;
+           // boolean success = false ;
+                
+            // call executeHttpPost method passing necessary parameters 
+            try 
+             {            	
+            	response2 = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/getBal.php", postParameters);                         
+            	result2 = response2.toString(); 
+            	
+              }
+              catch (Exception e) 
+              {
+                   Log.e("log_tag","Error in http connection!!" + e.toString());               
+              	   Toast.makeText(getActivity(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
+              }
+			  return response2; 
+        }
+        @Override
+        protected void onPostExecute(String result2) 
+        {          
+        	 //mDialog.dismiss();
+        	 //String remoteBal = Get Balance from Remote
+        	 // updateLocalBal() ;
+        	 
+        	//parse json data
+             try
+             {
+            	 returnString = "";
+                 JSONArray jArray = new JSONArray(result2);
+                 Log.i("tagconvertstr", "["+result2+"]");
+                     for(int i=0;i<jArray.length();i++)
+                     {
+                             JSONObject json_data = jArray.getJSONObject(i);                            
+                             returnString +=  json_data.getInt("Balance");
+                             System.out.print("Returned: "+returnString);                        	 
+                     }                     
+              }
+             catch(JSONException e)
+             {
+                     Log.e("log_tag", "Error parsing data "+e.toString());
+             }         
+             userBal.setText("Current Balance: "+returnString+"");               	
+        }
+
+        @Override
+        protected void onPreExecute() 
+        {
+        	//mDialog.setMessage("Getting Balance...");
+           // mDialog.show();             
+        }
 }
 	private String getEmail() 
 	{
@@ -151,8 +208,6 @@ public class TopUp extends Fragment implements OnItemSelectedListener
 	{
 		topUpAmt = topUp.getSelectedItem().toString();
 		topUpInt = Integer.parseInt(topUpAmt);	
-   	    //Toast.makeText(getActivity(), "Top Up Is: "+topUpInt, Toast.LENGTH_SHORT).show();                      
-
 		
 		//int year1 = Integer.parseInt(month);	
 	}
