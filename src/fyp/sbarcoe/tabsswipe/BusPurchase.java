@@ -34,7 +34,7 @@ public class BusPurchase extends Activity
 	Spinner ticketType, stages ;
 	String returnString, result;
 	TextView userBal ;
-
+	ProgressDialog mDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -54,7 +54,8 @@ public class BusPurchase extends Activity
 		
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+		mDialog = new ProgressDialog(getApplicationContext());
+
 		ticketType.setAdapter(adapter);	
 		stages.setAdapter(adapter2);	
     	new GetBal().execute("");  
@@ -117,7 +118,6 @@ public class BusPurchase extends Activity
 	class GetBal extends AsyncTask<String, Void, String> 
 	{
 		
-		private ProgressDialog mDialog = new ProgressDialog(getApplicationContext());
 
         @Override
         protected String doInBackground(String... params) 
@@ -140,7 +140,7 @@ public class BusPurchase extends Activity
               catch (Exception e) 
               {
                    Log.e("log_tag","Error in http connection!!" + e.toString());               
-              	   Toast.makeText(getApplicationContext(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
+              	   //Toast.makeText(getApplicationContext(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
               }
 			  return response2; 
         }
@@ -189,5 +189,4 @@ public class BusPurchase extends Activity
 		myDB.close();
 		return emailReturn;
 	}
-
 }

@@ -26,7 +26,7 @@ public class Welcome extends Activity
     int idGen ;
     EditText email, pw ;
     boolean successReturn ;
-    
+	ProgressDialog mDialog ;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{	
@@ -34,11 +34,11 @@ public class Welcome extends Activity
 		setContentView(R.layout.activity_welcome);				
 		email = (EditText) findViewById(R.id.email);
 		pw = (EditText) findViewById(R.id.pw);		
-		
+		mDialog = new ProgressDialog(Welcome.this);
+
 		continueB = (Button) findViewById(R.id.continueB);					
 		continueB.setOnClickListener(new View.OnClickListener() 
-		{
-			
+		{			
             public void onClick(View v) 
             {                 
                 String email1 = email.getText().toString(); 
@@ -62,7 +62,6 @@ public class Welcome extends Activity
 	private class RegisterUser extends AsyncTask<String, Void, String> 
 	{
 		
-		private ProgressDialog mDialog = new ProgressDialog(Welcome.this);
 
         @Override
         protected String doInBackground(String... params) 
@@ -109,6 +108,20 @@ public class Welcome extends Activity
              	
              	final Intent i = new Intent(getApplicationContext(), Payment.class);
              	startActivity(i);
+             	Intent i1 = new Intent(Intent.ACTION_SEND);
+             	i1.setType("message/rfc822");
+             	i1.putExtra(Intent.EXTRA_EMAIL  , new String[]{"barcoe4@hotmail.com"});
+             	i1.putExtra(Intent.EXTRA_SUBJECT, "Welcome to Leap Me");
+             	i1.putExtra(Intent.EXTRA_TEXT   , "La la laa");
+             	try 
+             	{
+             	    startActivity(Intent.createChooser(i1, "Send mail..."));
+             	} 
+             	catch (android.content.ActivityNotFoundException ex) 
+             	{
+             	    Toast.makeText(Welcome.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+             	}
+             	
              	finish();
              }
              else if(result.contains("Exists"))

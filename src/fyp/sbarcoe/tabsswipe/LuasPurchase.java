@@ -1,16 +1,29 @@
 package fyp.sbarcoe.tabsswipe;
 
+import java.util.ArrayList;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import fyp.sbarcoe.tabsswipe.BusPurchase.GetBal;
 import info.androidhive.tabsswipe.R;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LuasPurchase extends Activity 
 {	
@@ -25,13 +38,13 @@ public class LuasPurchase extends Activity
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_luas_purchase);	
+		setContentView(R.layout.activity_luas_purchase);
+		
 		DBManager myDB = new DBManager(this);
 		myDB.open();
 		String[] result = myDB.getStopNames() ;	
-		userBal = (TextView) findViewById(R.id.curBal);
-
-		myDB.close();
+		userBal = (TextView) findViewById(R.id.userBal);
+		myDB.close();   	
 		
 		luasLine = (Spinner) findViewById(R.id.spinnerLuasLine);
 		luasFrom = (Spinner) findViewById(R.id.spinnerLuasFrom);
@@ -59,6 +72,7 @@ public class LuasPurchase extends Activity
 		luasLine.setAdapter(luasLineAdapter);	
 		//luasFrom.setAdapter(luasFromAdapter);	
 		//luasTo.setAdapter(luasToAdapter);	
+		new GetBal().execute("");  
 				
 	}
 
@@ -114,6 +128,76 @@ public class LuasPurchase extends Activity
 									
 			}
 		}).show();
+	}
+	class GetBal extends AsyncTask<String, Void, String> 
+	{
+        @Override
+        protected String doInBackground(String... params) 
+        {
+        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+
+            postParameters.add(new BasicNameValuePair("email", getEmail()));
+
+            String response = null;
+           // boolean success = false ;
+                
+            // call executeHttpPost method passing necessary parameters 
+            try 
+             {            	
+            	response = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/getBal.php", postParameters);                         
+            	result = response.toString(); 
+            	
+              }
+              catch (Exception e) 
+              {
+                   Log.e("log_tag","Error in http connection!!" + e.toString());               
+              	   //Toast.makeText(getApplicationContext(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
+              }
+			  return response; 
+        }
+        @Override
+        protected void onPostExecute(String result2) 
+        {          
+        	 //mDialog.dismiss();
+        	 //String remoteBal = Get Balance from Remote
+        	 // updateLocalBal() ;     	 
+        	
+			//parse json data
+             try
+             {
+            	 returnString = "";
+                 JSONArray jArray = new JSONArray(result2);
+                 Log.i("tagconvertstr", "["+result+"]");
+                     for(int i=0;i<jArray.length();i++)
+                     {
+                             JSONObject json_data = jArray.getJSONObject(i);                            
+                             returnString +=  json_data.getInt("Balance");
+                             System.out.print("Returned: "+returnString);                        	 
+                     }                     
+              }
+             catch(JSONException e)
+             {
+                     Log.e("log_tag", "Error parsing data "+e.toString());
+             }    
+             userBal.append(returnString);
+             //userBal.setText("Current Balance: "+returnString+"");               	
+        }
+
+        @Override
+        protected void onPreExecute() 
+        {
+        	//mDialog.setMessage("Getting Balance...");
+           // mDialog.show();             
+        }
+	}
+	private String getEmail() 
+	{
+		DBManager myDB = new DBManager(getApplicationContext());
+		myDB.open();	
+		String emailReturn ;
+		emailReturn = myDB.getEmail();	
+		myDB.close();
+		return emailReturn;
 	}
 
 }

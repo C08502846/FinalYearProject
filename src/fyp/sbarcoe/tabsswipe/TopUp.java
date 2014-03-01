@@ -35,6 +35,7 @@ public class TopUp extends Fragment implements OnItemSelectedListener
 	TextView userBal ;
 	Button topUpButton ;
 	int topUpInt ;
+	ProgressDialog mDialog ;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{		
@@ -50,6 +51,7 @@ public class TopUp extends Fragment implements OnItemSelectedListener
 		
 		topUp.setAdapter(topUpAdapter);	
 		userBal = (TextView) rootView.findViewById(R.id.tvTopUpBal);
+		mDialog = new ProgressDialog(getActivity());
 		
     	new GetBal().execute("");  
 
@@ -68,9 +70,7 @@ public class TopUp extends Fragment implements OnItemSelectedListener
 		return rootView;
 	}
 	class deductFromCard extends AsyncTask<String, Void, String> 
-	{
-		
-		private ProgressDialog mDialog = new ProgressDialog(getActivity());
+	{		
 
         @Override
         protected String doInBackground(String... params) 
@@ -97,7 +97,7 @@ public class TopUp extends Fragment implements OnItemSelectedListener
               catch (Exception e) 
               {
                    Log.e("log_tag","Error in http connection!!" + e.toString());               
-              	   Toast.makeText(getActivity(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
+              	   //Toast.makeText(getActivity(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
               }
 			  return response1; 
         }
@@ -133,7 +133,7 @@ public class TopUp extends Fragment implements OnItemSelectedListener
 	class GetBal extends AsyncTask<String, Void, String> 
 	{
 		
-		private ProgressDialog mDialog = new ProgressDialog(getActivity());
+		
 
         @Override
         protected String doInBackground(String... params) 
@@ -184,7 +184,7 @@ public class TopUp extends Fragment implements OnItemSelectedListener
              {
                      Log.e("log_tag", "Error parsing data "+e.toString());
              }         
-             userBal.setText("Current Balance: "+returnString+"");               	
+             userBal.setText("Current Balance: €"+returnString+"");               	
         }
 
         @Override

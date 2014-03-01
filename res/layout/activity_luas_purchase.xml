@@ -22,7 +22,7 @@
             android:id="@+id/userBal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Current Balance: €2.50"
+            android:text="Current Balance: €"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFFFFF" />
 
