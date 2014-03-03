@@ -20,19 +20,21 @@ import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemSelectedListener;
 
-public class LuasPurchase extends Activity 
+public class LuasPurchase extends Activity implements OnItemSelectedListener
 {	
 	Spinner luasLine, luasFrom, luasTo ;
 	ArrayAdapter<String> luas_adp ;
 	String returnString, result;
 	TextView userBal ;
-
-
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -40,11 +42,7 @@ public class LuasPurchase extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_luas_purchase);
 		
-		DBManager myDB = new DBManager(this);
-		myDB.open();
-		String[] result = myDB.getStopNames() ;	
-		userBal = (TextView) findViewById(R.id.userBal);
-		myDB.close();   	
+		String[] result = populateGreenStops();
 		
 		luasLine = (Spinner) findViewById(R.id.spinnerLuasLine);
 		luasFrom = (Spinner) findViewById(R.id.spinnerLuasFrom);
@@ -70,6 +68,40 @@ public class LuasPurchase extends Activity
 		//luasToAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		luasLine.setAdapter(luasLineAdapter);	
+    	insertStops();
+
+		luasLine.setOnItemSelectedListener(new OnItemSelectedListener() 
+		{
+		    @Override
+		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) 
+		    {
+		    	String lineSelected = luasLine.getSelectedItem().toString();
+             	//Toast.makeText(getApplicationContext(), "Luas Line: "+lineSelected, Toast.LENGTH_LONG).show(); 
+		    	if(lineSelected == "Green")
+		    	{
+		    		//Empty Spinner from previous selection
+		    		//getStops(lineSelected) ;
+		    		// Populate Spinners With Green line Stops
+		    		// Get Zone for current selection 
+		    	}
+		    	else if (lineSelected == "Red")
+		    	{
+		    		//Empty Spinner from previous selection
+		    		//getStops(lineSelected) ;
+		    		// Populate Spinners With Red line Stops
+		    		// Get zone for current selection 
+		    	}
+		    	// Compare 2 Zones and Calculate Fare
+		    	// Assign to ticketCost and display 
+		    }
+
+		    @Override
+		    public void onNothingSelected(AdapterView<?> parentView) {
+		        // your code here
+		    }
+
+		});
+		
 		//luasFrom.setAdapter(luasFromAdapter);	
 		//luasTo.setAdapter(luasToAdapter);	
 		new GetBal().execute("");  
@@ -199,5 +231,69 @@ public class LuasPurchase extends Activity
 		myDB.close();
 		return emailReturn;
 	}
-
+	public String[] populateGreenStops()
+	{
+		DBManager myDB = new DBManager(this);
+		myDB.open();
+		String[] result = myDB.getGreenStops() ;	
+		userBal = (TextView) findViewById(R.id.userBal);
+		myDB.close(); 
+		return result ;
+		
+	}
+	@Override
+	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) 
+	{
+		//topUpAmt = topUp.getSelectedItem().toString();
+		//topUpInt = Integer.parseInt(topUpAmt);	
+		
+	}
+	
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	String[] getStops(String line)
+	{
+		return null;		
+	}
+	public void insertStops()
+	{
+		DBManager myDB = new DBManager(this);
+		myDB.open();
+		
+		//myDB.populateLuasData();		
+		//myDB.addLuasStops(stopName, stopZone)		
+		
+		//Green Line
+		myDB.addLuasStops("Stephens Green", 1);
+		myDB.addLuasStops("Harcourt", 1);
+		myDB.addLuasStops("Charlemont", 1);
+		myDB.addLuasStops("Ranelagh", 2);
+		myDB.addLuasStops("Beechwood", 2);
+		myDB.addLuasStops("Cowper", 2);
+		myDB.addLuasStops("Milltown", 2);
+		myDB.addLuasStops("Windy Arbour", 2);
+		myDB.addLuasStops("Dundrum", 2);
+		myDB.addLuasStops("Balally", 3);
+		myDB.addLuasStops("Kilmacud", 3);
+		myDB.addLuasStops("Stilorgan", 3);
+		myDB.addLuasStops("Sandyford", 3);
+		myDB.addLuasStops("Central Park", 4);
+		myDB.addLuasStops("Glencairn", 4);
+		myDB.addLuasStops("The Gallops", 4);
+		myDB.addLuasStops("Leopardstown Valley", 4);
+		myDB.addLuasStops("Ballyogan", 4);
+		myDB.addLuasStops("Carrickmines", 5);
+		myDB.addLuasStops("Laughanstown", 5);
+		myDB.addLuasStops("Cherrywood", 5);
+		myDB.addLuasStops("Brides Glen", 5);
+		
+		//Red Line
+		
+		
+		myDB.close();	
+	}
 }
+

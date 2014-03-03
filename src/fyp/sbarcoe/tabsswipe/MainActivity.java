@@ -51,8 +51,7 @@ public class MainActivity extends FragmentActivity implements
 	        editor.commit(); // Very important to save the preference
 	        finish();
 	    }
-		insertStops();
-
+		
 
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
@@ -115,39 +114,7 @@ public class MainActivity extends FragmentActivity implements
 		}
 		return true;
 	}
-	public void insertStops()
-	{
-		DBManager myDB = new DBManager(this);
-		myDB.open();
-		
-		//myDB.populateLuasData();		
-		//myDB.addLuasStops(stopName, stopZone)		
-		
-		myDB.addLuasStops("Stephens Green", 1);
-		myDB.addLuasStops("Harcourt", 1);
-		myDB.addLuasStops("Charlemont", 1);
-		myDB.addLuasStops("Ranelagh", 2);
-		myDB.addLuasStops("Beechwood", 2);
-		myDB.addLuasStops("Cowper", 2);
-		myDB.addLuasStops("Milltown", 2);
-		myDB.addLuasStops("Windy Arbour", 2);
-		myDB.addLuasStops("Dundrum", 2);
-		myDB.addLuasStops("Balally", 3);
-		myDB.addLuasStops("Kilmacud", 3);
-		myDB.addLuasStops("Stilorgan", 3);
-		myDB.addLuasStops("Sandyford", 3);
-		myDB.addLuasStops("Central Park", 4);
-		myDB.addLuasStops("Glencairn", 4);
-		myDB.addLuasStops("The Gallops", 4);
-		myDB.addLuasStops("Leopardstown Valley", 4);
-		myDB.addLuasStops("Ballyogan", 4);
-		myDB.addLuasStops("Carrickmines", 5);
-		myDB.addLuasStops("Laughanstown", 5);
-		myDB.addLuasStops("Cherrywood", 5);
-		myDB.addLuasStops("Brides Glen", 5);
-		
-		myDB.close();	
-	}
+
 	private void helpMenuItem() 
 	{
 		new AlertDialog.Builder(this)

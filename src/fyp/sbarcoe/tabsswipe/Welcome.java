@@ -35,7 +35,7 @@ public class Welcome extends Activity
 		email = (EditText) findViewById(R.id.email);
 		pw = (EditText) findViewById(R.id.pw);		
 		mDialog = new ProgressDialog(Welcome.this);
-
+		insertStops();
 		continueB = (Button) findViewById(R.id.continueB);					
 		continueB.setOnClickListener(new View.OnClickListener() 
 		{			
@@ -51,10 +51,7 @@ public class Welcome extends Activity
                 else
                 {
                 	new RegisterUser().execute("");   
-                }                                  
-                
-            	//registerUser(email1, pw1);            	
-            	//Toast.makeText(getApplicationContext(), "Please try again.", Toast.LENGTH_SHORT).show();            	    
+                }                                       	         	    
             }
         });
 		
@@ -108,20 +105,7 @@ public class Welcome extends Activity
              	
              	final Intent i = new Intent(getApplicationContext(), Payment.class);
              	startActivity(i);
-             	Intent i1 = new Intent(Intent.ACTION_SEND);
-             	i1.setType("message/rfc822");
-             	i1.putExtra(Intent.EXTRA_EMAIL  , new String[]{"barcoe4@hotmail.com"});
-             	i1.putExtra(Intent.EXTRA_SUBJECT, "Welcome to Leap Me");
-             	i1.putExtra(Intent.EXTRA_TEXT   , "La la laa");
-             	try 
-             	{
-             	    startActivity(Intent.createChooser(i1, "Send mail..."));
-             	} 
-             	catch (android.content.ActivityNotFoundException ex) 
-             	{
-             	    Toast.makeText(Welcome.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-             	}
-             	
+
              	finish();
              }
              else if(result.contains("Exists"))
@@ -164,11 +148,45 @@ public class Welcome extends Activity
 		getMenuInflater().inflate(R.menu.welcome, menu);
 		return true;
 	}
-	public int createID()
+
+	public void insertStops()
 	{
-		Random r = new Random();
-		int i1 = r.nextInt(100000-0);
-		return i1;		
+		DBManager myDB = new DBManager(this);
+		myDB.open();
+		
+		//myDB.populateLuasData();		
+		//myDB.addLuasStops(stopName, stopZone)		
+		
+		myDB.addLuasStops("Stephens Green", 1);
+		myDB.addLuasStops("Harcourt", 1);
+		myDB.addLuasStops("Charlemont", 1);
+		myDB.addLuasStops("Ranelagh", 2);
+		myDB.addLuasStops("Beechwood", 2);
+		myDB.addLuasStops("Cowper", 2);
+		myDB.addLuasStops("Milltown", 2);
+		myDB.addLuasStops("Windy Arbour", 2);
+		myDB.addLuasStops("Dundrum", 2);
+		myDB.addLuasStops("Balally", 3);
+		myDB.addLuasStops("Kilmacud", 3);
+		myDB.addLuasStops("Stilorgan", 3);
+		myDB.addLuasStops("Sandyford", 3);
+		myDB.addLuasStops("Central Park", 4);
+		myDB.addLuasStops("Glencairn", 4);
+		myDB.addLuasStops("The Gallops", 4);
+		myDB.addLuasStops("Leopardstown Valley", 4);
+		myDB.addLuasStops("Ballyogan", 4);
+		myDB.addLuasStops("Carrickmines", 5);
+		myDB.addLuasStops("Laughanstown", 5);
+		myDB.addLuasStops("Cherrywood", 5);
+		myDB.addLuasStops("Brides Glen", 5);
+		
+		myDB.close();	
 	}
+//	public int createID()
+//	{
+//		Random r = new Random();
+//		int i1 = r.nextInt(100000-0);
+//		return i1;		
+//	}
 
 }
