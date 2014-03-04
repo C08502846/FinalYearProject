@@ -153,32 +153,66 @@ public class Welcome extends Activity
 	{
 		DBManager myDB = new DBManager(this);
 		myDB.open();
-		
+
 		//myDB.populateLuasData();		
 		//myDB.addLuasStops(stopName, stopZone)		
-		
-		myDB.addLuasStops("Stephens Green", 1);
-		myDB.addLuasStops("Harcourt", 1);
-		myDB.addLuasStops("Charlemont", 1);
-		myDB.addLuasStops("Ranelagh", 2);
-		myDB.addLuasStops("Beechwood", 2);
-		myDB.addLuasStops("Cowper", 2);
-		myDB.addLuasStops("Milltown", 2);
-		myDB.addLuasStops("Windy Arbour", 2);
-		myDB.addLuasStops("Dundrum", 2);
-		myDB.addLuasStops("Balally", 3);
-		myDB.addLuasStops("Kilmacud", 3);
-		myDB.addLuasStops("Stilorgan", 3);
-		myDB.addLuasStops("Sandyford", 3);
-		myDB.addLuasStops("Central Park", 4);
-		myDB.addLuasStops("Glencairn", 4);
-		myDB.addLuasStops("The Gallops", 4);
-		myDB.addLuasStops("Leopardstown Valley", 4);
-		myDB.addLuasStops("Ballyogan", 4);
-		myDB.addLuasStops("Carrickmines", 5);
-		myDB.addLuasStops("Laughanstown", 5);
-		myDB.addLuasStops("Cherrywood", 5);
-		myDB.addLuasStops("Brides Glen", 5);
+
+		//Green Line
+		myDB.addLuasStops("Stephens Green","Green", 1);
+		myDB.addLuasStops("Harcourt","Green", 1);
+		myDB.addLuasStops("Charlemont", "Green",1);
+		myDB.addLuasStops("Ranelagh", "Green",2);
+		myDB.addLuasStops("Beechwood","Green", 2);
+		myDB.addLuasStops("Cowper","Green", 2);
+		myDB.addLuasStops("Milltown","Green", 2);
+		myDB.addLuasStops("Windy Arbour", "Green",2);
+		myDB.addLuasStops("Dundrum", "Green",2);
+		myDB.addLuasStops("Balally", "Green",3);
+		myDB.addLuasStops("Kilmacud","Green", 3);
+		myDB.addLuasStops("Stilorgan","Green", 3);
+		myDB.addLuasStops("Sandyford","Green", 3);
+		myDB.addLuasStops("Central Park","Green", 4);
+		myDB.addLuasStops("Glencairn","Green", 4);
+		myDB.addLuasStops("The Gallops","Green", 4);
+		myDB.addLuasStops("Leopardstown Valley","Green", 4);
+		myDB.addLuasStops("Ballyogan","Green", 4);
+		myDB.addLuasStops("Carrickmines","Green", 5);
+		myDB.addLuasStops("Laughanstown", "Green", 5);
+		myDB.addLuasStops("Cherrywood","Green", 5);
+		myDB.addLuasStops("Brides Glen","Green", 5);
+
+		//Insert Red Line Stops
+		myDB.addLuasStops("The Point","Red", 1);
+		myDB.addLuasStops("Spencer Dock","Red", 1);
+		myDB.addLuasStops("Mayor Square NCI","Red", 1);
+		myDB.addLuasStops("Georges Dock","Red", 1);
+		myDB.addLuasStops("Connolly","Red", 1);
+		myDB.addLuasStops("Busaras", "Red",1);
+		myDB.addLuasStops("Abbey Street","Red", 2);
+		myDB.addLuasStops("Jervis","Red", 2);
+		myDB.addLuasStops("Four Courts","Red", 2);
+		myDB.addLuasStops("Smithfield","Red", 2);
+		myDB.addLuasStops("Museum","Red", 2);
+		myDB.addLuasStops("Heuston","Red", 3);
+		myDB.addLuasStops("James's","Red", 3);
+		myDB.addLuasStops("Fatima","Red", 3);
+		myDB.addLuasStops("Rialto","Red", 3);
+		myDB.addLuasStops("Suir Road", "Red", 4);
+		myDB.addLuasStops("Goldenbridge","Red", 4);
+		myDB.addLuasStops("Drimnagh","Red", 4);
+		myDB.addLuasStops("Blackhorse","Red", 4);
+		myDB.addLuasStops("Bluebell","Red", 4);
+		myDB.addLuasStops("Kylemore","Red", 4);
+		myDB.addLuasStops("Red Cow", "Red", 5);
+		myDB.addLuasStops("Kingswood", "Red", 5);
+		myDB.addLuasStops("Belgard", "Red", 5);
+		myDB.addLuasStops("Fettercairn", "Red", 5);
+		myDB.addLuasStops("Cheeverstown", "Red", 5);
+		myDB.addLuasStops("Citywest Campus", "Red", 5);
+		myDB.addLuasStops("Fortunestown","Red", 5);
+		myDB.addLuasStops("Cookstown", "Red", 5);
+		myDB.addLuasStops("Hospital", "Red", 5);
+		myDB.addLuasStops("Tallaght", "Red", 5);
 		
 		myDB.close();	
 	}

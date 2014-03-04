@@ -19,7 +19,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="fyp.sbarcoe.tabsswipe.MainActivity"
-            android:label="@string/app_name" >                        
+            android:label="@string/app_name" >    
+ 
 
         </activity>
         <activity
@@ -31,7 +32,7 @@
             android:name="fyp.sbarcoe.tabsswipe.LuasPurchase"
             android:label="@string/title_activity_luas_purchase"
             android:parentActivityName="fyp.sbarcoe.tabsswipe.MainActivity" >
-                        <intent-filter>
+            <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

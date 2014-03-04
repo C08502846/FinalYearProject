@@ -13,7 +13,9 @@ public class DBManager
 	
 	public static final String KEY_ROWID = "_id";
 	public static final String KEY_STOP_NAME= "StopName";
+	public static final String KEY_LINE= "Line";
 	public static final String KEY_STOP_ZONE= "StopZone";
+	
 	public static final String KEY_EMAIL= "Email";
 	public static final String KEY_PASSWORD= "Password";
 	public static final String KEY_BALANCE= "Balance";
@@ -25,11 +27,12 @@ public class DBManager
 	private static final String CREATE_DATABASE = "CREATE TABLE " + DATABASE_TABLE_LUAS + " (" +
             KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 		    KEY_STOP_NAME + " TEXT NOT NULL, " +	
+			KEY_LINE + " TEXT NOT NULL, "+
 	        KEY_STOP_ZONE + " INTEGER NOT NULL);" ;	
 
 	private static final String CREATE_USER_TABLE = "CREATE TABLE " +DATABASE_TABLE_USER+ " (" +
 	KEY_EMAIL+ " STRING PRIMARY KEY, " +
-	KEY_PASSWORD + " TEXT NOT NULL); "+
+	KEY_PASSWORD + " TEXT NOT NULL, "+
 	KEY_BALANCE + " TEXT NULL); ";
 	
 	//private static final String INSERT_DATA = "INSERT INTO LuasStop VALUES(1, 'Stephens Green', 1);";
@@ -92,17 +95,19 @@ public class DBManager
 		//db.execSQL("INSERT INTO ...");	
 		// Insert INTO DublinBus KEY_TICKET_TYPE, KEY_STAGES
 	}
-	public long addLuasStops(String stopName, int zone)
+	public long addLuasStops(String stopName, String line, int zone)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(KEY_STOP_NAME, stopName);
+		cv.put(KEY_LINE, line);
 		cv.put(KEY_STOP_ZONE, zone);
 		return myDB.insert(DATABASE_TABLE_LUAS, null, cv);			
 	}
-	public String[] getGreenStops() 
+	public String[] getStops(String line) 
 	{
 		String[] columns = new String[]{KEY_STOP_NAME};
-		Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, null, null, null, null, null);
+		//Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, null, null, null, null, null);
+		Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, "Line"+" LIKE '"+line+"%'", null, null, null, null);
 		ArrayList<String> stopNames = new ArrayList<String>();
 		while(c.moveToNext())
 		        {			
@@ -118,7 +123,7 @@ public class DBManager
 		String[] columns = new String[]{KEY_STOP_NAME};
 //		Cursor c = myDB.query(DATABASE_TABLE, columns, "assign_title"+" LIKE '"+title+"%'", null, null, null, null);
 
-		Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, "lineType"+" LIKE '"+line+"%'", null, null, null, null);
+		Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, null, null, null, null, null);
 		ArrayList<String> stopNames = new ArrayList<String>();
 		while(c.moveToNext())
 		        {			
