@@ -1,5 +1,7 @@
 package fyp.sbarcoe.tabsswipe;
 
+import info.androidhive.tabsswipe.R;
+
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
@@ -8,25 +10,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fyp.sbarcoe.tabsswipe.BusPurchase.GetBal;
-import info.androidhive.tabsswipe.R;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 public class LuasPurchase extends Activity implements OnItemSelectedListener
 {	
@@ -34,7 +37,9 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	public ArrayAdapter<String> luas_adp ;
 	String returnString, result1;
 	String[] result ;
-	TextView userBal ;
+	TextView userBal, tvChoose ;
+	private RadioGroup radioLineGroup;
+	private RadioButton radioLineButton;
 
 
 	@Override
@@ -42,80 +47,51 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_luas_purchase);
-		luasLine = (Spinner) findViewById(R.id.spinnerLuasLine);
 		luasFrom = (Spinner) findViewById(R.id.spinnerLuasFrom);
 		luasTo = (Spinner) findViewById(R.id.spinnerLuasTo); 	
-		
+		addRadioGroupListeners();
     	insertStops();
-    	
-		result = populateStops("Red");
-		luas_adp = new ArrayAdapter<String> (this,android.R.layout.simple_dropdown_item_1line,result);
-		luas_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-	
-		luasTo.setAdapter(luas_adp);
-	    luasFrom.setAdapter(luas_adp);  
-
-	    ArrayAdapter<CharSequence> luasLineAdapter = ArrayAdapter.createFromResource(this,
-	    R.array.luas_line, android.R.layout.simple_spinner_item);	
-		luasLineAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);	
-				
-		luasLine.setAdapter(luasLineAdapter);	
-
-
-		luasLine.setOnItemSelectedListener(new OnItemSelectedListener() 
-		{
-		    @Override
-		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) 
-		    {
-		    	String lineSelected = luasLine.getSelectedItem().toString();
-             	//Toast.makeText(getApplicationContext(), "Luas Line: "+lineSelected, Toast.LENGTH_LONG).show(); 
-		    	if(lineSelected == "Green")
-		    	{  		
-		    		result = populateStops(lineSelected);	
-		    		luas_adp.notifyDataSetChanged();
-		    		luasTo.setAdapter(luas_adp);
-		    	    luasFrom.setAdapter(luas_adp);  
-//		    		luas_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
-//		    		luas_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-//		    		luas_adp.notifyDataSetChanged();
-		    	    
-		    	    
-		    		//Empty Spinner from previous selection
-		    		//getStops(lineSelected) ;
-		    		// Populate Spinners With Green line Stops
-		    		// Get Zone for current selection 
-		    	}
-		    	else if (lineSelected == "Red")
-		    	{
-		    		result = populateStops(lineSelected);
-		    		luas_adp.notifyDataSetChanged();
-		    		luasTo.setAdapter(luas_adp);
-		    	    luasFrom.setAdapter(luas_adp);  
-                   
-//    		    	luas_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
-//		    		luas_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-//		    		luas_adp.notifyDataSetChanged();
-		    		//Empty Spinner from previous selection
-		    		//getStops(lineSelected) ;
-		    		// Populate Spinners With Red line Stops
-		    		// Get zone for current selection 
-		    	}
-		    	// Compare 2 Zones and Calculate Fare
-		    	// Assign to ticketCost and display 
-		    }
-
-		    @Override
-		    public void onNothingSelected(AdapterView<?> parentView) {
-		        // your code here
-		    }
-
-		});
-
-		//luasFrom.setAdapter(luasFromAdapter);	
-		//luasTo.setAdapter(luasToAdapter);	
 		new GetBal().execute("");  
 
 	}
+	 public void addRadioGroupListeners() 
+	 {		 
+			radioLineGroup = (RadioGroup) findViewById(R.id.radioSex);
+			int selectedId = radioLineGroup.getCheckedRadioButtonId();
+			radioLineButton = (RadioButton) findViewById(selectedId);
+			radioLineButton.setChecked(false);        
+	        radioLineGroup.setOnCheckedChangeListener(new OnCheckedChangeListener()
+	        {
+	        	@Override
+	            public void onCheckedChanged(RadioGroup group, int checkedId)
+	            {
+			    	String lineSelected = "";
+			    	lineSelected = radioLineButton.getText().toString() ;
+	                switch(checkedId)
+	                {
+	                case R.id.radioGreen:
+	                	luasFrom.clearFocus();
+	                	//luasFrom.setBackgroundColor(111111);
+	    				result = populateStops("Green");
+	    				//int StopZone = getStopZone() ;
+	    				luas_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
+	    				luas_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+	    				luasTo.setAdapter(luas_adp);
+	    			    luasFrom.setAdapter(luas_adp);   
+
+	                    break;
+	                case R.id.radioRed:	   
+	                	luasFrom.clearFocus();
+	                	//luasFrom.setBackgroundColor(000000);
+	    				result = populateStops("Red");
+	    				luas_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
+	    				luas_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+	    				luasTo.setAdapter(luas_adp);
+	    			    luasFrom.setAdapter(luas_adp);   
+	                    break;	              
+	                }
+	            }}); 
+		  }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
