@@ -118,20 +118,18 @@ public class DBManager
 		return stopsReturn;
 		
 	}
-	public String[] getRedStops(String line) 
+	public String getZone(String stopName) 
 	{
-		String[] columns = new String[]{KEY_STOP_NAME};
-//		Cursor c = myDB.query(DATABASE_TABLE, columns, "assign_title"+" LIKE '"+title+"%'", null, null, null, null);
-
-		Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, null, null, null, null, null);
-		ArrayList<String> stopNames = new ArrayList<String>();
+		//String[] columns = new String[]{KEY_STOP_ZONE};
+		String selectQuery = "SELECT StopZone FROM LuasStop WHERE StopName = '" +stopName+ "'" ;
+		Cursor c = myDB.rawQuery(selectQuery, null);
+		//Cursor c = myDB.query(DATABASE_TABLE_USER, columns, "Select Email From User", null, null, null, null);
+		String returnZone = "" ;
 		while(c.moveToNext())
-		        {			
-			        stopNames.add(c.getString(0));
-		        }
-		String[] stopsReturn = (String[]) stopNames.toArray(new String[stopNames.size()]);
-
-		return stopsReturn;
+		{
+			returnZone = c.getString(0);
+		}
+		return returnZone;
 		
 	}
 	public static String[] getBusTicketType()

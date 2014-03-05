@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -35,11 +36,14 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 {	
 	Spinner luasLine, luasFrom, luasTo ;
 	public ArrayAdapter<String> luas_adp ;
-	String returnString, result1;
+	String returnString, result1, fromStop, toStop, zoneFrom, zoneTo, totalCost ;
 	String[] result ;
-	TextView userBal, tvChoose ;
+	TextView userBal, costLuas ;
 	private RadioGroup radioLineGroup;
 	private RadioButton radioLineButton;
+	int zoneFromInt, zoneToInt, zoneDiff ;
+	double costOfJourney;
+	Button btnBuy ;
 
 
 	@Override
@@ -48,13 +52,99 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_luas_purchase);
 		luasFrom = (Spinner) findViewById(R.id.spinnerLuasFrom);
-		luasTo = (Spinner) findViewById(R.id.spinnerLuasTo); 	
+		luasTo = (Spinner) findViewById(R.id.spinnerLuasTo); 
+		costLuas = (TextView) findViewById(R.id.tvCostLuas);
+		btnBuy = (Button) findViewById(R.id.btnBuyLuasTick);
+		
 		addRadioGroupListeners();
-    	insertStops();
-		new GetBal().execute("");  
+		setSpinnerListeners() ;
+		btnClicked() ;
+    	//insertStops();
+		zoneDiff = 0 ;
+
+		//new GetBal().execute("");  
 
 	}
-	 public void addRadioGroupListeners() 
+
+	private void btnClicked() 
+	{
+		btnBuy.setOnClickListener(new OnClickListener() {
+			 
+			@Override
+			public void onClick(View arg0) 
+			{	
+				String email = getEmail() ;
+				fromStop = "" ; toStop = "" ; 
+				totalCost="";
+				updateRemoteJourney(email, fromStop, toStop, totalCost) ;
+				// if user Balance > total cost do this
+				// Get UserEmail, Stop From, Stop To, , Total Cost, Date
+				// Send to Remote DB:  Insert INTO Journeys VALUES(email, stopFrom, stopTo, totalCost, date)
+				//else Error, please top up.
+
+			}
+ 
+		});
+		
+	}
+
+	protected void updateRemoteJourney(String email, String fromStop2,
+			String toStop2, String totalCost2) 
+	{
+		//Connect Remotely, pass 4 variables to php and insert to Journeys table
+		
+	}
+
+	private void setZoneCost() 
+	{
+		if(zoneFromInt > zoneToInt)
+		{
+			zoneDiff = zoneFromInt - zoneToInt ;
+			//Toast.makeText(getApplicationContext(), "From > To: " +zoneDiff, Toast.LENGTH_SHORT).show();
+
+		}
+		else if( zoneToInt > zoneFromInt)
+		{
+			zoneDiff = zoneToInt - zoneFromInt  ;
+			//Toast.makeText(getApplicationContext(), "To > From: " +zoneDiff, Toast.LENGTH_SHORT).show();
+
+		}
+		else if(zoneFromInt == zoneToInt)
+		{
+			zoneDiff = 0 ;
+			//Toast.makeText(getApplicationContext(), "Same: " +zoneDiff, Toast.LENGTH_SHORT).show();
+
+		}
+		// Green Line Peak Costs
+		 switch (zoneDiff) 
+		 {
+         case 1:  zoneDiff = 1;
+         costOfJourney = 1.70 ;
+         break;
+         case 2:  zoneDiff = 2;
+         costOfJourney = 2.10 ;
+         break;
+         case 3:  zoneDiff = 3;
+         costOfJourney = 2.50 ;
+         break;
+         case 4:  zoneDiff = 4;
+         costOfJourney = 2.70 ;
+         break;
+         case 5:  zoneDiff = 5;
+         costOfJourney = 2.90 ;
+         break;        
+         default: zoneDiff = 0;
+         costOfJourney = 0 ;
+         break;
+         }
+	 //Toast.makeText(getApplicationContext(), "Cost: " +costOfJourney, Toast.LENGTH_SHORT).show();
+		 //convert to double
+	 totalCost = String.valueOf(costOfJourney);
+
+		
+	}
+
+	public void addRadioGroupListeners() 
 	 {		 
 			radioLineGroup = (RadioGroup) findViewById(R.id.radioSex);
 			int selectedId = radioLineGroup.getCheckedRadioButtonId();
@@ -71,9 +161,11 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	                {
 	                case R.id.radioGreen:
 	                	luasFrom.clearFocus();
-	                	//luasFrom.setBackgroundColor(111111);
-	    				result = populateStops("Green");
-	    				//int StopZone = getStopZone() ;
+	                	costLuas.setText("Journey Cost: €");
+
+	                	//luasFrom.setBackgroundColor(-16711936);
+	                	//luasTo.setBackgroundColor(-16711936);
+	    				result = populateStops("Green");	    				
 	    				luas_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
 	    				luas_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 	    				luasTo.setAdapter(luas_adp);
@@ -82,16 +174,57 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	                    break;
 	                case R.id.radioRed:	   
 	                	luasFrom.clearFocus();
-	                	//luasFrom.setBackgroundColor(000000);
+	            		costLuas.setText("Journey Cost: €");
+
+	                	//luasFrom.setBackgroundColor(-65536);
+	                	//luasTo.setBackgroundColor(-65536);
 	    				result = populateStops("Red");
 	    				luas_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
 	    				luas_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 	    				luasTo.setAdapter(luas_adp);
 	    			    luasFrom.setAdapter(luas_adp);   
-	                    break;	              
+	                    break;	      
 	                }
 	            }}); 
 		  }
+	 private void setSpinnerListeners() 
+	 {
+		 luasFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
+			{
+			    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
+			    {
+			        Object item = parent.getItemAtPosition(pos);
+			        fromStop = item.toString() ;
+			        zoneFrom = getStopZone(fromStop);
+			        zoneFromInt = Integer.parseInt(zoneFrom);
+					setZoneCost();
+					costLuas.setText("Journey Cost: €" +totalCost);
+			    	//Toast.makeText(getApplicationContext(), "Zone From: " +zoneFromInt, Toast.LENGTH_SHORT).show();
+			        
+
+			    }
+			    public void onNothingSelected(AdapterView<?> parent) {
+			    }
+			});
+		 luasTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
+			{
+			    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
+			    {
+			        Object item = parent.getItemAtPosition(pos);
+			        toStop = item.toString() ;
+			        zoneTo = getStopZone(toStop);
+			        zoneToInt = Integer.parseInt(zoneTo);
+					setZoneCost();
+					costLuas.setText("Journey Cost: €" +totalCost);
+
+			        //Toast.makeText(getApplicationContext(), "Zone To: " +zoneToInt, Toast.LENGTH_SHORT).show();
+
+			    }
+			    public void onNothingSelected(AdapterView<?> parent) {
+			    }
+			});
+		
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -207,6 +340,15 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
            // mDialog.show();             
         }
 	}
+	public String getStopZone(String stopName)
+	{
+		 String result2 ;
+		 DBManager myDB = new DBManager(this);
+		 myDB.open();
+	     result2 = myDB.getZone(stopName) ;
+	     myDB.close();
+		 return result2;
+	}
 	private String getEmail() 
 	{
 		DBManager myDB = new DBManager(getApplicationContext());
@@ -231,6 +373,9 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	{
 		//topUpAmt = topUp.getSelectedItem().toString();
 		//topUpInt = Integer.parseInt(topUpAmt);	
+		//String lol = luasFrom.toString() ; 
+   	   // Toast.makeText(getApplicationContext(), "From: " +lol, Toast.LENGTH_SHORT).show();
+
 
 	}
 
@@ -288,7 +433,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 		myDB.addLuasStops("Smithfield","Red", 2);
 		myDB.addLuasStops("Museum","Red", 2);
 		myDB.addLuasStops("Heuston","Red", 3);
-		myDB.addLuasStops("James's","Red", 3);
+		myDB.addLuasStops("James","Red", 3);
 		myDB.addLuasStops("Fatima","Red", 3);
 		myDB.addLuasStops("Rialto","Red", 3);
 		myDB.addLuasStops("Suir Road", "Red", 4);
