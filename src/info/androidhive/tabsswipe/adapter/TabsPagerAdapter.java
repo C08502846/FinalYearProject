@@ -7,6 +7,7 @@ import fyp.sbarcoe.tabsswipe.Validate;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.widget.Toast;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter 
 {
@@ -28,7 +29,8 @@ public class TabsPagerAdapter extends FragmentPagerAdapter
 			return new TopUp();
 		case 2:
 			// Validate fragment activity
-			return new Validate();		
+			return new Validate();
+
 		}
 		return null;	}
 

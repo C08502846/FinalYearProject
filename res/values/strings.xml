@@ -7,9 +7,12 @@
     <string name="title_activity_bus_purchase">BusPurchase</string>
     
    
-    <string name="radio_male">Green</string>
-    <string name="radio_female">Red</string>
-    <string name="btn_display">Display</string>
+    <string name="radio_green">Green</string>
+    <string name="radio_red">Red</string>
+    <string name="radio_single">Single</string>
+    <string name="radio_return">Return</string>
+    <string name="radio_adult">Adult</string>
+    <string name="radio_child">Child</string>
 
     <string-array name="ticket_type">
         <item>Adult</item>
@@ -57,6 +60,7 @@
 
     <string name="title_activity_welcome">Welcome</string>
     <string name="title_activity_payment">Payment</string>
+    <string name="title_activity_validate">Validate</string>
 
     <integer-array name="spinMonth">
         <item>01</item>

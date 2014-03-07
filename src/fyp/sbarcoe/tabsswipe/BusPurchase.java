@@ -1,7 +1,13 @@
 package fyp.sbarcoe.tabsswipe;
 
+import info.androidhive.tabsswipe.R;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -9,25 +15,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fyp.sbarcoe.tabsswipe.TopUp.GetBal;
-
-import info.androidhive.tabsswipe.R;
-import info.androidhive.tabsswipe.R.layout;
-import info.androidhive.tabsswipe.R.menu;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class BusPurchase extends Activity 
 {	
@@ -35,7 +40,9 @@ public class BusPurchase extends Activity
 	String returnString, result;
 	TextView userBal ;
 	ProgressDialog mDialog;
-	
+	Button buy ;
+	ImageView img ;
+	Bitmap bitmap ;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -43,9 +50,11 @@ public class BusPurchase extends Activity
 		setContentView(R.layout.activity_bus_purchase);	
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		ticketType = (Spinner) findViewById(R.id.spinner1);
-		stages = (Spinner) findViewById(R.id.spinner2);
-		userBal = (TextView) findViewById(R.id.curBal);
+		//ticketType = (Spinner) findViewById(R.id.spinner1);
+		//stages = (Spinner) findViewById(R.id.spinner2);
+		//userBal = (TextView) findViewById(R.id.curBal);
+		//buy = (Button) findViewById(R.id.buy);
+		img = (ImageView) findViewById(R.id.img);
 		
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
 		R.array.ticket_type, android.R.layout.simple_spinner_item);				
@@ -58,10 +67,66 @@ public class BusPurchase extends Activity
 
 		ticketType.setAdapter(adapter);	
 		stages.setAdapter(adapter2);	
-    	new GetBal().execute("");  
+    	//new GetBal().execute("");  
+    	
+    	        
+    	buy.setOnClickListener(new View.OnClickListener() 
+		{			
+            public void onClick(View v) 
+            {  
+            	bitmap = DownloadImage("http://www.allindiaflorist.com/imgs/arrangemen4.jpg");
+                img = (ImageView) findViewById(R.id.img);
+            	img.setImageBitmap(bitmap);         	         	    
+            }
+        });
 
 	}
-
+	private InputStream OpenHttpConnection(String urlString)
+		    throws IOException
+		    {
+		        InputStream in = null;
+		        int response = -1;
+		                 
+		        URL url = new URL(urlString);
+		        URLConnection conn = url.openConnection();
+		                   
+		        if (!(conn instanceof HttpURLConnection))                    
+		            throw new IOException("Not an HTTP connection");
+		          
+		        try{
+		            HttpURLConnection httpConn = (HttpURLConnection) conn;
+		            httpConn.setAllowUserInteraction(false);
+		            httpConn.setInstanceFollowRedirects(true);
+		            httpConn.setRequestMethod("GET");
+		            httpConn.connect();
+		  
+		            response = httpConn.getResponseCode();                
+		            if (response == HttpURLConnection.HTTP_OK) {
+		                in = httpConn.getInputStream();                                
+		            }                    
+		        }
+		        catch (Exception ex)
+		        {
+		            throw new IOException("Error connecting");           
+		        }
+		        return in;    
+		    }
+	 private Bitmap DownloadImage(String URL)
+	    {       
+	        Bitmap bitmap = null;
+	        InputStream in = null;       
+	        try {
+	            in = OpenHttpConnection(URL);
+	            bitmap = BitmapFactory.decodeStream(in);
+	            in.close();
+	        } catch (IOException e1) {
+	            // TODO Auto-generated catch block
+	            e1.printStackTrace();
+	        }
+	        return bitmap;               
+	    }
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

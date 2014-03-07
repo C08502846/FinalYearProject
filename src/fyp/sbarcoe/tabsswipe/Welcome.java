@@ -3,11 +3,8 @@ package fyp.sbarcoe.tabsswipe;
 import info.androidhive.tabsswipe.R;
 
 import java.util.ArrayList;
-import java.util.Random;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -35,7 +32,7 @@ public class Welcome extends Activity
 		email = (EditText) findViewById(R.id.email);
 		pw = (EditText) findViewById(R.id.pw);		
 		mDialog = new ProgressDialog(Welcome.this);
-		insertStops();
+		//insertStops();
 		continueB = (Button) findViewById(R.id.continueB);					
 		continueB.setOnClickListener(new View.OnClickListener() 
 		{			
@@ -194,7 +191,7 @@ public class Welcome extends Activity
 		myDB.addLuasStops("Smithfield","Red", 2);
 		myDB.addLuasStops("Museum","Red", 2);
 		myDB.addLuasStops("Heuston","Red", 3);
-		myDB.addLuasStops("James's","Red", 3);
+		myDB.addLuasStops("James","Red", 3);
 		myDB.addLuasStops("Fatima","Red", 3);
 		myDB.addLuasStops("Rialto","Red", 3);
 		myDB.addLuasStops("Suir Road", "Red", 4);

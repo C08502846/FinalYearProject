@@ -30,9 +30,15 @@
         android:text="To: Cherrywood" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/qrCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/qrcode" />
+
+    <Button
+        android:id="@+id/qrTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button" />
 
 </LinearLayout>

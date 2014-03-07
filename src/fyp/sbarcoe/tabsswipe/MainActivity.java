@@ -3,19 +3,38 @@ package fyp.sbarcoe.tabsswipe;
 
 import info.androidhive.tabsswipe.R;
 import info.androidhive.tabsswipe.adapter.TabsPagerAdapter;
+
+import java.util.ArrayList;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.app.ActionBar.Tab;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+
+import com.androidquery.AQuery;
+import com.androidquery.callback.AjaxCallback;
+import com.androidquery.callback.AjaxStatus;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -24,8 +43,13 @@ public class MainActivity extends FragmentActivity implements
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 	
-	String stopName ;
+	String stopName, returnString ;
 	int stopZone ;
+	String resultBuy ;
+	//TextView userBal;
+	Dialog mDialog;
+	AQuery myimg;
+	ImageView myimg2 ;
 	
 	SharedPreferences mPrefs;
     final String welcomeScreenShownPref = "welcomeScreenShown";
@@ -38,7 +62,9 @@ public class MainActivity extends FragmentActivity implements
 	{		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);	
-		
+		//userBal = (TextView) findViewById(fyp.sbarcoe.tabsswipe.TopUp.topUpInt);
+		mDialog = new ProgressDialog(MainActivity.this);
+
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		 // second argument is the default to use if the preference can't be found
 	    Boolean welcomeScreenShown = mPrefs.getBoolean(welcomeScreenShownPref, false);
@@ -65,8 +91,7 @@ public class MainActivity extends FragmentActivity implements
 		// Adding Tabs
 		for (String tab_name : tabs) 
 		{
-			actionBar.addTab(actionBar.newTab().setText(tab_name)
-					.setTabListener(this));			
+			actionBar.addTab(actionBar.newTab().setText(tab_name).setTabListener(this));			
 		}
 
 		/**
@@ -84,7 +109,8 @@ public class MainActivity extends FragmentActivity implements
 			}
 
 			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
+			public void onPageScrolled(int arg0, float arg1, int arg2) 
+			{
 			}
 
 			@Override
@@ -92,6 +118,8 @@ public class MainActivity extends FragmentActivity implements
 			}
 		});
 	}
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) 
 	{
@@ -145,18 +173,113 @@ public class MainActivity extends FragmentActivity implements
 		}).show();
 	}
 	@Override
-	public void onTabReselected(Tab tab, FragmentTransaction ft) {
+	public void onTabReselected(Tab tab, FragmentTransaction ft) 
+	{
+		
 	}
 
 	@Override
-	public void onTabSelected(Tab tab, FragmentTransaction ft) {
+	public void onTabSelected(Tab tab, FragmentTransaction ft) 
+	{
 		// on tab selected
 		// show respected fragment view
-		viewPager.setCurrentItem(tab.getPosition());
+		String testTab = tab.getText().toString();
+
+   	    if(testTab == "Top Up")
+   	    {
+        	new GetBal().execute(""); 
+   	    }
+   	    else if(testTab == "Buy New")
+   	    {
+
+   	    }
+   	    else if(testTab == "Validate")
+   	    {
+   	    	new GetBal().execute("");  			
+   	    }
 	}
+ 	       
+	
 
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+	}
+	class GetBal extends AsyncTask<String, Void, String> 
+	{
+		
+
+        @Override
+        protected String doInBackground(String... params) 
+        {
+        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+
+            // define the parameter        cardnumber, expmonth, expyear, cv
+            postParameters.add(new BasicNameValuePair("email", getEmail()));
+
+            String response2 = null;
+           // boolean success = false ;
+                
+            // call executeHttpPost method passing necessary parameters 
+            try 
+             {            	
+            	response2 = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/getBal.php", postParameters);                         
+            	resultBuy = response2.toString(); 
+            	
+              }
+              catch (Exception e) 
+              {
+                   Log.e("log_tag","Error in http connection!!" + e.toString());               
+              	   //Toast.makeText(getApplicationContext(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
+              }
+			  return response2; 
+        }
+        @Override
+        protected void onPostExecute(String result2) 
+        {          
+        	
+			mDialog.dismiss();
+        	 //String remoteBal = Get Balance from Remote
+        	 // updateLocalBal() ;
+			//parse json data
+             try
+             {
+            	 returnString = "";
+                 JSONArray jArray = new JSONArray(result2);
+                 Log.i("tagconvertstr", "["+resultBuy+"]");
+                     for(int i=0;i<jArray.length();i++)
+                     {
+                             JSONObject json_data = jArray.getJSONObject(i);                            
+                             returnString +=  json_data.getInt("Balance");
+                             System.out.print("Returned: "+returnString);                        	 
+                     }                     
+              }
+             catch(JSONException e)
+             {
+                     Log.e("log_tag", "Error parsing data "+e.toString());
+             }    
+             //userBal.append(returnString);
+             fyp.sbarcoe.tabsswipe.TopUp.userBal.setText("CurrentBalance: €"+returnString);
+
+        	// Toast.makeText(getApplicationContext(), "Bal: "+returnString, Toast.LENGTH_SHORT).show();                      
+
+             //userBal.setText("Current Balance: "+returnString+"");               	
+        }
+
+        @Override
+        protected void onPreExecute() 
+        {
+        	((AlertDialog) mDialog).setMessage("Updating Balance...");
+            mDialog.show();             
+        }
+    }
+	private String getEmail() 
+	{
+		DBManager myDB = new DBManager(getApplicationContext());
+		myDB.open();	
+		String emailReturn ;
+		emailReturn = myDB.getEmail();	
+		myDB.close();
+		return emailReturn;
 	}
 
 }

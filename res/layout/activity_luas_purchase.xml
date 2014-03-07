@@ -8,9 +8,16 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LuasPurchase" >
-
+<ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -30,43 +37,80 @@
             android:id="@+id/tvChoose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose a Luas Line:"
+            android:text="Choose Your Preferences:"
             android:textColor="#FFFFFF" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
              <RadioGroup
-                 android:id="@+id/radioSex"
-                 android:layout_width="wrap_content"
+                 android:id="@+id/radioColor"
+                 android:layout_width="match_parent"
                  android:layout_height="wrap_content"
-                 android:orientation="horizontal" >
+                 android:orientation="horizontal">
 
                  <RadioButton
                      android:id="@+id/radioRed"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:text="@string/radio_female" />
+                     android:text="@string/radio_red" />
 
                  <RadioButton
                      android:id="@+id/radioGreen"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:checked="true"
-                     android:text="@string/radio_male" />
+                     android:text="@string/radio_green" />
+
+             </RadioGroup>
+              <RadioGroup
+                 android:id="@+id/radioSinRet"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                 android:paddingBottom="5dp" >
+
+                 <RadioButton
+                     android:id="@+id/radioSingle"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="@string/radio_single" />
+
+                 <RadioButton
+                     android:id="@+id/radioReturn"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:checked="true"
+                     android:text="@string/radio_return" />
+
+             </RadioGroup>
+             
+              <RadioGroup
+                 android:id="@+id/radioADCHI"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                 android:paddingBottom="5dp" >
+
+                 <RadioButton
+                     android:id="@+id/radioAdult"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="@string/radio_adult" />
+
+                 <RadioButton
+                     android:id="@+id/radioChild"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:checked="true"
+                     android:text="@string/radio_child" />
 
              </RadioGroup>
 
-        </LinearLayout>
-
-
-<!--         <Spinner -->
-<!--             android:id="@+id/spinnerLuasLine" -->
-<!--             android:layout_width="fill_parent" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:textColor="#FFFFFF" /> -->
-
+        </LinearLayout>  
+        
         <TextView
             android:id="@+id/tvFromLuas"
             android:layout_width="wrap_content"
@@ -76,10 +120,10 @@
 
         <Spinner
             android:id="@+id/spinnerLuasFrom"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#000000"
-            android:popupBackground="#000000"  />
+            android:popupBackground="#3f3f3f"
+            android:spinnerMode="dropdown"  />
 
         <TextView
             android:id="@+id/tvToLuas"
@@ -91,10 +135,10 @@
 
         <Spinner
             android:id="@+id/spinnerLuasTo"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#000000"
-            android:popupBackground="#000000" />
+            android:popupBackground="#3f3f3f"
+            android:spinnerMode="dropdown" />
 
         <TextView
             android:id="@+id/tvCostLuas"
@@ -110,11 +154,13 @@
 
             <Button
                 android:id="@+id/btnBuyLuasTick"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Buy" />
+                android:text="Buy"
+                android:layout_gravity="center" />
 
         </LinearLayout>
     </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

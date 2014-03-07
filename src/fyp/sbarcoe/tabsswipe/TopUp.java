@@ -32,9 +32,9 @@ public class TopUp extends Fragment implements OnItemSelectedListener
 	String topUpAmt, currentBal, returnString ;
 	String result2 ;
 	Spinner topUp ;
-	TextView userBal ;
+	static TextView userBal ;
 	Button topUpButton ;
-	int topUpInt ;
+	static int topUpInt ;
 	ProgressDialog mDialog ;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
@@ -53,7 +53,7 @@ public class TopUp extends Fragment implements OnItemSelectedListener
 		userBal = (TextView) rootView.findViewById(R.id.tvTopUpBal);
 		mDialog = new ProgressDialog(getActivity());
 		
-    	new GetBal().execute("");  
+    	//new GetBal().execute("");  
 
 		topUpButton.setOnClickListener(new View.OnClickListener() {public void onClick(View v)
 		{				
@@ -163,7 +163,7 @@ public class TopUp extends Fragment implements OnItemSelectedListener
         @Override
         protected void onPostExecute(String result2) 
         {          
-        	 //mDialog.dismiss();
+        	 mDialog.dismiss();
         	 //String remoteBal = Get Balance from Remote
         	 // updateLocalBal() ;
         	 
@@ -190,8 +190,8 @@ public class TopUp extends Fragment implements OnItemSelectedListener
         @Override
         protected void onPreExecute() 
         {
-        	//mDialog.setMessage("Getting Balance...");
-           // mDialog.show();             
+        	mDialog.setMessage("Updating Balance...");
+            mDialog.show();             
         }
 }
 	private String getEmail() 

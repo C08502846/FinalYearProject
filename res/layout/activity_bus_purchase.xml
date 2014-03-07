@@ -44,11 +44,12 @@
             android:layout_height="wrap_content"
             android:text="Number of Stages"
             android:textColor="#FFFFFF" />
-        
+
         <Spinner
             android:id="@+id/spinner2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
+
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
@@ -62,18 +63,22 @@
             android:layout_height="wrap_content" >
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/buy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Buy" />
-            
+
             <Button
                 android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Calculate Fare" />
-
         </LinearLayout>
+
+        <ImageView android:id="@+id/img" 
+            android:layout_gravity="center" 
+            android:layout_height="wrap_content" 
+            android:layout_width="wrap_content"/>
 
     </LinearLayout>
     
