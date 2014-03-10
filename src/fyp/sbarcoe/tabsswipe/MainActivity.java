@@ -41,7 +41,7 @@ import com.androidquery.callback.AjaxStatus;
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
 
-	private ViewPager viewPager;
+	public ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 	
@@ -190,6 +190,8 @@ public class MainActivity extends FragmentActivity implements
 	{
 		// on tab selected
 		// show respected fragment view
+		viewPager.setCurrentItem(tab.getPosition());
+
 		String testTab = tab.getText().toString();
 
    	    if(testTab == "Top Up")
@@ -265,7 +267,7 @@ public class MainActivity extends FragmentActivity implements
                      Log.e("log_tag", "Error parsing data "+e.toString());
              }    
              //userBal.append(returnString);
-             fyp.sbarcoe.tabsswipe.TopUp.userBal.setText("CurrentBalance: €"+returnString);
+             fyp.sbarcoe.tabsswipe.TopUp.userBal.setText("Current Balance: €"+returnString);
 
         	// Toast.makeText(getApplicationContext(), "Bal: "+returnString, Toast.LENGTH_SHORT).show();                      
 

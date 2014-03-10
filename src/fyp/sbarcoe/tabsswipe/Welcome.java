@@ -32,7 +32,7 @@ public class Welcome extends Activity
 		email = (EditText) findViewById(R.id.email);
 		pw = (EditText) findViewById(R.id.pw);		
 		mDialog = new ProgressDialog(Welcome.this);
-		//insertStops();
+		insertStops();
 		continueB = (Button) findViewById(R.id.continueB);					
 		continueB.setOnClickListener(new View.OnClickListener() 
 		{			

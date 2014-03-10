@@ -119,7 +119,6 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
          costOfJourney = 0 ;
          break;
          }
-	 //Toast.makeText(getApplicationContext(), "Cost: " +costOfJourney, Toast.LENGTH_SHORT).show();
 		 //convert to double
 	 totalCost = String.valueOf(costOfJourney);
 
@@ -200,9 +199,6 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 			        zoneFromInt = Integer.parseInt(zoneFrom);
 					setZoneCost();
 					costLuas.setText("Journey Cost: €" +totalCost);
-			    	//Toast.makeText(getApplicationContext(), "Zone From: " +zoneFromInt, Toast.LENGTH_SHORT).show();
-
-
 			    }
 			    public void onNothingSelected(AdapterView<?> parent) {
 			    }
@@ -283,7 +279,6 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	class GetBal extends AsyncTask<String, Void, String> 
 	{
 
-
         @Override
         protected String doInBackground(String... params) 
         {
@@ -326,23 +321,20 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
                      {
                              JSONObject json_data = jArray.getJSONObject(i);                            
                              returnString +=  json_data.getInt("Balance");
+
                      }                     
               }
              catch(JSONException e)
              {
                      Log.e("log_tag", "Error parsing data "+e.toString());
              }    
-             userBal.setText("Current Balance: €"+returnString+"");             	
-
-        	// Toast.makeText(getApplicationContext(), "Bal: "+returnString, Toast.LENGTH_SHORT).show();                      
-
-             //userBal.setText("Current Balance: "+returnString+"");               	
+             userBal.setText("Current Balance: €"+returnString+"");
         }
 
         @Override
         protected void onPreExecute() 
         {
-        	mDialog.setMessage("Updating Balance...");
+        	mDialog.setMessage("Updating Balance...!!!!");
             mDialog.show();             
         }
     }
@@ -386,8 +378,13 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
         	 
         	 if  (resultBuy.contains("Success"))
              {
-           	    Toast.makeText(getApplicationContext(), "Ticket Purchased", Toast.LENGTH_SHORT).show(); 
-            	new GetBal().execute(""); 
+           	    Toast.makeText(getApplicationContext(), "Ticket Purchased", Toast.LENGTH_SHORT).show();
+           	              	  
+           	    final Intent i = new Intent(getApplicationContext(), MainActivity.class);
+          	    startActivity(i);
+          	    finish();
+           	    //new GetBal().execute("");
+            	
             	//new CreateQRTicket().execute(""); 
 
              	//insertLocalUserData(email.getText().toString(), pw.getText().toString());
