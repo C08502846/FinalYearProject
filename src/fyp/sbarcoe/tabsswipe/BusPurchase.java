@@ -50,10 +50,10 @@ public class BusPurchase extends Activity
 		setContentView(R.layout.activity_bus_purchase);	
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		//ticketType = (Spinner) findViewById(R.id.spinner1);
-		//stages = (Spinner) findViewById(R.id.spinner2);
-		//userBal = (TextView) findViewById(R.id.curBal);
-		//buy = (Button) findViewById(R.id.buy);
+		ticketType = (Spinner) findViewById(R.id.spinner1);
+		stages = (Spinner) findViewById(R.id.spinner2);
+		userBal = (TextView) findViewById(R.id.curBal);
+		buy = (Button) findViewById(R.id.buy);
 		img = (ImageView) findViewById(R.id.img);
 		
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -74,58 +74,11 @@ public class BusPurchase extends Activity
 		{			
             public void onClick(View v) 
             {  
-            	bitmap = DownloadImage("http://www.allindiaflorist.com/imgs/arrangemen4.jpg");
-                img = (ImageView) findViewById(R.id.img);
-            	img.setImageBitmap(bitmap);         	         	    
+            	  	         	    
             }
         });
 
 	}
-	private InputStream OpenHttpConnection(String urlString)
-		    throws IOException
-		    {
-		        InputStream in = null;
-		        int response = -1;
-		                 
-		        URL url = new URL(urlString);
-		        URLConnection conn = url.openConnection();
-		                   
-		        if (!(conn instanceof HttpURLConnection))                    
-		            throw new IOException("Not an HTTP connection");
-		          
-		        try{
-		            HttpURLConnection httpConn = (HttpURLConnection) conn;
-		            httpConn.setAllowUserInteraction(false);
-		            httpConn.setInstanceFollowRedirects(true);
-		            httpConn.setRequestMethod("GET");
-		            httpConn.connect();
-		  
-		            response = httpConn.getResponseCode();                
-		            if (response == HttpURLConnection.HTTP_OK) {
-		                in = httpConn.getInputStream();                                
-		            }                    
-		        }
-		        catch (Exception ex)
-		        {
-		            throw new IOException("Error connecting");           
-		        }
-		        return in;    
-		    }
-	 private Bitmap DownloadImage(String URL)
-	    {       
-	        Bitmap bitmap = null;
-	        InputStream in = null;       
-	        try {
-	            in = OpenHttpConnection(URL);
-	            bitmap = BitmapFactory.decodeStream(in);
-	            in.close();
-	        } catch (IOException e1) {
-	            // TODO Auto-generated catch block
-	            e1.printStackTrace();
-	        }
-	        return bitmap;               
-	    }
-	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

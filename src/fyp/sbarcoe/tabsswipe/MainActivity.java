@@ -2,6 +2,7 @@ package fyp.sbarcoe.tabsswipe;
 
 
 import info.androidhive.tabsswipe.R;
+import info.androidhive.tabsswipe.adapter.ImageLoader;
 import info.androidhive.tabsswipe.adapter.TabsPagerAdapter;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.androidquery.AQuery;
 import com.androidquery.callback.AjaxCallback;
@@ -43,14 +45,17 @@ public class MainActivity extends FragmentActivity implements
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 	
-	String stopName, returnString ;
+	String stopName, returnString, returnString2, returnURL ;
 	int stopZone ;
-	String resultBuy ;
+	String resultBuy, result2 ;
+	static String image_url;
+    public static ImageView image;
+	int loader;
+
 	//TextView userBal;
 	Dialog mDialog;
 	AQuery myimg;
 	ImageView myimg2 ;
-	
 	SharedPreferences mPrefs;
     final String welcomeScreenShownPref = "welcomeScreenShown";
     
@@ -64,6 +69,8 @@ public class MainActivity extends FragmentActivity implements
 		setContentView(R.layout.activity_main);	
 		//userBal = (TextView) findViewById(fyp.sbarcoe.tabsswipe.TopUp.topUpInt);
 		mDialog = new ProgressDialog(MainActivity.this);
+
+        
 
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		 // second argument is the default to use if the preference can't be found
@@ -195,7 +202,7 @@ public class MainActivity extends FragmentActivity implements
    	    }
    	    else if(testTab == "Validate")
    	    {
-   	    	new GetBal().execute("");  			
+        	new GetImageName().execute("");
    	    }
 	}
  	       
@@ -271,7 +278,77 @@ public class MainActivity extends FragmentActivity implements
         	((AlertDialog) mDialog).setMessage("Updating Balance...");
             mDialog.show();             
         }
-    }
+    }class GetImageName extends AsyncTask<String, Void, String> 
+	{	
+
+        @Override
+        protected String doInBackground(String... params) 
+        {
+        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+
+            // define the parameter        cardnumber, expmonth, expyear, cv
+            postParameters.add(new BasicNameValuePair("email", getEmail()));
+
+            String response2 = null;
+           // boolean success = false ;
+                
+            // call executeHttpPost method passing necessary parameters 
+            try 
+             {            	
+            	response2 = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/getQRCodeImg.php", postParameters);                         
+            	result2 = response2.toString(); 
+            	
+              }
+              catch (Exception e) 
+              {
+                   Log.e("log_tag","Error in http connection!!" + e.toString());               
+              	   Toast.makeText(getApplicationContext(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
+              }
+			  return response2; 
+        }
+        @Override
+        protected void onPostExecute(String result2) 
+        {          
+        	 mDialog.dismiss();
+        	 //String remoteBal = Get Balance from Remote
+        	 // updateLocalBal() ;
+        	 
+        	//parse json data
+             try
+             {
+            	 returnString2 = "";
+                 JSONArray jArray = new JSONArray(result2);
+                 Log.i("tagconvertstr", "["+result2+"]");
+                     for(int i=0;i<jArray.length();i++)
+                     {
+                             JSONObject json_data = jArray.getJSONObject(i);                            
+                             returnString2 +=  json_data.getString("ticketimg");
+                             System.out.print("Returned: "+returnString2);                        	 
+                     }  
+                     image_url = image_url+returnString2 ;                     
+               	     ImageLoader imgLoader = new ImageLoader(getApplicationContext());
+                     imgLoader.DisplayImage(image_url, loader, image);
+                	 //Toast.makeText(getApplicationContext(), "Image URL: "+image_url, Toast.LENGTH_SHORT).show();
+              }
+             catch(JSONException e)
+             {
+                     Log.e("log_tag", "Error parsing data "+e.toString());
+             }         
+             //userBal.setText("Current Balance: €"+returnString+"");               	
+        }
+
+        @Override
+        protected void onPreExecute() 
+        {
+            loader = R.drawable.loader;
+            image_url = "http://sbarcoe.net23.net/Android/phpqrcode/tickets/";
+    		image = (ImageView) findViewById(R.id.image);
+
+        	((AlertDialog) mDialog).setMessage("Retrieving Ticket...");
+            mDialog.show();             
+        }
+}
+	
 	private String getEmail() 
 	{
 		DBManager myDB = new DBManager(getApplicationContext());

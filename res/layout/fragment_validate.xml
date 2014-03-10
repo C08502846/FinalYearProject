@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
         android:paddingBottom="40dp"
-        android:text="Type: Adult" />
+        android:text="Type:" />
 
     <TextView
         android:id="@+id/tvValFrom"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
         android:paddingBottom="40dp"
-        android:text="From: Stephens Green" />
+        android:text="From:" />
 
     <TextView
         android:id="@+id/tvValTo"
@@ -27,13 +27,12 @@
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
         android:paddingBottom="40dp"
-        android:text="To: Cherrywood" />
+        android:text="To: " />
 
     <ImageView
-        android:id="@+id/qrCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/qrcode" />
+        android:id="@+id/image"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
 
     <Button
         android:id="@+id/qrTest"

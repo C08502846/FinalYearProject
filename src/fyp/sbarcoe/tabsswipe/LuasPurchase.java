@@ -72,7 +72,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 		luas_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 		luasTo.setAdapter(luas_adp);
 	    luasFrom.setAdapter(luas_adp);   
-	
+
 		new GetBal().execute("");  
 	}
 
@@ -123,12 +123,12 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 		 //convert to double
 	 totalCost = String.valueOf(costOfJourney);
 
-		
+
 	}
 	private void btnClicked() 
 	{
 		btnBuy.setOnClickListener(new OnClickListener() {
-			 
+
 			@Override
 			public void onClick(View arg0) 
 			{
@@ -142,7 +142,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 			}
  
 		});
-		
+
 	}
 	public void addRadioGroupListeners() 
 	 {		 
@@ -162,7 +162,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	                case R.id.radioGreen:
 	                	//luasFrom.clearFocus();
 	                	costLuas.setText("Journey Cost: €");
-	                	
+
 	                	//luasFrom.setBackgroundColor(-16711936);
 	                	//luasTo.setBackgroundColor(-16711936);
 	    				result = populateStops("Green");	
@@ -201,7 +201,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 					setZoneCost();
 					costLuas.setText("Journey Cost: €" +totalCost);
 			    	//Toast.makeText(getApplicationContext(), "Zone From: " +zoneFromInt, Toast.LENGTH_SHORT).show();
-			        
+
 
 			    }
 			    public void onNothingSelected(AdapterView<?> parent) {
@@ -224,7 +224,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 			    public void onNothingSelected(AdapterView<?> parent) {
 			    }
 			});
-		
+
 	}
 
 	@Override
@@ -282,7 +282,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	}
 	class GetBal extends AsyncTask<String, Void, String> 
 	{
-		
+
 
         @Override
         protected String doInBackground(String... params) 
@@ -299,8 +299,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
             try 
              {            	
             	response2 = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/getBal.php", postParameters);                         
-            	resultBuy = response2.toString(); 
-            	
+            	resultBuy = response2.toString();             	
               }
               catch (Exception e) 
               {
@@ -327,15 +326,13 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
                      {
                              JSONObject json_data = jArray.getJSONObject(i);                            
                              returnString +=  json_data.getInt("Balance");
-                             System.out.print("Returned: "+returnString);                        	 
                      }                     
               }
              catch(JSONException e)
              {
                      Log.e("log_tag", "Error parsing data "+e.toString());
              }    
-             //userBal.append(returnString);
-             userBal.setText("CurrentBalance: €"+returnString);
+             userBal.setText("Current Balance: €"+returnString+"");             	
 
         	// Toast.makeText(getApplicationContext(), "Bal: "+returnString, Toast.LENGTH_SHORT).show();                      
 
@@ -351,7 +348,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
     }
 	class PurchaseTicket extends AsyncTask<String, Void, String> 
 	{
-		
+
 
         @Override
         protected String doInBackground(String... params) 
@@ -367,7 +364,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
             postParameters.add(new BasicNameValuePair("cost", totalCost));
 
             String response2 = null;
-           // boolean success = false ;
+           //boolean success = false ;
                 
             // call executeHttpPost method passing necessary parameters 
             try 
@@ -414,75 +411,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
             mDialog.show();             
         }
     }
-	class CreateQRTicket extends AsyncTask<String, Void, String> 
-	{
-		
-
-        @Override
-        protected String doInBackground(String... params) 
-        {
-        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-        	//(String email, String fromStop2, String toStop2, String totalCost2)
-            // define the parameter        cardnumber, expmonth, expyear, cv
-        	
-            postParameters.add(new BasicNameValuePair("email", getEmail()));
-            postParameters.add(new BasicNameValuePair("line", line));
-            postParameters.add(new BasicNameValuePair("stopfrom", fromStop));
-            postParameters.add(new BasicNameValuePair("stopto", toStop));
-            postParameters.add(new BasicNameValuePair("cost", totalCost));
-
-            String response2 = null;
-           // boolean success = false ;
-                
-            // call executeHttpPost method passing necessary parameters 
-            try 
-             {            	
-            	response2 = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/phpqrcode/generateqr.php", postParameters);              
-            	resultQR = response2.toString();             	
-              }
-              catch (Exception e) 
-              {
-                   Log.e("log_tag","Error in http connection!!" + e.toString());               
-              	   //Toast.makeText(getApplicationContext(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
-              }
-			  return response2; 
-        }
-        @Override
-        protected void onPostExecute(String result2) 
-        {          
-        	 mDialog.dismiss();
-        	 
-        	 if  (resultQR.contains("File generated!"))
-             {
-           	    Toast.makeText(getApplicationContext(), "Ticket Made", Toast.LENGTH_SHORT).show(); 
-            	//new GetBal().execute(""); 
-           	    finish();
-           	     Intent i = (new Intent(getApplicationContext(), MainActivity.class));
- 		         startActivity(i);
-           	     //startActivity(new Intent(this, MyFragmentActivity.class));
-             	//insertLocalUserData(email.getText().toString(), pw.getText().toString());
-             }
-             else if(resultQR.contains("File already generated!"))
-             {
-             	Toast.makeText(getApplicationContext(), "Already generated!", Toast.LENGTH_SHORT).show();
-             }
-             else
-             {
-            	 Toast.makeText(getApplicationContext(), "No Result.", Toast.LENGTH_SHORT).show();
-             }
-        	 // updateLocalBal() ;
-             //userBal.setText("Current Balance: "+returnString+"");               	
-        }
-
-        @Override
-        protected void onPreExecute() 
-        {
-        	mDialog.setMessage("Creating Ticket...");
-            mDialog.show();             
-        }
-    }
-
-
+	
 	public String getStopZone(String stopName)
 	{
 		 String result2 ;
@@ -595,7 +524,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 		myDB.addLuasStops("Cookstown", "Red", 5);
 		myDB.addLuasStops("Hospital", "Red", 5);
 		myDB.addLuasStops("Tallaght", "Red", 5);
-		
+
 		myDB.close();	
 	}
 }
