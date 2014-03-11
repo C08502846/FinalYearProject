@@ -7,9 +7,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.androidquery.AQuery;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -55,12 +52,15 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_luas_purchase);
+		
 		luasFrom = (Spinner) findViewById(R.id.spinnerLuasFrom);
 		luasTo = (Spinner) findViewById(R.id.spinnerLuasTo); 
 		costLuas = (TextView) findViewById(R.id.tvCostLuas);
-		btnBuy = (Button) findViewById(R.id.btnBuyLuasTick);
 		userBal = (TextView) findViewById(R.id.userBal);
+		btnBuy = (Button) findViewById(R.id.btnBuyLuasTick);
+
 		mDialog = new ProgressDialog(LuasPurchase.this);
+		
 		addRadioGroupListeners();
 		setSpinnerListeners() ;
 		btnClicked() ;
@@ -334,7 +334,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
         @Override
         protected void onPreExecute() 
         {
-        	mDialog.setMessage("Updating Balance...!!!!");
+        	mDialog.setMessage("Updating Balance..");
             mDialog.show();             
         }
     }

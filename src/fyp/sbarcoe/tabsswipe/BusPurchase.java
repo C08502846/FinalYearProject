@@ -1,5 +1,7 @@
 package fyp.sbarcoe.tabsswipe;
 
+import fyp.sbarcoe.tabsswipe.LuasPurchase.GetBal;
+import fyp.sbarcoe.tabsswipe.LuasPurchase.PurchaseTicket;
 import info.androidhive.tabsswipe.R;
 
 import java.io.IOException;
@@ -19,6 +21,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -28,21 +31,34 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 
 public class BusPurchase extends Activity 
 {	
-	Spinner ticketType, stages ;
-	String returnString, result;
-	TextView userBal ;
+	Spinner busFrom, busTo, ticketType ;
+	String returnString, result2, line, fromStop, toStop, zoneFrom, totalCost, zoneTo, resultBal, resultBuy;
+	String[] result; 
+	TextView userBal, costBus  ;
 	ProgressDialog mDialog;
+	Button buyBtn ;
+
 	Button buy ;
-	ImageView img ;
-	Bitmap bitmap ;
+	int zoneFromInt, zoneToInt, zoneDiff ;
+	private RadioGroup radioLineGroup;
+	private RadioButton radioLineButton;
+	public ArrayAdapter<String> bus_adp ;
+	double costOfJourney;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -50,12 +66,11 @@ public class BusPurchase extends Activity
 		setContentView(R.layout.activity_bus_purchase);	
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		ticketType = (Spinner) findViewById(R.id.spinner1);
-		stages = (Spinner) findViewById(R.id.spinner2);
-		userBal = (TextView) findViewById(R.id.curBal);
-		buy = (Button) findViewById(R.id.buy);
-		img = (ImageView) findViewById(R.id.img);
-		
+		busFrom = (Spinner) findViewById(R.id.spinnerBusFrom);
+		busTo = (Spinner) findViewById(R.id.spinnerBusTo);
+		userBal = (TextView) findViewById(R.id.userBal);
+		buyBtn = (Button) findViewById(R.id.btnBuyBusTick);
+		costBus = (TextView) findViewById(R.id.tvCostBus);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
 		R.array.ticket_type, android.R.layout.simple_spinner_item);				
 		ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
@@ -64,19 +79,174 @@ public class BusPurchase extends Activity
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mDialog = new ProgressDialog(getApplicationContext());
+		result = populateStops("Green");
 
-		ticketType.setAdapter(adapter);	
-		stages.setAdapter(adapter2);	
-    	//new GetBal().execute("");  
-    	
-    	        
-    	buy.setOnClickListener(new View.OnClickListener() 
-		{			
-            public void onClick(View v) 
-            {  
-            	  	         	    
-            }
-        });
+    	new GetBal().execute("");   
+    	bus_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
+    	bus_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+		busTo.setAdapter(bus_adp);
+		busFrom.setAdapter(bus_adp);  
+
+		addRadioGroupListenersBus();
+		setSpinnerListenersBus() ;
+		btnClickedBus() ;
+	}
+
+		
+
+	private void btnClickedBus() 
+	{
+		buyBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) 
+			{
+				new PurchaseBusTicket().execute(""); 
+				//updateRemoteJourney(email, fromStop, toStop, totalCost) ;
+				// if user Balance > total cost do this
+				// Get UserEmail, Stop From, Stop To, , Total Cost, Date
+				// Send to Remote DB:  Insert INTO Journeys VALUES(email, stopFrom, stopTo, totalCost, date)
+				//else Error, please top up.
+
+			}
+ 
+		});
+
+	}
+	private void setZoneCost() 
+	{
+		if(zoneFromInt > zoneToInt)
+		{
+			zoneDiff = zoneFromInt - zoneToInt ;
+			//Toast.makeText(getApplicationContext(), "From > To: " +zoneDiff, Toast.LENGTH_SHORT).show();
+
+		}
+		else if( zoneToInt > zoneFromInt)
+		{
+			zoneDiff = zoneToInt - zoneFromInt  ;
+			//Toast.makeText(getApplicationContext(), "To > From: " +zoneDiff, Toast.LENGTH_SHORT).show();
+
+		}
+		else if(zoneFromInt == zoneToInt)
+		{
+			zoneDiff = 0 ;
+			//Toast.makeText(getApplicationContext(), "Same: " +zoneDiff, Toast.LENGTH_SHORT).show();
+
+		}
+		// Green Line Peak Costs
+		 switch (zoneDiff) 
+		 {
+         case 1:  zoneDiff = 1;
+         costOfJourney = 1.70 ;
+         break;
+         case 2:  zoneDiff = 2;
+         costOfJourney = 2.10 ;
+         break;
+         case 3:  zoneDiff = 3;
+         costOfJourney = 2.50 ;
+         break;
+         case 4:  zoneDiff = 4;
+         costOfJourney = 2.70 ;
+         break;
+         case 5:  zoneDiff = 5;
+         costOfJourney = 2.90 ;
+         break;        
+         default: zoneDiff = 0;
+         costOfJourney = 0 ;
+         break;
+         }
+		 //convert to double
+	 totalCost = String.valueOf(costOfJourney);
+
+
+	}
+	public void addRadioGroupListenersBus()
+	{
+			radioLineGroup = (RadioGroup) findViewById(R.id.radioADCHI);
+			int selectedId = radioLineGroup.getCheckedRadioButtonId();
+			radioLineButton = (RadioButton) findViewById(selectedId);
+			//radioLineButton.setChecked(false);        
+	        radioLineGroup.setOnCheckedChangeListener(new OnCheckedChangeListener()
+	        {
+	        	@Override
+	            public void onCheckedChanged(RadioGroup group, int checkedId)
+	            {
+			    	String lineSelected = "";
+			    	lineSelected = radioLineButton.getText().toString() ;
+	                switch(checkedId)
+	                {
+	                case R.id.radioAdult:
+	                	//luasFrom.clearFocus();
+	                	costBus.setText("Journey Cost: €");
+
+	                	//luasFrom.setBackgroundColor(-16711936);
+	                	//luasTo.setBackgroundColor(-16711936);
+	    				result = populateStops("Green");	
+	    				line = "Green";
+	    				//bus_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
+	    				//bus_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+	    				//busTo.setAdapter(bus_adp);
+	    			   // busFrom.setAdapter(bus_adp);
+	                    break;
+	                case R.id.radioChild:	   
+	                	//luasFrom.clearFocus();
+	            		costBus.setText("Journey Cost: €");
+
+	                	//luasFrom.setBackgroundColor(-65536);
+	                	//luasTo.setBackgroundColor(-65536);
+	    				result = populateStops("Red");
+	    				line = "Red";
+	    				//bus_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
+	    				//bus_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+	    				//busTo.setAdapter(bus_adp);
+	    			   // busFrom.setAdapter(bus_adp);   
+	                    break;	      
+	                }
+	            }}); 
+    }
+	 private void setSpinnerListenersBus() 
+	 {
+		 busFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
+			{
+			    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
+			    {
+			        Object item = parent.getItemAtPosition(pos);
+			        fromStop = item.toString() ;
+			        zoneFrom = getStopZone(fromStop);
+			        zoneFromInt = Integer.parseInt(zoneFrom);
+					setZoneCost();
+					costBus.setText("Journey Cost: €" +totalCost);
+			    }
+			    public void onNothingSelected(AdapterView<?> parent) {
+			    }
+			});
+		 busTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
+			{
+			    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
+			    {
+			        Object item = parent.getItemAtPosition(pos);
+			        toStop = item.toString() ;
+			        zoneTo = getStopZone(toStop);
+			        zoneToInt = Integer.parseInt(zoneTo);
+					setZoneCost();
+					costBus.setText("Journey Cost: €" +totalCost);
+
+			        //Toast.makeText(getApplicationContext(), "Zone To: " +zoneToInt, Toast.LENGTH_SHORT).show();
+
+			    }
+			    public void onNothingSelected(AdapterView<?> parent) {
+			    }
+			});
+
+	}
+	public String[] populateStops(String stopSelected)
+	{
+		DBManager myDB = new DBManager(this);
+		myDB.open();
+		String[] result = myDB.getStops(stopSelected) ;	
+		//userBal = (TextView) findViewById(R.id.userBal);
+		myDB.close(); 
+		return result ;
 
 	}
 	
@@ -152,7 +322,7 @@ public class BusPurchase extends Activity
             try 
              {            	
             	response2 = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/getBal.php", postParameters);                         
-            	result = response2.toString(); 
+            	result2 = response2.toString(); 
             	
               }
               catch (Exception e) 
@@ -165,9 +335,7 @@ public class BusPurchase extends Activity
         @Override
         protected void onPostExecute(String result2) 
         {          
-        	 //mDialog.dismiss();
-        	 //String remoteBal = Get Balance from Remote
-        	 // updateLocalBal() ;
+        	 mDialog.dismiss();       	
         	 
         	
 			//parse json data
@@ -175,7 +343,7 @@ public class BusPurchase extends Activity
              {
             	 returnString = "";
                  JSONArray jArray = new JSONArray(result2);
-                 Log.i("tagconvertstr", "["+result+"]");
+                 Log.i("tagconvertstr", "["+result2+"]");
                      for(int i=0;i<jArray.length();i++)
                      {
                              JSONObject json_data = jArray.getJSONObject(i);                            
@@ -187,17 +355,94 @@ public class BusPurchase extends Activity
              {
                      Log.e("log_tag", "Error parsing data "+e.toString());
              }    
-             userBal.append(returnString);
+             userBal.setText("Current Balance: "+returnString+"");               	
+        }
+
+        @Override
+        protected void onPreExecute() 
+        {
+        	mDialog.setMessage("Getting Balance...");
+            mDialog.show();             
+        }
+}
+	public String getStopZone(String stopName)
+	{
+		 String result2 ;
+		 DBManager myDB = new DBManager(this);
+		 myDB.open();
+	     result2 = myDB.getZone(stopName) ;
+	     myDB.close();
+		 return result2;
+	}
+	class PurchaseBusTicket extends AsyncTask<String, Void, String> 
+	{
+
+
+        @Override
+        protected String doInBackground(String... params) 
+        {
+        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+        	//(String email, String fromStop2, String toStop2, String totalCost2)
+            // define the parameter        cardnumber, expmonth, expyear, cv
+        	
+            postParameters.add(new BasicNameValuePair("email", getEmail()));
+            postParameters.add(new BasicNameValuePair("stopfrom", fromStop));
+            postParameters.add(new BasicNameValuePair("stopto", toStop));
+            postParameters.add(new BasicNameValuePair("cost", totalCost));
+
+            String response2 = null;
+           //boolean success = false ;
+                
+            // call executeHttpPost method passing necessary parameters 
+            try 
+             {            	
+            	response2 = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/buyBus.php", postParameters);                         
+            	resultBuy = response2.toString();             	
+              }
+              catch (Exception e) 
+              {
+                   Log.e("log_tag","Error in http connection!!" + e.toString());               
+              	   //Toast.makeText(getApplicationContext(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
+              }
+			  return response2; 
+        }
+        @Override
+        protected void onPostExecute(String result2) 
+        {          
+        	 mDialog.dismiss();
+        	 
+        	 if  (resultBuy.contains("Success"))
+             {
+           	    Toast.makeText(getApplicationContext(), "Ticket Purchased", Toast.LENGTH_SHORT).show();
+           	              	  
+           	    final Intent i = new Intent(getApplicationContext(), MainActivity.class);
+          	    startActivity(i);
+          	    finish();
+           	    //new GetBal().execute("");
+            	
+            	//new CreateQRTicket().execute(""); 
+
+             	//insertLocalUserData(email.getText().toString(), pw.getText().toString());
+             }
+             else if(resultBuy.contains("NoFunds"))
+             {
+             	Toast.makeText(getApplicationContext(), "Purchase Fail", Toast.LENGTH_SHORT).show();
+             }
+             else
+             {
+            	 Toast.makeText(getApplicationContext(), "No Result", Toast.LENGTH_SHORT).show();
+             }
+        	 // updateLocalBal() ;
              //userBal.setText("Current Balance: "+returnString+"");               	
         }
 
         @Override
         protected void onPreExecute() 
         {
-        	//mDialog.setMessage("Getting Balance...");
-           // mDialog.show();             
+        	mDialog.setMessage("Purchasing Ticket...");
+            mDialog.show();             
         }
-}
+    }
 	private String getEmail() 
 	{
 		DBManager myDB = new DBManager(getApplicationContext());

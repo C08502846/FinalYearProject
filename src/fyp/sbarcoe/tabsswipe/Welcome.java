@@ -31,8 +31,7 @@ public class Welcome extends Activity
 		setContentView(R.layout.activity_welcome);				
 		email = (EditText) findViewById(R.id.email);
 		pw = (EditText) findViewById(R.id.pw);		
-		mDialog = new ProgressDialog(Welcome.this);
-		insertStops();
+		mDialog = new ProgressDialog(Welcome.this);		
 		continueB = (Button) findViewById(R.id.continueB);					
 		continueB.setOnClickListener(new View.OnClickListener() 
 		{			
@@ -51,6 +50,7 @@ public class Welcome extends Activity
                 }                                       	         	    
             }
         });
+		insertStops();
 		
 	}
 	private class RegisterUser extends AsyncTask<String, Void, String> 
