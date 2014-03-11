@@ -103,7 +103,22 @@ public class DBManager
 		cv.put(KEY_STOP_ZONE, zone);
 		return myDB.insert(DATABASE_TABLE_LUAS, null, cv);			
 	}
-	public String[] getStops(String line) 
+	public String[] getLuasStops(String line) 
+	{
+		String[] columns = new String[]{KEY_STOP_NAME};
+		//Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, null, null, null, null, null);
+		Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, "Line"+" LIKE '"+line+"%'", null, null, null, null);
+		ArrayList<String> stopNames = new ArrayList<String>();
+		while(c.moveToNext())
+		        {			
+			        stopNames.add(c.getString(0));
+		        }
+		String[] stopsReturn = (String[]) stopNames.toArray(new String[stopNames.size()]);
+
+		return stopsReturn;
+		
+	}
+	public String[] getBusStops(String line) 
 	{
 		String[] columns = new String[]{KEY_STOP_NAME};
 		//Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, null, null, null, null, null);

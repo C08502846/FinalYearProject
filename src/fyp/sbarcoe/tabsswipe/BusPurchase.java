@@ -45,8 +45,8 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 
 public class BusPurchase extends Activity 
 {	
-	Spinner busFrom, busTo, ticketType ;
-	String returnString, result2, line, fromStop, toStop, zoneFrom, totalCost, zoneTo, resultBal, resultBuy;
+	Spinner busFrom, busTo ;
+	String returnString, result2, line, fromStop, toStop, zoneFrom, totalCost, zoneTo, resultBal, resultBuy, ticketType;
 	String[] result; 
 	TextView userBal, costBus  ;
 	ProgressDialog mDialog;
@@ -78,7 +78,7 @@ public class BusPurchase extends Activity
 		
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mDialog = new ProgressDialog(getApplicationContext());
+		mDialog = new ProgressDialog(BusPurchase.this);
 		result = populateStops("Green");
 
     	new GetBal().execute("");   
@@ -171,18 +171,17 @@ public class BusPurchase extends Activity
 	        	@Override
 	            public void onCheckedChanged(RadioGroup group, int checkedId)
 	            {
-			    	String lineSelected = "";
-			    	lineSelected = radioLineButton.getText().toString() ;
 	                switch(checkedId)
 	                {
 	                case R.id.radioAdult:
 	                	//luasFrom.clearFocus();
-	                	costBus.setText("Journey Cost: €");
+	                	//costBus.setText("Journey Cost: €");
 
 	                	//luasFrom.setBackgroundColor(-16711936);
 	                	//luasTo.setBackgroundColor(-16711936);
 	    				result = populateStops("Green");	
-	    				line = "Green";
+	    				ticketType = "Adult";
+	    			
 	    				//bus_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
 	    				//bus_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 	    				//busTo.setAdapter(bus_adp);
@@ -190,12 +189,13 @@ public class BusPurchase extends Activity
 	                    break;
 	                case R.id.radioChild:	   
 	                	//luasFrom.clearFocus();
-	            		costBus.setText("Journey Cost: €");
+	            		//costBus.setText("Journey Cost: €");
 
 	                	//luasFrom.setBackgroundColor(-65536);
 	                	//luasTo.setBackgroundColor(-65536);
 	    				result = populateStops("Red");
-	    				line = "Red";
+	    				ticketType = "Child";
+
 	    				//bus_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
 	    				//bus_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 	    				//busTo.setAdapter(bus_adp);
@@ -243,7 +243,7 @@ public class BusPurchase extends Activity
 	{
 		DBManager myDB = new DBManager(this);
 		myDB.open();
-		String[] result = myDB.getStops(stopSelected) ;	
+		String[] result = myDB.getLuasStops(stopSelected) ;	
 		//userBal = (TextView) findViewById(R.id.userBal);
 		myDB.close(); 
 		return result ;
@@ -335,7 +335,7 @@ public class BusPurchase extends Activity
         @Override
         protected void onPostExecute(String result2) 
         {          
-        	 mDialog.dismiss();       	
+        	 //mDialog.dismiss();       	
         	 
         	
 			//parse json data
@@ -361,8 +361,8 @@ public class BusPurchase extends Activity
         @Override
         protected void onPreExecute() 
         {
-        	mDialog.setMessage("Getting Balance...");
-            mDialog.show();             
+        	//mDialog.setMessage("Getting Balance...");
+           // mDialog.show();             
         }
 }
 	public String getStopZone(String stopName)
@@ -386,6 +386,7 @@ public class BusPurchase extends Activity
             // define the parameter        cardnumber, expmonth, expyear, cv
         	
             postParameters.add(new BasicNameValuePair("email", getEmail()));
+            postParameters.add(new BasicNameValuePair("tickettype", ticketType));
             postParameters.add(new BasicNameValuePair("stopfrom", fromStop));
             postParameters.add(new BasicNameValuePair("stopto", toStop));
             postParameters.add(new BasicNameValuePair("cost", totalCost));
@@ -415,10 +416,10 @@ public class BusPurchase extends Activity
              {
            	    Toast.makeText(getApplicationContext(), "Ticket Purchased", Toast.LENGTH_SHORT).show();
            	              	  
-           	    final Intent i = new Intent(getApplicationContext(), MainActivity.class);
-          	    startActivity(i);
-          	    finish();
-           	    //new GetBal().execute("");
+           	    //final Intent i = new Intent(getApplicationContext(), MainActivity.class);
+          	    //startActivity(i);
+          	   // finish();
+           	    new GetBal().execute("");
             	
             	//new CreateQRTicket().execute(""); 
 
@@ -439,7 +440,7 @@ public class BusPurchase extends Activity
         @Override
         protected void onPreExecute() 
         {
-        	mDialog.setMessage("Purchasing Ticket...");
+        	mDialog.setMessage("Purchasing Bus Ticket...");
             mDialog.show();             
         }
     }

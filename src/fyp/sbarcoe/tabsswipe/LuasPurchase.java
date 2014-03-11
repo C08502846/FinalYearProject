@@ -431,7 +431,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	{
 		DBManager myDB = new DBManager(this);
 		myDB.open();
-		String[] result = myDB.getStops(stopSelected) ;	
+		String[] result = myDB.getLuasStops(stopSelected) ;	
 		//userBal = (TextView) findViewById(R.id.userBal);
 		myDB.close(); 
 		return result ;
