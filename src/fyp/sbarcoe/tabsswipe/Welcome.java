@@ -8,8 +8,10 @@ import org.apache.http.message.BasicNameValuePair;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -24,11 +26,18 @@ public class Welcome extends Activity
     EditText email, pw ;
     boolean successReturn ;
 	ProgressDialog mDialog ;
+	SharedPreferences mPrefs;
+    final String welcomeScreenShownPref = "welcomeScreenShown";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{	
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_welcome);				
+		setContentView(R.layout.activity_welcome);	
+		
+		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+	    Boolean welcomeScreenShown = mPrefs.getBoolean(welcomeScreenShownPref, false);
+
 		email = (EditText) findViewById(R.id.email);
 		pw = (EditText) findViewById(R.id.pw);		
 		mDialog = new ProgressDialog(Welcome.this);		
@@ -97,7 +106,10 @@ public class Welcome extends Activity
         	 if  (result.contains("Success"))
              {
              	Toast.makeText(getApplicationContext(), "Registered.", Toast.LENGTH_SHORT).show(); 
-             	
+             	SharedPreferences.Editor editor = mPrefs.edit();
+    	        editor.putBoolean(welcomeScreenShownPref, true);
+    	        editor.commit(); // Very important to save the preference
+    	        
              	insertLocalUserData(email.getText().toString(), pw.getText().toString());
              	
              	final Intent i = new Intent(getApplicationContext(), Payment.class);

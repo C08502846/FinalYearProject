@@ -68,20 +68,16 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);	
 		//userBal = (TextView) findViewById(fyp.sbarcoe.tabsswipe.TopUp.topUpInt);
-		mDialog = new ProgressDialog(MainActivity.this);
-
-        
+		mDialog = new ProgressDialog(MainActivity.this);        
 
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 		 // second argument is the default to use if the preference can't be found
 	    Boolean welcomeScreenShown = mPrefs.getBoolean(welcomeScreenShownPref, false);
+	    
 	    if (!welcomeScreenShown) 
 	    {	        
 	    	final Intent i = new Intent(getApplicationContext(), Welcome.class);
-		    startActivity(i);		    
-	    	SharedPreferences.Editor editor = mPrefs.edit();
-	        editor.putBoolean(welcomeScreenShownPref, true);
-	        editor.commit(); // Very important to save the preference
+		    startActivity(i);    	
 	        finish();
 	    }
 		

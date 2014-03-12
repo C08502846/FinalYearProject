@@ -125,11 +125,8 @@ public class Payment extends Activity implements OnItemSelectedListener
 
         	 if  (result.contains("Success"))
              {
-             	Toast.makeText(getApplicationContext(), "Card Added", Toast.LENGTH_SHORT).show();              	
-             	
-             	//insertLocalUserData(email.getText().toString(), pw.getText().toString());
-             	
-             	final Intent i = new Intent(getApplicationContext(), MainActivity.class);
+             	Toast.makeText(getApplicationContext(), "Card Added", Toast.LENGTH_SHORT).show();        	
+                final Intent i = new Intent(getApplicationContext(), MainActivity.class);
              	startActivity(i);
              	finish();
              }

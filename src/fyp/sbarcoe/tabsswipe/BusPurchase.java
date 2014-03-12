@@ -1,29 +1,15 @@
 package fyp.sbarcoe.tabsswipe;
-
-import fyp.sbarcoe.tabsswipe.LuasPurchase.GetBal;
-import fyp.sbarcoe.tabsswipe.LuasPurchase.PurchaseTicket;
 import info.androidhive.tabsswipe.R;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -35,7 +21,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -355,7 +340,7 @@ public class BusPurchase extends Activity
              {
                      Log.e("log_tag", "Error parsing data "+e.toString());
              }    
-             userBal.setText("Current Balance: "+returnString+"");               	
+             userBal.setText("Current Balance: €"+returnString+"");               	
         }
 
         @Override
