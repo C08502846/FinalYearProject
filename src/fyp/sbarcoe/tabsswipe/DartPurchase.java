@@ -1,11 +1,15 @@
 package fyp.sbarcoe.tabsswipe;
+
+
 import info.androidhive.tabsswipe.R;
 import java.util.ArrayList;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -22,6 +26,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -29,33 +34,34 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-public class BusPurchase extends Activity 
+public class DartPurchase extends Activity 
 {	
-	Spinner busFrom, busTo ;
+	Spinner dartFrom, dartTo ;
 	String returnString, result2, line, fromStop, toStop, zoneFrom, totalCost, zoneTo, resultBal, resultBuy, ticketType;
 	String[] result; 
-	TextView userBal, costBus  ;
+	TextView userBal, costdart  ;
 	ProgressDialog mDialog;
 	Button buyBtn ;
 
 	Button buy ;
 	int zoneFromInt, zoneToInt, zoneDiff ;
 	private RadioGroup radioLineGroup;
-	public ArrayAdapter<String> bus_adp ;
+	private RadioButton radioLineButton;
+	public ArrayAdapter<String> dart_adp ;
 	double costOfJourney;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_bus_purchase);	
+		setContentView(R.layout.activity_dart_purchase);	
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		busFrom = (Spinner) findViewById(R.id.spinnerBusFrom);
-		busTo = (Spinner) findViewById(R.id.spinnerBusTo);
+		dartFrom = (Spinner) findViewById(R.id.spinnerDartFrom);
+		dartTo = (Spinner) findViewById(R.id.spinnerDartTo);
 		userBal = (TextView) findViewById(R.id.userBal);
-		buyBtn = (Button) findViewById(R.id.btnBuyBusTick);
-		costBus = (TextView) findViewById(R.id.tvCostBus);
+		buyBtn = (Button) findViewById(R.id.btnBuyDartTick);
+		costdart = (TextView) findViewById(R.id.tvCostDart);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
 		R.array.ticket_type, android.R.layout.simple_spinner_item);				
 		ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
@@ -63,31 +69,30 @@ public class BusPurchase extends Activity
 		
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mDialog = new ProgressDialog(BusPurchase.this);
+		mDialog = new ProgressDialog(DartPurchase.this);
 		result = populateStops("Green");
 
     	new GetBal().execute("");   
-    	bus_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
-    	bus_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-		busTo.setAdapter(bus_adp);
-		busFrom.setAdapter(bus_adp);  
+    	dart_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
+    	dart_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+		dartTo.setAdapter(dart_adp);
+		dartFrom.setAdapter(dart_adp);  
 
-		addRadioGroupListenersBus();
-		setSpinnerListenersBus() ;
-		btnClickedBus() ;
-		ticketType = "Adult";
+		addRadioGroupListenersdart();
+		setSpinnerListenersdart() ;
+		btnClickeddart() ;
 	}
 
 		
 
-	private void btnClickedBus() 
+	private void btnClickeddart() 
 	{
 		buyBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) 
 			{
-				new PurchaseBusTicket().execute(""); 
+				new PurchasedartTicket().execute(""); 
 				//updateRemoteJourney(email, fromStop, toStop, totalCost) ;
 				// if user Balance > total cost do this
 				// Get UserEmail, Stop From, Stop To, , Total Cost, Date
@@ -146,10 +151,11 @@ public class BusPurchase extends Activity
 
 
 	}
-	public void addRadioGroupListenersBus()
+	public void addRadioGroupListenersdart()
 	{
 			radioLineGroup = (RadioGroup) findViewById(R.id.radioADCHI);
 			int selectedId = radioLineGroup.getCheckedRadioButtonId();
+			radioLineButton = (RadioButton) findViewById(selectedId);
 			//radioLineButton.setChecked(false);        
 	        radioLineGroup.setOnCheckedChangeListener(new OnCheckedChangeListener()
 	        {
@@ -160,38 +166,38 @@ public class BusPurchase extends Activity
 	                {
 	                case R.id.radioAdult:
 	                	//luasFrom.clearFocus();
-	                	//costBus.setText("Journey Cost: €");
+	                	//costdart.setText("Journey Cost: €");
 
 	                	//luasFrom.setBackgroundColor(-16711936);
 	                	//luasTo.setBackgroundColor(-16711936);
 	    				result = populateStops("Green");	
 	    				ticketType = "Adult";
 	    			
-	    				//bus_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
-	    				//bus_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-	    				//busTo.setAdapter(bus_adp);
-	    			   // busFrom.setAdapter(bus_adp);
+	    				//dart_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
+	    				//dart_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+	    				//dartTo.setAdapter(dart_adp);
+	    			   // dartFrom.setAdapter(dart_adp);
 	                    break;
 	                case R.id.radioChild:	   
 	                	//luasFrom.clearFocus();
-	            		//costBus.setText("Journey Cost: €");
+	            		//costdart.setText("Journey Cost: €");
 
 	                	//luasFrom.setBackgroundColor(-65536);
 	                	//luasTo.setBackgroundColor(-65536);
 	    				result = populateStops("Red");
 	    				ticketType = "Child";
 
-	    				//bus_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
-	    				//bus_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-	    				//busTo.setAdapter(bus_adp);
-	    			   // busFrom.setAdapter(bus_adp);   
+	    				//dart_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
+	    				//dart_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+	    				//dartTo.setAdapter(dart_adp);
+	    			   // dartFrom.setAdapter(dart_adp);   
 	                    break;	      
 	                }
 	            }}); 
     }
-	 private void setSpinnerListenersBus() 
+	 private void setSpinnerListenersdart() 
 	 {
-		 busFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
+		 dartFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
 			{
 			    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
 			    {
@@ -200,12 +206,12 @@ public class BusPurchase extends Activity
 			        zoneFrom = getStopZone(fromStop);
 			        zoneFromInt = Integer.parseInt(zoneFrom);
 					setZoneCost();
-					costBus.setText("Journey Cost: €" +totalCost);
+					costdart.setText("Journey Cost: €" +totalCost);
 			    }
 			    public void onNothingSelected(AdapterView<?> parent) {
 			    }
 			});
-		 busTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
+		 dartTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
 			{
 			    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
 			    {
@@ -214,7 +220,7 @@ public class BusPurchase extends Activity
 			        zoneTo = getStopZone(toStop);
 			        zoneToInt = Integer.parseInt(zoneTo);
 					setZoneCost();
-					costBus.setText("Journey Cost: €" +totalCost);
+					costdart.setText("Journey Cost: €" +totalCost);
 
 			        //Toast.makeText(getApplicationContext(), "Zone To: " +zoneToInt, Toast.LENGTH_SHORT).show();
 
@@ -357,7 +363,7 @@ public class BusPurchase extends Activity
 	     myDB.close();
 		 return result2;
 	}
-	class PurchaseBusTicket extends AsyncTask<String, Void, String> 
+	class PurchasedartTicket extends AsyncTask<String, Void, String> 
 	{
 
 
@@ -380,7 +386,7 @@ public class BusPurchase extends Activity
             // call executeHttpPost method passing necessary parameters 
             try 
              {            	
-            	response2 = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/buyBus.php", postParameters);                         
+            	response2 = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/buyDart.php", postParameters);                         
             	resultBuy = response2.toString();             	
               }
               catch (Exception e) 
@@ -398,10 +404,9 @@ public class BusPurchase extends Activity
         	 if  (resultBuy.contains("Success"))
              {
            	    Toast.makeText(getApplicationContext(), "Ticket Purchased", Toast.LENGTH_SHORT).show();
-           	    final Intent i = new Intent(getApplicationContext(), BusValidate.class);
+           	    final Intent i = new Intent(getApplicationContext(), DartValidate.class);
 		        startActivity(i);    	
 	            finish();  
-           	   
            	    new GetBal().execute("");
             	
             	//new CreateQRTicket().execute(""); 
@@ -423,7 +428,7 @@ public class BusPurchase extends Activity
         @Override
         protected void onPreExecute() 
         {
-        	mDialog.setMessage("Purchasing Bus Ticket...");
+        	mDialog.setMessage("Purchasing dart Ticket...");
             mDialog.show();             
         }
     }

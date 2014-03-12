@@ -59,7 +59,7 @@ public class Welcome extends Activity
                 }                                       	         	    
             }
         });
-		insertStops();
+		
 		
 	}
 	private class RegisterUser extends AsyncTask<String, Void, String> 
@@ -109,7 +109,7 @@ public class Welcome extends Activity
              	SharedPreferences.Editor editor = mPrefs.edit();
     	        editor.putBoolean(welcomeScreenShownPref, true);
     	        editor.commit(); // Very important to save the preference
-    	        
+    	        insertStops();
              	insertLocalUserData(email.getText().toString(), pw.getText().toString());
              	
              	final Intent i = new Intent(getApplicationContext(), Payment.class);

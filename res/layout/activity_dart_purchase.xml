@@ -1,0 +1,128 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#047504"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".LuasPurchase" >
+<ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" >
+        
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/userBal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current Balance: €"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000000"
+            android:fontFamily="sans-serif-condensed" 
+            android:background="@drawable/balbg" />
+
+        <TextView
+            android:id="@+id/tvChoose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose Your Preferences:"
+            android:textColor="#FFFFFF" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" > 
+              <RadioGroup
+                 android:id="@+id/radioADCHI"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                 android:paddingBottom="5dp" >
+
+                 <RadioButton
+                     android:id="@+id/radioAdult"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="@string/radio_adult" />
+
+                 <RadioButton
+                     android:id="@+id/radioChild"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:checked="true"
+                     android:text="@string/radio_child" />
+
+             </RadioGroup>
+
+        </LinearLayout>  
+        
+        <TextView
+            android:id="@+id/tvFromDart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="From Stop:"
+            android:textColor="#FFFFFF" />
+
+        <Spinner
+            android:id="@+id/spinnerDartFrom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:popupBackground="#3f3f3f"
+            android:spinnerMode="dropdown"  />
+
+        <TextView
+            android:id="@+id/tvToDart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To Stop:"
+            android:textColor="#FFFFFF"
+             />
+
+        <Spinner
+            android:id="@+id/spinnerDartTo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:popupBackground="#3f3f3f"
+            android:spinnerMode="dropdown" />
+
+        <TextView
+            android:id="@+id/tvCostDart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cost: €"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000000"
+            android:fontFamily="sans-serif-condensed" 
+            android:background="@drawable/balbg" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/btnBuyDartTick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Buy"
+                android:layout_gravity="center" />
+
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

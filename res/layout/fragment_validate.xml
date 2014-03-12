@@ -5,39 +5,25 @@
     android:orientation="vertical" 
     android:background="#047504">
 
-    <TextView
-        android:id="@+id/tvValType"
+    <ImageButton
+        android:id="@+id/valDBusBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
-        android:paddingBottom="40dp"
-        android:text="Type:" />
+        android:layout_weight="0.25"        
+        android:src="@drawable/dub_busval" />
 
-    <TextView
-        android:id="@+id/tvValFrom"
+    <ImageButton
+        android:id="@+id/valLuasBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
-        android:paddingBottom="40dp"
-        android:text="From:" />
+        android:layout_weight="0.25"        
+        android:src="@drawable/luasval" />
 
-    <TextView
-        android:id="@+id/tvValTo"
+    <ImageButton
+        android:id="@+id/valDartBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
-        android:paddingBottom="40dp"
-        android:text="To: " />
-
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
-
-    <Button
-        android:id="@+id/qrTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button" />
-
+        android:layout_weight="0.25"  
+        android:src="@drawable/dartval" />
+    
 </LinearLayout>

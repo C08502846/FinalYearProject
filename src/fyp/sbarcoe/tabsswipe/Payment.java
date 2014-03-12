@@ -64,22 +64,7 @@ public class Payment extends Activity implements OnItemSelectedListener
             {                    	
             	new RegisterCard().execute("");  
             }
-		});
-//		payPal.setOnClickListener(new View.OnClickListener() {public void onClick(View v)
-//		{ 
-//			// Handle Paypal transaction 
-//		}});
-		
-//		 Boolean welcomeScreenShown = mPrefs.getBoolean(welcomeScreenShownPref, false);
-//		    if (!welcomeScreenShown) 
-//		    {	        
-//		    	final Intent i = new Intent(getApplicationContext(), Welcome.class);
-//			    startActivity(i);		    
-//		    	SharedPreferences.Editor editor = mPrefs.edit();
-//		        editor.putBoolean(welcomeScreenShownPref, true);
-//		        editor.commit(); // Very important to save the preference
-//		    }
-		    
+		});		    
 	}
     private class RegisterCard extends AsyncTask<String, Void, String> {
 		
@@ -116,11 +101,7 @@ public class Payment extends Activity implements OnItemSelectedListener
         }
         @Override
         protected void onPostExecute(String result) 
-        {
-            //TextView txt = (TextView) findViewById(R.id.output);
-           // txt.setText("Executed"); // txt.setText(result);
-            // might want to change "executed" for the returned string passed
-            // into onPostExecute() but that is upto you   	
+        {           
         	 mDialog.dismiss();
 
         	 if  (result.contains("Success"))
@@ -146,7 +127,6 @@ public class Payment extends Activity implements OnItemSelectedListener
         	mDialog.setMessage("Registering Card Details...");
             mDialog.show();             
         }
-
 	  
     }
     private String getEmail() 
@@ -170,14 +150,10 @@ public class Payment extends Activity implements OnItemSelectedListener
 	{
 		monthValue = spinMonth.getSelectedItem().toString();
 		yearValue = spinYear.getSelectedItem().toString();
-		//int month1 = Integer.parseInt(month);
-		//int year1 = Integer.parseInt(month);	
 	}
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
 		
 	}
-	
-
 }

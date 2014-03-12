@@ -33,6 +33,11 @@ public class BuyTicket extends Fragment
 			Intent i = new Intent(getActivity(), LuasPurchase.class);
 			startActivity(i);
 		}}); 
+		dart.setOnClickListener(new View.OnClickListener() {public void onClick(View v)
+		{			
+			Intent i = new Intent(getActivity(), DartPurchase.class);
+			startActivity(i);
+		}}); 
 		//luas.setOnClickListener(new View.OnClickListener() {public void onClick(View v){System.out.println("Luas");}}); 
 		//dart.setOnClickListener(new View.OnClickListener() {public void onClick(View v){System.out.println("Dart");}}); 				
 		return rootView;

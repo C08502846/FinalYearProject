@@ -306,10 +306,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
         @Override
         protected void onPostExecute(String result2) 
         {          
-        	 mDialog.dismiss();
-        	 //String remoteBal = Get Balance from Remote
-        	 // updateLocalBal() ;
-        	 
+        	 mDialog.dismiss();       	     	 
         	
 			//parse json data
              try
@@ -321,7 +318,6 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
                      {
                              JSONObject json_data = jArray.getJSONObject(i);                            
                              returnString +=  json_data.getInt("Balance");
-
                      }                     
               }
              catch(JSONException e)
@@ -379,15 +375,9 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
         	 if  (resultBuy.contains("Success"))
              {
            	    Toast.makeText(getApplicationContext(), "Ticket Purchased", Toast.LENGTH_SHORT).show();
-           	              	  
-           	    final Intent i = new Intent(getApplicationContext(), MainActivity.class);
-          	    startActivity(i);
-          	    finish();
-           	    //new GetBal().execute("");
-            	
-            	//new CreateQRTicket().execute(""); 
-
-             	//insertLocalUserData(email.getText().toString(), pw.getText().toString());
+           	    final Intent i = new Intent(getApplicationContext(), LuasValidate.class);
+ 		        startActivity(i);    	
+ 	            finish();           	    
              }
              else if(resultBuy.contains("NoFunds"))
              {
