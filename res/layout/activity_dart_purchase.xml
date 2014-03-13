@@ -68,6 +68,27 @@
                      android:text="@string/radio_child" />
 
              </RadioGroup>
+              <RadioGroup
+                 android:id="@+id/radioSINRET"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                 android:paddingBottom="5dp" >
+
+                 <RadioButton
+                     android:id="@+id/radioSin"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="@string/radio_single" />
+
+                 <RadioButton
+                     android:id="@+id/radioRet"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:checked="true"
+                     android:text="@string/radio_return" />
+
+             </RadioGroup>
 
         </LinearLayout>  
         

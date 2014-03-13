@@ -7,12 +7,17 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import fyp.sbarcoe.tabsswipe.DartPurchase.PurchasedartTicket;
 import info.androidhive.tabsswipe.R;
 import info.androidhive.tabsswipe.adapter.ImageLoader;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +33,8 @@ public class LuasValidate extends Activity
 	String resultBuy, result2 ;
 	String stopName, returnString, returnString2, returnURL ;
 	Dialog mDialog;
-	
+	Boolean internetCheck ;
+
 	static String image_url;
 	public static ImageView image;
 	int loader;
@@ -49,10 +55,27 @@ public class LuasValidate extends Activity
 	          Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();	                                                 	         	    
 	        }
 	    });
-    	new GetImageName().execute("");
+    	internetCheck = isOnline() ;
+    	if(internetCheck)
+    	{
+        	new GetImageName().execute("");
+    	}
+    	else
+    	{
+       	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
+    	}
 
 	}
-	
+	public boolean isOnline() 
+	{
+	    ConnectivityManager cm =
+	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+	        return true;
+	    }
+	    return false;
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) 

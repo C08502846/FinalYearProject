@@ -3,12 +3,17 @@ package fyp.sbarcoe.tabsswipe;
 import info.androidhive.tabsswipe.R;
 
 import java.util.ArrayList;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -55,12 +60,28 @@ public class Welcome extends Activity
                 }
                 else
                 {
-                	new RegisterUser().execute("");   
+                	Boolean internetCheck = isOnline() ;
+                	if(internetCheck)
+                	{
+                    	new RegisterUser().execute(""); 
+                	}
+                	else
+                	{
+                   	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
+                	}
                 }                                       	         	    
             }
-        });
-		
-		
+        });		
+	}
+	public boolean isOnline() 
+	{
+	    ConnectivityManager cm =
+	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+	        return true;
+	    }
+	    return false;
 	}
 	private class RegisterUser extends AsyncTask<String, Void, String> 
 	{
@@ -109,7 +130,8 @@ public class Welcome extends Activity
              	SharedPreferences.Editor editor = mPrefs.edit();
     	        editor.putBoolean(welcomeScreenShownPref, true);
     	        editor.commit(); // Very important to save the preference
-    	        insertStops();
+    	        insertLuasStops(); 
+    	        insertDartStops();
              	insertLocalUserData(email.getText().toString(), pw.getText().toString());
              	
              	final Intent i = new Intent(getApplicationContext(), Payment.class);
@@ -157,8 +179,43 @@ public class Welcome extends Activity
 		getMenuInflater().inflate(R.menu.welcome, menu);
 		return true;
 	}
+	public void insertDartStops()
+	{
+		DBManager myDB = new DBManager(this);
+		myDB.open();
+		myDB.addDartStops("Greystones", 1);
+		myDB.addDartStops("Bray", 1);
+		myDB.addDartStops("Shankill", 1);
+		myDB.addDartStops("Killiney", 1);
+		myDB.addDartStops("Dalkey", 2);		
+		myDB.addDartStops("Glenageary", 2);		
+		myDB.addDartStops("Sandycove", 2);		
+		myDB.addDartStops("Dun Laoghaire", 2);		
+		myDB.addDartStops("Salthill Monkstown", 2);		
+		myDB.addDartStops("Seapoint", 3);		
+		myDB.addDartStops("Blackrock", 3);		
+		myDB.addDartStops("Booterstown", 3);		
+		myDB.addDartStops("Sydney Parade", 3);		
+		myDB.addDartStops("Sandymount", 3);		
+		myDB.addDartStops("Landsdowne Road", 4);		
+		myDB.addDartStops("Grand Canal Dock", 4);		
+		myDB.addDartStops("Pearse", 4);		
+		myDB.addDartStops("Tara Street", 4);		
+		myDB.addDartStops("Connolly Station", 4);		
+		myDB.addDartStops("Clontarf Road", 5);		
+		myDB.addDartStops("Killesher", 5);		
+		myDB.addDartStops("Harmonstown", 5);		
+		myDB.addDartStops("Raheny", 5);		
+		myDB.addDartStops("Kilbarrack", 5);		
+		myDB.addDartStops("Howth Junction", 6);		
+		myDB.addDartStops("Bayside", 6);		
+		myDB.addDartStops("Sutton", 6);		
+		myDB.addDartStops("Howth", 6);		
+		myDB.close();	
 
-	public void insertStops()
+	}
+
+	public void insertLuasStops()
 	{
 		DBManager myDB = new DBManager(this);
 		myDB.open();

@@ -1,6 +1,7 @@
 package fyp.sbarcoe.tabsswipe;
 
 
+import fyp.sbarcoe.tabsswipe.BusPurchase.GetBal;
 import info.androidhive.tabsswipe.R;
 import java.util.ArrayList;
 
@@ -13,8 +14,11 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -37,16 +41,17 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 public class DartPurchase extends Activity 
 {	
 	Spinner dartFrom, dartTo ;
-	String returnString, result2, line, fromStop, toStop, zoneFrom, totalCost, zoneTo, resultBal, resultBuy, ticketType;
+	String returnString, result2, line, fromStop, toStop, zoneFrom, totalCost, zoneTo, resultBal, resultBuy, ticketType, type2;
 	String[] result; 
 	TextView userBal, costdart  ;
 	ProgressDialog mDialog;
 	Button buyBtn ;
+	Boolean internetCheck ;
 
 	Button buy ;
 	int zoneFromInt, zoneToInt, zoneDiff ;
-	private RadioGroup radioLineGroup;
-	private RadioButton radioLineButton;
+	private RadioGroup radioLineGroup, radioTypeGroup;
+	private RadioButton radioLineButton, radioTypeButton;
 	public ArrayAdapter<String> dart_adp ;
 	double costOfJourney;
 
@@ -70,19 +75,38 @@ public class DartPurchase extends Activity
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mDialog = new ProgressDialog(DartPurchase.this);
-		result = populateStops("Green");
+		result = populateDartStops();
 
-    	new GetBal().execute("");   
     	dart_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
     	dart_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 		dartTo.setAdapter(dart_adp);
 		dartFrom.setAdapter(dart_adp);  
-
+		ticketType = "Child";
+		type2 = "Return";
 		addRadioGroupListenersdart();
 		setSpinnerListenersdart() ;
 		btnClickeddart() ;
+        
+		internetCheck = isOnline() ;
+    	if(internetCheck)
+    	{
+        	new GetBal().execute("");   
+    	}
+    	else
+    	{
+       	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
+    	}
 	}
-
+	public boolean isOnline() 
+	{
+	    ConnectivityManager cm =
+	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+	        return true;
+	    }
+	    return false;
+	}
 		
 
 	private void btnClickeddart() 
@@ -92,13 +116,15 @@ public class DartPurchase extends Activity
 			@Override
 			public void onClick(View arg0) 
 			{
-				new PurchasedartTicket().execute(""); 
-				//updateRemoteJourney(email, fromStop, toStop, totalCost) ;
-				// if user Balance > total cost do this
-				// Get UserEmail, Stop From, Stop To, , Total Cost, Date
-				// Send to Remote DB:  Insert INTO Journeys VALUES(email, stopFrom, stopTo, totalCost, date)
-				//else Error, please top up.
-
+				internetCheck = isOnline() ;
+		    	if(internetCheck)
+		    	{
+					new PurchasedartTicket().execute(""); 
+		    	}
+		    	else
+		    	{
+		       	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
+		    	}
 			}
  
 		});
@@ -148,14 +174,17 @@ public class DartPurchase extends Activity
          }
 		 //convert to double
 	 totalCost = String.valueOf(costOfJourney);
-
-
+	 
 	}
 	public void addRadioGroupListenersdart()
 	{
 			radioLineGroup = (RadioGroup) findViewById(R.id.radioADCHI);
 			int selectedId = radioLineGroup.getCheckedRadioButtonId();
 			radioLineButton = (RadioButton) findViewById(selectedId);
+			
+			radioTypeGroup = (RadioGroup) findViewById(R.id.radioSINRET);
+			int selectedId2 = radioTypeGroup.getCheckedRadioButtonId();
+			radioTypeButton = (RadioButton) findViewById(selectedId2);
 			//radioLineButton.setChecked(false);        
 	        radioLineGroup.setOnCheckedChangeListener(new OnCheckedChangeListener()
 	        {
@@ -165,35 +194,32 @@ public class DartPurchase extends Activity
 	                switch(checkedId)
 	                {
 	                case R.id.radioAdult:
-	                	//luasFrom.clearFocus();
 	                	//costdart.setText("Journey Cost: €");
-
-	                	//luasFrom.setBackgroundColor(-16711936);
-	                	//luasTo.setBackgroundColor(-16711936);
-	    				result = populateStops("Green");	
 	    				ticketType = "Adult";
-	    			
-	    				//dart_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
-	    				//dart_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-	    				//dartTo.setAdapter(dart_adp);
-	    			   // dartFrom.setAdapter(dart_adp);
 	                    break;
 	                case R.id.radioChild:	   
-	                	//luasFrom.clearFocus();
-	            		//costdart.setText("Journey Cost: €");
-
-	                	//luasFrom.setBackgroundColor(-65536);
-	                	//luasTo.setBackgroundColor(-65536);
-	    				result = populateStops("Red");
-	    				ticketType = "Child";
-
-	    				//dart_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
-	    				//dart_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-	    				//dartTo.setAdapter(dart_adp);
-	    			   // dartFrom.setAdapter(dart_adp);   
+	            		//costdart.setText("Journey Cost: €");	                	
+	    				ticketType = "Child";	    				
 	                    break;	      
 	                }
 	            }}); 
+	        radioTypeGroup.setOnCheckedChangeListener(new OnCheckedChangeListener()
+	        {
+	        	@Override
+	        	public void onCheckedChanged(RadioGroup group, int checkedId)
+	        	{
+	        		switch(checkedId)
+	        		{
+	        		case R.id.radioSin:
+	        			//costdart.setText("Journey Cost: €");
+	        			type2 = "Single";
+	        			break;
+	        		case R.id.radioRet:	   
+	        			//costdart.setText("Journey Cost: €");	                	
+	        			type2 = "Return";	    				
+	        			break;	      
+	        		}
+	        	}}); 
     }
 	 private void setSpinnerListenersdart() 
 	 {
@@ -221,25 +247,31 @@ public class DartPurchase extends Activity
 			        zoneToInt = Integer.parseInt(zoneTo);
 					setZoneCost();
 					costdart.setText("Journey Cost: €" +totalCost);
-
-			        //Toast.makeText(getApplicationContext(), "Zone To: " +zoneToInt, Toast.LENGTH_SHORT).show();
-
 			    }
 			    public void onNothingSelected(AdapterView<?> parent) {
 			    }
 			});
 
 	}
-	public String[] populateStops(String stopSelected)
+	public String[] populateDartStops()
 	{
 		DBManager myDB = new DBManager(this);
 		myDB.open();
-		String[] result = myDB.getLuasStops(stopSelected) ;	
+		String[] result = myDB.getDartStops() ;	
 		//userBal = (TextView) findViewById(R.id.userBal);
 		myDB.close(); 
 		return result ;
-
 	}
+	public String getStopZone(String stopName)
+	{
+		 String result2 ;
+		 DBManager myDB = new DBManager(this);
+		 myDB.open();
+	     result2 = myDB.getDartZone(stopName) ;
+	     myDB.close();
+		 return result2;
+	}
+	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -354,15 +386,7 @@ public class DartPurchase extends Activity
             mDialog.show();             
         }
 }
-	public String getStopZone(String stopName)
-	{
-		 String result2 ;
-		 DBManager myDB = new DBManager(this);
-		 myDB.open();
-	     result2 = myDB.getZone(stopName) ;
-	     myDB.close();
-		 return result2;
-	}
+
 	class PurchasedartTicket extends AsyncTask<String, Void, String> 
 	{
 
@@ -376,6 +400,7 @@ public class DartPurchase extends Activity
         	
             postParameters.add(new BasicNameValuePair("email", getEmail()));
             postParameters.add(new BasicNameValuePair("tickettype", ticketType));
+            postParameters.add(new BasicNameValuePair("type2", type2));
             postParameters.add(new BasicNameValuePair("stopfrom", fromStop));
             postParameters.add(new BasicNameValuePair("stopto", toStop));
             postParameters.add(new BasicNameValuePair("cost", totalCost));
@@ -407,7 +432,17 @@ public class DartPurchase extends Activity
            	    final Intent i = new Intent(getApplicationContext(), DartValidate.class);
 		        startActivity(i);    	
 	            finish();  
-           	    new GetBal().execute("");
+	            
+	            internetCheck = isOnline() ;
+	            
+		    	if(internetCheck)
+		    	{
+	           	    new GetBal().execute("");
+		    	}
+		    	else
+		    	{
+		       	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
+		    	}
             	
             	//new CreateQRTicket().execute(""); 
 

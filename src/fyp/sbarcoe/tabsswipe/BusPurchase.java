@@ -9,8 +9,11 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -37,7 +40,7 @@ public class BusPurchase extends Activity
 	TextView userBal, costBus  ;
 	ProgressDialog mDialog;
 	Button buyBtn ;
-
+	Boolean internetCheck ;
 	Button buy ;
 	int zoneFromInt, zoneToInt, zoneDiff ;
 	private RadioGroup radioLineGroup;
@@ -65,8 +68,18 @@ public class BusPurchase extends Activity
 		adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mDialog = new ProgressDialog(BusPurchase.this);
 		result = populateStops("Green");
-
-    	new GetBal().execute("");   
+		
+		internetCheck = isOnline() ;
+		
+    	if(internetCheck)
+    	{
+    	    new GetBal().execute(""); 
+    	}
+    	else
+    	{
+       	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
+    	}
+    	
     	bus_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
     	bus_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 		busTo.setAdapter(bus_adp);
@@ -75,7 +88,17 @@ public class BusPurchase extends Activity
 		addRadioGroupListenersBus();
 		setSpinnerListenersBus() ;
 		btnClickedBus() ;
-		ticketType = "Adult";
+		ticketType = "Child";
+	}
+	public boolean isOnline() 
+	{
+	    ConnectivityManager cm =
+	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+	        return true;
+	    }
+	    return false;
 	}
 
 		
@@ -87,17 +110,18 @@ public class BusPurchase extends Activity
 			@Override
 			public void onClick(View arg0) 
 			{
-				new PurchaseBusTicket().execute(""); 
-				//updateRemoteJourney(email, fromStop, toStop, totalCost) ;
-				// if user Balance > total cost do this
-				// Get UserEmail, Stop From, Stop To, , Total Cost, Date
-				// Send to Remote DB:  Insert INTO Journeys VALUES(email, stopFrom, stopTo, totalCost, date)
-				//else Error, please top up.
-
+				internetCheck = isOnline() ;
+				if(internetCheck)
+		    	{
+				    new PurchaseBusTicket().execute(""); 
+		    	}
+				else
+				{
+		       	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
+				}		
 			}
  
 		});
-
 	}
 	private void setZoneCost() 
 	{
@@ -353,7 +377,7 @@ public class BusPurchase extends Activity
 		 String result2 ;
 		 DBManager myDB = new DBManager(this);
 		 myDB.open();
-	     result2 = myDB.getZone(stopName) ;
+	     result2 = myDB.getLuasZone(stopName) ;
 	     myDB.close();
 		 return result2;
 	}
@@ -401,8 +425,16 @@ public class BusPurchase extends Activity
            	    final Intent i = new Intent(getApplicationContext(), BusValidate.class);
 		        startActivity(i);    	
 	            finish();  
-           	   
-           	    new GetBal().execute("");
+	            internetCheck = isOnline() ;
+	            if(internetCheck)
+		    	{
+           	        new GetBal().execute("");
+		    	}
+	            else
+	            {
+		       	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
+
+	            }
             	
             	//new CreateQRTicket().execute(""); 
 

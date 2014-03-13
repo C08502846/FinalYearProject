@@ -11,7 +11,10 @@ import org.json.JSONObject;
 
 import info.androidhive.tabsswipe.R;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -36,6 +39,7 @@ public class TopUp extends Fragment implements OnItemSelectedListener
 	Button topUpButton ;
 	static int topUpInt ;
 	ProgressDialog mDialog ;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{		
@@ -68,7 +72,7 @@ public class TopUp extends Fragment implements OnItemSelectedListener
 		});
 		
 		return rootView;
-	}
+	}	
 	class deductFromCard extends AsyncTask<String, Void, String> 
 	{		
 
@@ -130,6 +134,7 @@ public class TopUp extends Fragment implements OnItemSelectedListener
             mDialog.show();             
         }
 }
+	
 	class GetBal extends AsyncTask<String, Void, String> 
 	{
 		

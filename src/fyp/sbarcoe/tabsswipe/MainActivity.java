@@ -19,10 +19,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -35,8 +37,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
-import com.androidquery.callback.AjaxCallback;
-import com.androidquery.callback.AjaxStatus;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -60,7 +60,7 @@ public class MainActivity extends FragmentActivity implements
     final String welcomeScreenShownPref = "welcomeScreenShown";
     
 	// Tab titles
-	private String[] tabs = { "Buy New", "Top Up", "Validate" };
+	private String[] tabs = { "Buy New", "Top Up", "Validate" };	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -192,7 +192,15 @@ public class MainActivity extends FragmentActivity implements
 
    	    if(testTab == "Top Up")
    	    {
-        	new GetBal().execute(""); 
+   	    	Boolean internetCheck = isOnline() ;
+        	if(internetCheck)
+        	{
+        		new GetBal().execute(""); 
+        	}
+        	else
+        	{
+        		Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
+        	}
    	    }
    	    else if(testTab == "Buy New")
    	    {
@@ -201,6 +209,17 @@ public class MainActivity extends FragmentActivity implements
    	    else if(testTab == "Validate")
    	    {
    	    }
+	}
+	
+	public boolean isOnline() 
+	{
+	    ConnectivityManager cm =
+	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+	        return true;
+	    }
+	    return false;
 	}
  	       
 	

@@ -23,6 +23,11 @@ public class DBManager
 	private static final String DATABASE_NAME = "LeapMe";
 	static final String DATABASE_TABLE_LUAS = "LuasStop";
 	static final String DATABASE_TABLE_USER = "User";
+	
+	static final String DATABASE_TABLE_DART = "DartStop";
+	public static final String KEY_DART_STOP= "StopName";
+
+	
 	private static final int DATABASE_VERSION= 1;
 	private static final String CREATE_DATABASE = "CREATE TABLE " + DATABASE_TABLE_LUAS + " (" +
             KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -34,6 +39,11 @@ public class DBManager
 	KEY_EMAIL+ " STRING PRIMARY KEY, " +
 	KEY_PASSWORD + " TEXT NOT NULL, "+
 	KEY_BALANCE + " TEXT NULL); ";
+	
+	private static final String CREATE_DART_TABLE = "CREATE TABLE " +DATABASE_TABLE_DART+ " (" +
+            KEY_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            KEY_DART_STOP+ " TEXT NOT NULL, " +
+	        KEY_STOP_ZONE + " INTEGER NOT NULL);" ;	
 	
 	//private static final String INSERT_DATA = "INSERT INTO LuasStop VALUES(1, 'Stephens Green', 1);";
 	//private static final String INSERT_DATA1 = "INSERT INTO LuasStop VALUES(2, 'Harcourt', 1);";
@@ -59,6 +69,7 @@ public class DBManager
 		{
 			db.execSQL(CREATE_DATABASE);
 			db.execSQL(CREATE_USER_TABLE);
+			db.execSQL(CREATE_DART_TABLE);
 			//db.execSQL(INSERT_DATA);			
 			System.out.println("Database Created!") ;
 			Log.w("myApp", "no network");				
@@ -103,6 +114,13 @@ public class DBManager
 		cv.put(KEY_STOP_ZONE, zone);
 		return myDB.insert(DATABASE_TABLE_LUAS, null, cv);			
 	}
+	public long addDartStops(String stopName, int zone)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(KEY_DART_STOP, stopName);
+		cv.put(KEY_STOP_ZONE, zone);
+		return myDB.insert(DATABASE_TABLE_DART, null, cv);			
+	}
 	public String[] getLuasStops(String line) 
 	{
 		String[] columns = new String[]{KEY_STOP_NAME};
@@ -115,6 +133,21 @@ public class DBManager
 		        }
 		String[] stopsReturn = (String[]) stopNames.toArray(new String[stopNames.size()]);
 
+		return stopsReturn;
+		
+	}
+	public String[] getDartStops() 
+	{
+		String[] columns = new String[]{KEY_DART_STOP};
+		//Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, null, null, null, null, null);
+		Cursor c = myDB.query(DATABASE_TABLE_DART, columns, null, null, null, null, null);
+		ArrayList<String> stopNames = new ArrayList<String>();
+		while(c.moveToNext())
+		{			
+			stopNames.add(c.getString(0));
+		}
+		String[] stopsReturn = (String[]) stopNames.toArray(new String[stopNames.size()]);
+		
 		return stopsReturn;
 		
 	}
@@ -133,7 +166,7 @@ public class DBManager
 		return stopsReturn;
 		
 	}
-	public String getZone(String stopName) 
+	public String getLuasZone(String stopName) 
 	{
 		//String[] columns = new String[]{KEY_STOP_ZONE};
 		String selectQuery = "SELECT StopZone FROM LuasStop WHERE StopName = '" +stopName+ "'" ;
@@ -147,11 +180,33 @@ public class DBManager
 		return returnZone;
 		
 	}
-	public static String[] getBusTicketType()
+	public String getDartZone(String stopName) 
 	{
-		String[] ticketType = {"Adult", "Child"} ;		
-		String childTicket = "Child" ;		
-		return ticketType;
+		//String[] columns = new String[]{KEY_STOP_ZONE};
+		String selectQuery = "SELECT StopZone FROM DartStop WHERE StopName = '" +stopName+ "'" ;
+		Cursor c = myDB.rawQuery(selectQuery, null);
+		//Cursor c = myDB.query(DATABASE_TABLE_USER, columns, "Select Email From User", null, null, null, null);
+		String returnZone = "" ;
+		while(c.moveToNext())
+		{
+			returnZone = c.getString(0);
+		}
+		return returnZone;
+		
+	}
+	public String getBusZone(String stopName) 
+	{
+		//String[] columns = new String[]{KEY_STOP_ZONE};
+		String selectQuery = "SELECT StopZone FROM BusStop WHERE StopName = '" +stopName+ "'" ;
+		Cursor c = myDB.rawQuery(selectQuery, null);
+		//Cursor c = myDB.query(DATABASE_TABLE_USER, columns, "Select Email From User", null, null, null, null);
+		String returnZone = "" ;
+		while(c.moveToNext())
+		{
+			returnZone = c.getString(0);
+		}
+		return returnZone;
+		
 	}
 	public String getEmail()
 	{		

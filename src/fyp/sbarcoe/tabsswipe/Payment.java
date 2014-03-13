@@ -1,5 +1,6 @@
 package fyp.sbarcoe.tabsswipe;
 
+import fyp.sbarcoe.tabsswipe.LuasValidate.GetImageName;
 import info.androidhive.tabsswipe.R;
 
 import java.util.ArrayList;
@@ -9,8 +10,11 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -31,6 +35,7 @@ public class Payment extends Activity implements OnItemSelectedListener
 	Spinner spinMonth, spinYear ;
 	EditText cardNumber, cv ;
 	//ImageButton payPal ;
+	Boolean internetCheck ;
 
     final String welcomeScreenShownPref = "welcomeScreenShown";
     public String monthValue, yearValue ;
@@ -61,10 +66,28 @@ public class Payment extends Activity implements OnItemSelectedListener
 		Submit.setOnClickListener(new View.OnClickListener() 
 		{			
             public void onClick(View v) 
-            {                    	
-            	new RegisterCard().execute("");  
+            {   
+            	internetCheck = isOnline() ;
+            	if(internetCheck)
+            	{
+                	new RegisterCard().execute("");  
+            	}
+            	else
+            	{
+               	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
+            	}
             }
 		});		    
+	}
+	public boolean isOnline() 
+	{
+	    ConnectivityManager cm =
+	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+	        return true;
+	    }
+	    return false;
 	}
     private class RegisterCard extends AsyncTask<String, Void, String> {
 		

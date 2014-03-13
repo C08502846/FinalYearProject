@@ -1,5 +1,6 @@
 package fyp.sbarcoe.tabsswipe;
 
+import fyp.sbarcoe.tabsswipe.BusPurchase.GetBal;
 import info.androidhive.tabsswipe.R;
 import java.util.ArrayList;
 import org.apache.http.NameValuePair;
@@ -10,8 +11,11 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -35,16 +39,17 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 {	
 	Spinner luasLine, luasFrom, luasTo ;
 	public ArrayAdapter<String> luas_adp ;
-	String returnString, resultBal, resultBuy, resultQR, fromStop, toStop, zoneFrom, zoneTo, totalCost ;
+	String returnString, resultBal, resultBuy, resultQR, fromStop, toStop, zoneFrom, zoneTo, totalCost, type1, type2 ;
 	String[] result; 
 	String line ;
 	TextView userBal, costLuas ;
-	private RadioGroup radioLineGroup;
-	private RadioButton radioLineButton;
+	private RadioGroup radioLineGroup, radioType1Group, radioType2Group;
+	private RadioButton radioLineButton, radioType1Button, radioType2Button;
 	int zoneFromInt, zoneToInt, zoneDiff ;
 	double costOfJourney;
 	Button btnBuy ;
 	ProgressDialog mDialog ;
+	Boolean internetCheck ;
 
 
 	@Override
@@ -67,13 +72,35 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
     	//insertStops();
 		zoneDiff = 0 ;
 		line = "Green";
+		type1 = "Return";
+		type2 = "Child" ;
+		
 		result = populateStops("Green");
 		luas_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
 		luas_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 		luasTo.setAdapter(luas_adp);
 	    luasFrom.setAdapter(luas_adp);   
 
-		new GetBal().execute("");  
+        internetCheck = isOnline() ;
+		
+    	if(internetCheck)
+    	{
+    		new GetBal().execute(""); 
+    	}
+    	else
+    	{
+       	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
+    	}
+	}
+	public boolean isOnline() 
+	{
+	    ConnectivityManager cm =
+	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+	        return true;
+	    }
+	    return false;
 	}
 
 
@@ -131,7 +158,16 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 			@Override
 			public void onClick(View arg0) 
 			{
-				new PurchaseTicket().execute(""); 
+				    internetCheck = isOnline() ;
+					
+			    	if(internetCheck)
+			    	{
+						new PurchaseTicket().execute(""); 
+			    	}
+			    	else
+			    	{
+			       	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
+			    	}
 				//updateRemoteJourney(email, fromStop, toStop, totalCost) ;
 				// if user Balance > total cost do this
 				// Get UserEmail, Stop From, Stop To, , Total Cost, Date
@@ -148,6 +184,15 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 			radioLineGroup = (RadioGroup) findViewById(R.id.radioColor);
 			int selectedId = radioLineGroup.getCheckedRadioButtonId();
 			radioLineButton = (RadioButton) findViewById(selectedId);
+			
+			radioType1Group = (RadioGroup) findViewById(R.id.radioSinRet);
+			int selectedId1 = radioType1Group.getCheckedRadioButtonId();
+			radioType1Button = (RadioButton) findViewById(selectedId1);
+			
+			radioType2Group = (RadioGroup) findViewById(R.id.radioADCHI);
+			int selectedId2 = radioType2Group.getCheckedRadioButtonId();
+			radioType2Button = (RadioButton) findViewById(selectedId2);
+			
 			//radioLineButton.setChecked(false);        
 	        radioLineGroup.setOnCheckedChangeListener(new OnCheckedChangeListener()
 	        {
@@ -159,11 +204,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	                switch(checkedId)
 	                {
 	                case R.id.radioGreen:
-	                	//luasFrom.clearFocus();
-	                	costLuas.setText("Journey Cost: €");
-
-	                	//luasFrom.setBackgroundColor(-16711936);
-	                	//luasTo.setBackgroundColor(-16711936);
+	                	costLuas.setText("Journey Cost: €");	                	
 	    				result = populateStops("Green");	
 	    				line = "Green";
 	    				luas_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
@@ -172,11 +213,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	    			    luasFrom.setAdapter(luas_adp);
 	                    break;
 	                case R.id.radioRed:	   
-	                	//luasFrom.clearFocus();
-	            		costLuas.setText("Journey Cost: €");
-
-	                	//luasFrom.setBackgroundColor(-65536);
-	                	//luasTo.setBackgroundColor(-65536);
+	            		costLuas.setText("Journey Cost: €");	               
 	    				result = populateStops("Red");
 	    				line = "Red";
 	    				luas_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
@@ -186,6 +223,40 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	                    break;	      
 	                }
 	            }}); 
+	        radioType1Group.setOnCheckedChangeListener(new OnCheckedChangeListener()
+	        {
+	        	@Override
+	        	public void onCheckedChanged(RadioGroup group, int checkedId)
+	        	{
+	        		switch(checkedId)
+	        		{
+	        		case R.id.radioSingle:	
+	        			type1 = "Single";
+	        			break;
+	        		case R.id.radioReturn:  
+	        			type1 = "Return";	        			
+	        			break;	      
+	        		}
+	        	}}); 
+	        radioType2Group.setOnCheckedChangeListener(new OnCheckedChangeListener()
+	        {
+	        	@Override
+	        	public void onCheckedChanged(RadioGroup group, int checkedId2)
+	        	{
+	        		switch(checkedId2)
+	        		{
+	        		case R.id.radioAdult:	
+	        			type2 = "Adult";
+				        Toast.makeText(getApplicationContext(), "Adult", Toast.LENGTH_SHORT).show();
+
+	        			break;
+	        		case R.id.radioChild:  
+	        			type2 = "Child";
+				        Toast.makeText(getApplicationContext(), "Child", Toast.LENGTH_SHORT).show();
+
+	        			break;	      
+	        		}
+	        	}}); 
 		  }
 	 private void setSpinnerListeners() 
 	 {
@@ -346,6 +417,8 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
             // define the parameter        cardnumber, expmonth, expyear, cv
         	
             postParameters.add(new BasicNameValuePair("email", getEmail()));
+            postParameters.add(new BasicNameValuePair("type1", type1));            
+            postParameters.add(new BasicNameValuePair("type2", type2));            
             postParameters.add(new BasicNameValuePair("line", line));
             postParameters.add(new BasicNameValuePair("stopfrom", fromStop));
             postParameters.add(new BasicNameValuePair("stopto", toStop));
@@ -386,9 +459,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
              else
              {
             	 Toast.makeText(getApplicationContext(), "No Result", Toast.LENGTH_SHORT).show();
-             }
-        	 // updateLocalBal() ;
-             //userBal.setText("Current Balance: "+returnString+"");               	
+             }        	            	
         }
 
         @Override
@@ -404,7 +475,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 		 String result2 ;
 		 DBManager myDB = new DBManager(this);
 		 myDB.open();
-	     result2 = myDB.getZone(stopName) ;
+	     result2 = myDB.getLuasZone(stopName) ;
 	     myDB.close();
 		 return result2;
 	}
@@ -430,11 +501,6 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) 
 	{
-		//topUpAmt = topUp.getSelectedItem().toString();
-		//topUpInt = Integer.parseInt(topUpAmt);	
-		//String lol = luasFrom.toString() ; 
-   	   // Toast.makeText(getApplicationContext(), "From: " +lol, Toast.LENGTH_SHORT).show();
-
 
 	}
 
@@ -446,72 +512,5 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	String[] getStops(String line)
 	{
 		return null;		
-	}
-	public void insertStops()
-	{
-		DBManager myDB = new DBManager(this);
-		myDB.open();
-
-		//myDB.populateLuasData();		
-		//myDB.addLuasStops(stopName, stopZone)		
-
-		//Green Line
-		myDB.addLuasStops("Stephens Green","Green", 1);
-		myDB.addLuasStops("Harcourt","Green", 1);
-		myDB.addLuasStops("Charlemont", "Green",1);
-		myDB.addLuasStops("Ranelagh", "Green",2);
-		myDB.addLuasStops("Beechwood","Green", 2);
-		myDB.addLuasStops("Cowper","Green", 2);
-		myDB.addLuasStops("Milltown","Green", 2);
-		myDB.addLuasStops("Windy Arbour", "Green",2);
-		myDB.addLuasStops("Dundrum", "Green",2);
-		myDB.addLuasStops("Balally", "Green",3);
-		myDB.addLuasStops("Kilmacud","Green", 3);
-		myDB.addLuasStops("Stilorgan","Green", 3);
-		myDB.addLuasStops("Sandyford","Green", 3);
-		myDB.addLuasStops("Central Park","Green", 4);
-		myDB.addLuasStops("Glencairn","Green", 4);
-		myDB.addLuasStops("The Gallops","Green", 4);
-		myDB.addLuasStops("Leopardstown Valley","Green", 4);
-		myDB.addLuasStops("Ballyogan","Green", 4);
-		myDB.addLuasStops("Carrickmines","Green", 5);
-		myDB.addLuasStops("Laughanstown", "Green", 5);
-		myDB.addLuasStops("Cherrywood","Green", 5);
-		myDB.addLuasStops("Brides Glen","Green", 5);
-
-		//Insert Red Line Stops
-		myDB.addLuasStops("The Point","Red", 1);
-		myDB.addLuasStops("Spencer Dock","Red", 1);
-		myDB.addLuasStops("Mayor Square NCI","Red", 1);
-		myDB.addLuasStops("Georges Dock","Red", 1);
-		myDB.addLuasStops("Connolly","Red", 1);
-		myDB.addLuasStops("Busaras", "Red",1);
-		myDB.addLuasStops("Abbey Street","Red", 2);
-		myDB.addLuasStops("Jervis","Red", 2);
-		myDB.addLuasStops("Four Courts","Red", 2);
-		myDB.addLuasStops("Smithfield","Red", 2);
-		myDB.addLuasStops("Museum","Red", 2);
-		myDB.addLuasStops("Heuston","Red", 3);
-		myDB.addLuasStops("James","Red", 3);
-		myDB.addLuasStops("Fatima","Red", 3);
-		myDB.addLuasStops("Rialto","Red", 3);
-		myDB.addLuasStops("Suir Road", "Red", 4);
-		myDB.addLuasStops("Goldenbridge","Red", 4);
-		myDB.addLuasStops("Drimnagh","Red", 4);
-		myDB.addLuasStops("Blackhorse","Red", 4);
-		myDB.addLuasStops("Bluebell","Red", 4);
-		myDB.addLuasStops("Kylemore","Red", 4);
-		myDB.addLuasStops("Red Cow", "Red", 5);
-		myDB.addLuasStops("Kingswood", "Red", 5);
-		myDB.addLuasStops("Belgard", "Red", 5);
-		myDB.addLuasStops("Fettercairn", "Red", 5);
-		myDB.addLuasStops("Cheeverstown", "Red", 5);
-		myDB.addLuasStops("Citywest Campus", "Red", 5);
-		myDB.addLuasStops("Fortunestown","Red", 5);
-		myDB.addLuasStops("Cookstown", "Red", 5);
-		myDB.addLuasStops("Hospital", "Red", 5);
-		myDB.addLuasStops("Tallaght", "Red", 5);
-
-		myDB.close();	
 	}
 }
