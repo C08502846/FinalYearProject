@@ -46,29 +46,43 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" > 
-              <RadioGroup
-                 android:id="@+id/radioADCHI"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:orientation="horizontal"
-                 android:paddingBottom="5dp" >
+            android:orientation="vertical" >
 
-                 <RadioButton
-                     android:id="@+id/radioAdult"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="@string/radio_adult" />
+            <RadioGroup
+                android:id="@+id/radioADCHI"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp" >
 
-                 <RadioButton
-                     android:id="@+id/radioChild"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:checked="true"
-                     android:text="@string/radio_child" />
+                <RadioButton
+                    android:id="@+id/radioAdult"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/radio_adult" />
 
-             </RadioGroup>
+                <RadioButton
+                    android:id="@+id/radioChild"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/radio_child" />
 
+          
+            </RadioGroup>
+            <TextView
+                android:id="@+id/tvChooseBusNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Route:"
+                android:textColor="#FFFFFF" />
+            
+        <Spinner
+            android:id="@+id/spinnerBusNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:popupBackground="#3f3f3f"
+            android:spinnerMode="dropdown" />
         </LinearLayout>  
         
         <TextView

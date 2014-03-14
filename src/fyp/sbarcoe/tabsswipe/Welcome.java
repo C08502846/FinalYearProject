@@ -136,7 +136,6 @@ public class Welcome extends Activity
              	
              	final Intent i = new Intent(getApplicationContext(), Payment.class);
              	startActivity(i);
-
              	finish();
              }
              else if(result.contains("Exists"))

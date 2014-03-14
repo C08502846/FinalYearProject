@@ -38,18 +38,6 @@
         <item>Green</item>
         <item>Red</item>
     </string-array>
-    <string-array name="luas_from">
-        <item>Stephens Green</item>
-        <item>Harcourt Street</item>
-        <item>Ranelagh</item>
-        <item>Dundrum</item>
-    </string-array>
-    <string-array name="luas_to">
-        <item>Stephens Green</item>
-        <item>Harcourt Street</item>
-        <item>Ranelagh</item>
-        <item>Dundrum</item>
-    </string-array>
     <string-array name="top_up">
         <item>5</item>
         <item>10</item>
@@ -90,5 +78,174 @@
     <string name="title_activity_luas_validate">LuasValidate</string>
     <string name="title_activity_bus_validate">BusValidate</string>
     <string name="title_activity_dart_validate">DartValidate</string>
+
+    <string-array name="busNums">
+        <item>1</item>
+        <item>4</item>
+        <item>7</item>
+        <item>7</item>
+        <item>7b</item>
+        <item>7d</item>
+        <item>7n</item>
+        <item>8</item>
+        <item>9</item>
+        <item>11</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>15a</item>
+        <item>15b</item>
+        <item>15n</item>
+        <item>16</item>
+        <item>17</item>
+        <item>17a</item>
+        <item>18</item>
+        <item>25a</item>
+        <item>25b</item>
+        <item>25n</item>
+        <item>25x</item>
+        <item>26</item>
+        <item>27</item>
+        <item>27b</item>
+        <item>27a</item>
+        <item>27x</item>
+        <item>29a</item>
+        <item>29n</item>
+        <item>31a</item>
+        <item>31b</item>
+        <item>31n</item>
+        <item>32</item>
+        <item>32x</item>
+        <item>33</item>
+        <item>33a</item>
+        <item>33b</item>
+        <item>33d</item>
+        <item>33n</item>
+        <item>33x</item>
+        <item>37</item>
+        <item>38</item>
+        <item>38a</item>
+        <item>38b</item>
+        <item>39</item>
+        <item>39a</item>
+        <item>39n</item>
+        <item>40</item>
+        <item>40b</item>
+        <item>40d</item>
+        <item>41</item>
+        <item>41b</item>
+        <item>41c</item>
+        <item>41n</item>
+        <item>41x</item>
+        <item>42</item>
+        <item>42n</item>
+        <item>43</item>
+        <item>44</item>
+        <item>44b</item>
+        <item>45a</item>
+        <item>46a</item>
+        <item>46e</item>
+        <item>46n</item>
+        <item>47</item>
+        <item>49</item>
+        <item>49n</item>
+        <item>51d</item>
+        <item>51x</item>
+        <item>53</item>
+        <item>54a</item>
+        <item>56a</item>
+        <item>59</item>
+        <item>61</item>
+        <item>63</item>
+        <item>65</item>
+        <item>65b</item>
+        <item>66</item>
+        <item>66a</item>
+        <item>66b</item>
+        <item>66n</item>
+        <item>66x</item>
+        <item>67</item>
+        <item>67n</item>
+        <item>67x</item>
+        <item>68</item>
+        <item>69</item>
+        <item>69n</item>
+        <item>69x</item>
+        <item>70</item>
+        <item>70n</item>
+        <item>75</item>
+        <item>76a</item>
+        <item>76</item>
+        <item>77a</item>
+        <item>77n</item>
+        <item>77x</item>
+        <item>79/a</item>
+        <item>83</item>
+        <item>84/a</item>
+        <item>84n</item>
+        <item>84x</item>
+        <item>88n</item>
+        <item>90</item>
+        <item>102</item>
+        <item>104</item>
+        <item>111</item>
+        <item>114</item>
+        <item>116</item>
+        <item>118</item>
+        <item>120</item>
+        <item>122</item>
+        <item>123</item>
+        <item>130</item>
+        <item>140</item>
+        <item>142</item>
+        <item>145</item>
+        <item>150</item>
+        <item>151</item>
+        <item>161</item>
+        <item>184</item>
+        <item>185</item>
+        <item>220</item>
+        <item>236</item>
+        <item>238</item>
+        <item>239</item>
+        <item>270</item>
+        <item>747</item>
+    </string-array>
+    <string-array name="busStops">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+        <item>32</item>
+        <item>33</item>
+        <item>35</item>
+        <item>36</item>
+        <item>37</item>
+        <item>38</item>
+        <item>39</item>
+    </string-array>
+
+    <string name="title_activity_top_up">TopUp</string>
 
 </resources>

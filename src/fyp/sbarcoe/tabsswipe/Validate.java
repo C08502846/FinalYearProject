@@ -8,8 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fyp.sbarcoe.tabsswipe.TopUp.deductFromCard;
-
 import info.androidhive.tabsswipe.R;
 import info.androidhive.tabsswipe.adapter.ImageLoader;
 import android.app.ProgressDialog;

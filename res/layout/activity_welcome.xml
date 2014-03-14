@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="36dp"
             android:layout_marginRight="25dp"
-            android:text="Please Enter your Details Below: "
+            android:text="Please Register Below: "
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFFFFF" />

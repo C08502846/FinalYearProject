@@ -2,6 +2,7 @@ package fyp.sbarcoe.tabsswipe;
 
 
 import fyp.sbarcoe.tabsswipe.BusPurchase.GetBal;
+import fyp.sbarcoe.tabsswipe.LuasPurchase.PurchaseTicket;
 import info.androidhive.tabsswipe.R;
 import java.util.ArrayList;
 
@@ -53,7 +54,7 @@ public class DartPurchase extends Activity
 	private RadioGroup radioLineGroup, radioTypeGroup;
 	private RadioButton radioLineButton, radioTypeButton;
 	public ArrayAdapter<String> dart_adp ;
-	double costOfJourney;
+	double costOfJourney, userBalance;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -119,7 +120,14 @@ public class DartPurchase extends Activity
 				internetCheck = isOnline() ;
 		    	if(internetCheck)
 		    	{
-					new PurchasedartTicket().execute(""); 
+		    		if(costOfJourney < userBalance)
+		    		{
+						new PurchasedartTicket().execute(""); 
+		    		}
+		    		else
+		    		{
+			       	    Toast.makeText(getApplicationContext(), "You do not have sufficient funds please top up.", Toast.LENGTH_SHORT).show();
+		    		}
 		    	}
 		    	else
 		    	{
@@ -370,6 +378,7 @@ public class DartPurchase extends Activity
                      {
                              JSONObject json_data = jArray.getJSONObject(i);                            
                              returnString +=  json_data.getInt("Balance");
+                             userBalance = Double.parseDouble(returnString);
                      }                     
               }
              catch(JSONException e)
@@ -405,8 +414,7 @@ public class DartPurchase extends Activity
             postParameters.add(new BasicNameValuePair("stopto", toStop));
             postParameters.add(new BasicNameValuePair("cost", totalCost));
 
-            String response2 = null;
-           //boolean success = false ;
+            String response2 = null;          
                 
             // call executeHttpPost method passing necessary parameters 
             try 
@@ -432,21 +440,6 @@ public class DartPurchase extends Activity
            	    final Intent i = new Intent(getApplicationContext(), DartValidate.class);
 		        startActivity(i);    	
 	            finish();  
-	            
-	            internetCheck = isOnline() ;
-	            
-		    	if(internetCheck)
-		    	{
-	           	    new GetBal().execute("");
-		    	}
-		    	else
-		    	{
-		       	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
-		    	}
-            	
-            	//new CreateQRTicket().execute(""); 
-
-             	//insertLocalUserData(email.getText().toString(), pw.getText().toString());
              }
              else if(resultBuy.contains("NoFunds"))
              {
@@ -455,9 +448,7 @@ public class DartPurchase extends Activity
              else
              {
             	 Toast.makeText(getApplicationContext(), "No Result", Toast.LENGTH_SHORT).show();
-             }
-        	 // updateLocalBal() ;
-             //userBal.setText("Current Balance: "+returnString+"");               	
+             }        	           	
         }
 
         @Override

@@ -8,11 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fyp.sbarcoe.tabsswipe.LuasPurchase.GetBal;
-
 
 import info.androidhive.tabsswipe.R;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +21,6 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -34,7 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TopUp extends Activity implements OnItemSelectedListener
+public class TopUpFragment extends Fragment implements OnItemSelectedListener
 {
 	String topUpAmt, currentBal, returnString ;
 	String result2 ;
@@ -43,60 +39,41 @@ public class TopUp extends Activity implements OnItemSelectedListener
 	Button topUpButton ;
 	static int topUpInt ;
 	ProgressDialog mDialog ;
-	Boolean internetCheck ;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) 
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{		
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_top_up);		
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-
-		topUp = (Spinner) findViewById(R.id.spinnerTopUp);				
+		View rootView = inflater.inflate(R.layout.fragment_topup, container, false);	
+	
+		topUp = (Spinner) rootView.findViewById(R.id.spinnerTopUp);				
 		topUp.setOnItemSelectedListener(this);
-		topUpButton = (Button) findViewById(R.id.bTopUp);
-		ArrayAdapter<CharSequence> topUpAdapter = ArrayAdapter.createFromResource(this,
+		topUpButton = (Button) rootView.findViewById(R.id.bTopUp);
+		ArrayAdapter<CharSequence> topUpAdapter = ArrayAdapter.createFromResource(getActivity(),
 				R.array.top_up, android.R.layout.simple_spinner_item);	
 		
 		topUpAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
 		topUp.setAdapter(topUpAdapter);	
-		userBal = (TextView) findViewById(R.id.tvTopUpBal);
-		mDialog = new ProgressDialog(this);
+		userBal = (TextView) rootView.findViewById(R.id.tvTopUpBal);
+		mDialog = new ProgressDialog(getActivity());
 		
     	//new GetBal().execute("");  
-        internetCheck = isOnline() ;
-		
-    	if(internetCheck)
-    	{
-    		new GetBal().execute(""); 
-    	}
-    	else
-    	{
-       	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
-    	}
+
 		topUpButton.setOnClickListener(new View.OnClickListener() {public void onClick(View v)
 		{				
 			String localEmail = getEmail();
 	   	    //deductFunds(localEmail, topUpInt);
 			// new validateCV2().execute("");
-        	new TopUp2().execute("");  
+        	new TopUp().execute("");  
         	//new getUserBal().execute("");  
 	   	   // topUpUser() ;
 		}
-		});			
+
+		});
+		
+		return rootView;
 	}	
-	public boolean isOnline() 
-	{
-	    ConnectivityManager cm =
-	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
-	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-	        return true;
-	    }
-	    return false;
-	}
-	class TopUp2 extends AsyncTask<String, Void, String> 
+	class TopUp extends AsyncTask<String, Void, String> 
 	{		
 
         @Override
@@ -124,7 +101,7 @@ public class TopUp extends Activity implements OnItemSelectedListener
               catch (Exception e) 
               {
                    Log.e("log_tag","Error in http connection!!" + e.toString());               
-              	   //Toast.makeText(this, "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
+              	   //Toast.makeText(getActivity(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
               }
 			  return response1; 
         }
@@ -137,18 +114,16 @@ public class TopUp extends Activity implements OnItemSelectedListener
         	 
         	 if  (result.contains("Success"))
              {
-             	Toast.makeText(getApplicationContext(), "You have topped up by "+"€"+topUpAmt+"", Toast.LENGTH_LONG).show(); 
-            	final Intent i = new Intent(getApplicationContext(), MainActivity.class);
-             	startActivity(i);
-             	finish();
+             	Toast.makeText(getActivity(), "You have topped up by "+"€"+topUpAmt+"", Toast.LENGTH_LONG).show(); 
+            	new GetBal().execute("");
              }
              else if(result.contains("NoFunds"))
              {
-             	Toast.makeText(getApplicationContext(), "Not enough funds", Toast.LENGTH_SHORT).show();
+             	Toast.makeText(getActivity(), "Not enough funds", Toast.LENGTH_SHORT).show();
              }
              else
              {
-            	 Toast.makeText(getApplicationContext(), "No Result.", Toast.LENGTH_SHORT).show();
+            	 Toast.makeText(getActivity(), "No Result.", Toast.LENGTH_SHORT).show();
              }
         }
 
@@ -161,8 +136,11 @@ public class TopUp extends Activity implements OnItemSelectedListener
 }
 	
 	class GetBal extends AsyncTask<String, Void, String> 
-	{       
-		@Override
+	{
+		
+		
+
+        @Override
         protected String doInBackground(String... params) 
         {
         	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
@@ -183,6 +161,7 @@ public class TopUp extends Activity implements OnItemSelectedListener
               catch (Exception e) 
               {
                    Log.e("log_tag","Error in http connection!!" + e.toString());               
+              	   Toast.makeText(getActivity(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
               }
 			  return response2; 
         }
@@ -222,13 +201,14 @@ public class TopUp extends Activity implements OnItemSelectedListener
 }
 	private String getEmail() 
 	{
-		DBManager myDB = new DBManager(this);
+		DBManager myDB = new DBManager(getActivity());
 		myDB.open();	
 		String emailReturn ;
 		emailReturn = myDB.getEmail();	
 		myDB.close();
 		return emailReturn;
 	}
+	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) 
 	{
 		topUpAmt = topUp.getSelectedItem().toString();
@@ -237,6 +217,7 @@ public class TopUp extends Activity implements OnItemSelectedListener
 		//int year1 = Integer.parseInt(month);	
 	}
 
+	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
 		

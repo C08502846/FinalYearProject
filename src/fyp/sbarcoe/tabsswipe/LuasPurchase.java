@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -39,25 +41,25 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 {	
 	Spinner luasLine, luasFrom, luasTo ;
 	public ArrayAdapter<String> luas_adp ;
-	String returnString, resultBal, resultBuy, resultQR, fromStop, toStop, zoneFrom, zoneTo, totalCost, type1, type2 ;
-	String[] result; 
-	String line ;
-	TextView userBal, costLuas ;
 	private RadioGroup radioLineGroup, radioType1Group, radioType2Group;
 	private RadioButton radioLineButton, radioType1Button, radioType2Button;
 	int zoneFromInt, zoneToInt, zoneDiff ;
-	double costOfJourney;
-	Button btnBuy ;
+	double costOfJourney, userBalance;	
+	String line, returnString, resultBal, resultBuy, resultQR, fromStop, toStop, zoneFrom, zoneTo, totalCost, type1, type2 ;
+	String[] result; 
+	TextView userBal, costLuas ;	
+	Button btnBuy, dialogButtonOK, dialogButtonNO ;
 	ProgressDialog mDialog ;
 	Boolean internetCheck ;
-
+	Dialog dialog;
+	Context context ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_luas_purchase);
-		
+		context = this;
 		luasFrom = (Spinner) findViewById(R.id.spinnerLuasFrom);
 		luasTo = (Spinner) findViewById(R.id.spinnerLuasTo); 
 		costLuas = (TextView) findViewById(R.id.tvCostLuas);
@@ -69,7 +71,8 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 		addRadioGroupListeners();
 		setSpinnerListeners() ;
 		btnClicked() ;
-    	//insertStops();
+		setUpDialogs();
+		
 		zoneDiff = 0 ;
 		line = "Green";
 		type1 = "Return";
@@ -79,10 +82,9 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 		luas_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,result);
 		luas_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 		luasTo.setAdapter(luas_adp);
-	    luasFrom.setAdapter(luas_adp);   
-
-        internetCheck = isOnline() ;
-		
+	    luasFrom.setAdapter(luas_adp);
+	    
+        internetCheck = isOnline() ;		
     	if(internetCheck)
     	{
     		new GetBal().execute(""); 
@@ -91,6 +93,48 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
     	{
        	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
     	}
+	}
+	@Override
+	protected void onResume() 
+	{
+	    super.onResume();
+		new GetBal().execute(""); 
+	}
+	
+	private void setUpDialogs() 
+	{
+		dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog);
+        dialog.setTitle("Insufficient Funds.");		
+		
+		// set the custom dialog components - text and button
+		TextView text = (TextView) dialog.findViewById(R.id.DialogText);
+		text.setText("Would You Like to top up?");
+		
+		dialogButtonOK = (Button) dialog.findViewById(R.id.dialogButtonOK);
+		dialogButtonNO = (Button) dialog.findViewById(R.id.dialogButtonNO);	
+		
+		// if button is clicked, close the custom dialog
+				dialogButtonOK.setOnClickListener(new OnClickListener() 
+				{
+					@Override
+					public void onClick(View v) 
+					{
+						final Intent i = new Intent(getApplicationContext(), TopUp.class);
+		             	startActivity(i);
+		        		dialog.dismiss();
+
+					}
+				});
+				dialogButtonNO.setOnClickListener(new OnClickListener() 
+				{
+					@Override
+					public void onClick(View v) 
+					{
+						dialog.dismiss();
+					}
+				});	// TODO Auto-generated method stub
+		
 	}
 	public boolean isOnline() 
 	{
@@ -102,8 +146,6 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	    }
 	    return false;
 	}
-
-
 	private void setZoneCost() 
 	{
 		if(zoneFromInt > zoneToInt)
@@ -148,8 +190,6 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
          }
 		 //convert to double
 	 totalCost = String.valueOf(costOfJourney);
-
-
 	}
 	private void btnClicked() 
 	{
@@ -162,22 +202,17 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 					
 			    	if(internetCheck)
 			    	{
-						new PurchaseTicket().execute(""); 
-			    	}
-			    	else
-			    	{
-			       	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
-			    	}
-				//updateRemoteJourney(email, fromStop, toStop, totalCost) ;
-				// if user Balance > total cost do this
-				// Get UserEmail, Stop From, Stop To, , Total Cost, Date
-				// Send to Remote DB:  Insert INTO Journeys VALUES(email, stopFrom, stopTo, totalCost, date)
-				//else Error, please top up.
-
-			}
- 
+			    		if(costOfJourney < userBalance)
+			    		{
+							new PurchaseTicket().execute(""); 
+			    		}
+			    		else
+			    		{ 
+			    			dialog.show();
+			    		}
+			    	}	
+			} 
 		});
-
 	}
 	public void addRadioGroupListeners() 
 	 {		 
@@ -247,12 +282,10 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	        		{
 	        		case R.id.radioAdult:	
 	        			type2 = "Adult";
-				        Toast.makeText(getApplicationContext(), "Adult", Toast.LENGTH_SHORT).show();
 
 	        			break;
 	        		case R.id.radioChild:  
 	        			type2 = "Child";
-				        Toast.makeText(getApplicationContext(), "Child", Toast.LENGTH_SHORT).show();
 
 	        			break;	      
 	        		}
@@ -284,14 +317,10 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 			        zoneToInt = Integer.parseInt(zoneTo);
 					setZoneCost();
 					costLuas.setText("Journey Cost: €" +totalCost);
-
-			        //Toast.makeText(getApplicationContext(), "Zone To: " +zoneToInt, Toast.LENGTH_SHORT).show();
-
 			    }
 			    public void onNothingSelected(AdapterView<?> parent) {
 			    }
 			});
-
 	}
 
 	@Override
@@ -389,6 +418,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
                      {
                              JSONObject json_data = jArray.getJSONObject(i);                            
                              returnString +=  json_data.getInt("Balance");
+                             userBalance = Double.parseDouble(returnString);
                      }                     
               }
              catch(JSONException e)
@@ -508,9 +538,5 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
 
-	}
-	String[] getStops(String line)
-	{
-		return null;		
 	}
 }

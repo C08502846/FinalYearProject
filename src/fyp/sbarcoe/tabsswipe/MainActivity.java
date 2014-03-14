@@ -281,7 +281,7 @@ public class MainActivity extends FragmentActivity implements
                      Log.e("log_tag", "Error parsing data "+e.toString());
              }    
              //userBal.append(returnString);
-             fyp.sbarcoe.tabsswipe.TopUp.userBal.setText("Current Balance: €"+returnString);
+             fyp.sbarcoe.tabsswipe.TopUpFragment.userBal.setText("Current Balance: €"+returnString);
 
         	// Toast.makeText(getApplicationContext(), "Bal: "+returnString, Toast.LENGTH_SHORT).show();                      
 

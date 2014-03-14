@@ -9,8 +9,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- Permission to write to external storage -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -75,6 +74,11 @@
             android:name="fyp.sbarcoe.tabsswipe.DartValidate"
             android:label="@string/title_activity_dart_validate"
             android:parentActivityName="fyp.sbarcoe.tabsswipe.Validate" >
+        </activity>
+        <activity
+            android:name="fyp.sbarcoe.tabsswipe.TopUp"
+            android:label="@string/title_activity_top_up"
+            android:parentActivityName="fyp.sbarcoe.tabsswipe.MainActivity"  >
         </activity>
     </application>
 
