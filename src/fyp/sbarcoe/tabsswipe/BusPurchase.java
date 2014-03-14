@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -48,9 +49,11 @@ public class BusPurchase extends Activity
 	int zoneFromInt, zoneToInt, zoneDiff ;
 	private RadioGroup radioLineGroup;
 	public ArrayAdapter<String> bus_adp, bus_num_adp ;
-	double costOfJourney, userBalance;
+	double costOfJourney, userBalance;	
 	Dialog dialog;
 	Context context ;
+	AutoCompleteTextView busStops2;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -58,7 +61,9 @@ public class BusPurchase extends Activity
 		setContentView(R.layout.activity_bus_purchase);	
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		mDialog = new ProgressDialog(BusPurchase.this);
-
+		context = this;
+		busStops2 = (AutoCompleteTextView) findViewById(R.id.autoBusFrom);
+		
 		busFrom = (Spinner) findViewById(R.id.spinnerBusFrom);
 		busTo = (Spinner) findViewById(R.id.spinnerBusTo);
 		busNum = (Spinner) findViewById(R.id.spinnerBusNumber);
@@ -70,6 +75,8 @@ public class BusPurchase extends Activity
 		busStops = res.getStringArray(R.array.busStops);
 		busRoutes  = res.getStringArray(R.array.busNums);
 		internetCheck = isOnline() ;
+		costOfJourney = 2.10;
+		totalCost = String.valueOf(costOfJourney);
 		
     	if(internetCheck)
     	{
@@ -86,6 +93,7 @@ public class BusPurchase extends Activity
     	bus_num_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,busRoutes);
     	bus_num_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);    	
     	
+    	busStops2.setAdapter(bus_adp);
 		busTo.setAdapter(bus_adp);
 		busFrom.setAdapter(bus_adp);  
 		busNum.setAdapter(bus_num_adp);  
@@ -149,23 +157,20 @@ public class BusPurchase extends Activity
 			@Override
 			public void onClick(View arg0) 
 			{
-				internetCheck = isOnline() ;
-				if(internetCheck)
-		    	{
-					if(costOfJourney < userBalance)
-		    		{
-						new PurchaseBusTicket().execute(""); 
-		    		}
-		    		else
-		    		{ 
-		    			dialog.show();
-		    		}
-		    	}
-				else
-				{
-		       	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
-				}		
-			}
+				    internetCheck = isOnline() ;
+					
+			    	if(internetCheck)
+			    	{
+			    		if(costOfJourney < userBalance)
+			    		{
+							new PurchaseBusTicket().execute(""); 
+			    		}
+			    		else
+			    		{ 
+			    			dialog.show();
+			    		}
+			    	}	
+			} 
  
 		});
 	}

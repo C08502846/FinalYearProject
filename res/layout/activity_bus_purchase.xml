@@ -92,6 +92,16 @@
             android:text="From Stop:"
             android:textColor="#FFFFFF" />
 
+        <AutoCompleteTextView
+            android:id="@+id/autoBusFrom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number" >
+
+            <requestFocus />
+        </AutoCompleteTextView>
+
         <Spinner
             android:id="@+id/spinnerBusFrom"
             android:layout_width="match_parent"
