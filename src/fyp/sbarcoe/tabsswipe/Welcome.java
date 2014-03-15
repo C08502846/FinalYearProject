@@ -57,11 +57,7 @@ public class Welcome extends Activity
                 if (email1.isEmpty() || pw1.isEmpty() )
                 {
                	    Toast.makeText(getApplicationContext(), "Please fill in all fields.", Toast.LENGTH_SHORT).show();
-                }
-                else if(pw1.length()<6)
-                {
-               	    Toast.makeText(getApplicationContext(), "Please fill in all fields.", Toast.LENGTH_SHORT).show();
-                }
+                }                
                 else
                 {
                 	Boolean internetCheck = isOnline() ;
@@ -144,14 +140,10 @@ public class Welcome extends Activity
              else if(result.contains("BadEmail"))
              {
              	Toast.makeText(getApplicationContext(), "Please enter a valid email address.", Toast.LENGTH_SHORT).show();
-             }
-             else if(result.contains("GoodPW"))
-             {
-             	Toast.makeText(getApplicationContext(), "Valid password", Toast.LENGTH_SHORT).show();
-             }
+             }           
              else if(result.contains("BadPW"))
              {
-             	Toast.makeText(getApplicationContext(), "You must enter a Password with at least one letter, one number and one CAPS!", Toast.LENGTH_SHORT).show();
+             	Toast.makeText(getApplicationContext(), "Invalid Password.", Toast.LENGTH_SHORT).show();
              }
              else
              {

@@ -140,9 +140,7 @@ public class TopUpFragment extends Fragment
         @Override
         protected void onPostExecute(String result) 
         {          
-        	 mDialog.dismiss();
-        	 //String remoteBal = Get Balance from Remote
-        	 // updateLocalBal() ; 
+        	 mDialog.dismiss();        
         	 
         	 if  (result.contains("Success"))
              {

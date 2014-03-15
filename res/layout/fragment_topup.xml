@@ -25,25 +25,26 @@
             android:id="@+id/tvTopUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="left"
             android:text="Top Up By:"
             android:textSize="20dp"
             android:textColor="#FFFFFF"
-            android:paddingBottom="40dp"  />
+            android:paddingBottom="10dp"  />
 
         <RadioGroup
                  android:id="@+id/radioTOPUP"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  android:orientation="horizontal"
-                 android:paddingBottom="5dp" >
+                 android:paddingBottom="5dp"
+                 android:background="#FFFFFF" >
 
                  <RadioButton
                      android:id="@+id/radioTOPUP5"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:text="@string/radio_topup5"
-                     android:textColor="#FFFFFF"
+                     android:textColor="#000000"
                      android:textSize="20sp" />
 
                  <RadioButton
@@ -52,7 +53,7 @@
                      android:layout_height="wrap_content"
                      android:checked="true"
                      android:text="@string/radio_topup10"
-                     android:textColor="#FFFFFF"
+                     android:textColor="#000000"
                      android:textSize="20sp" />
                  
                   <RadioButton
@@ -60,7 +61,7 @@
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:text="@string/radio_topup15"
-                     android:textColor="#FFFFFF"
+                     android:textColor="#000000"
                      android:textSize="20sp" />
 
                  <RadioButton
@@ -69,17 +70,27 @@
                      android:layout_height="wrap_content"
                      android:checked="true"
                      android:text="@string/radio_topup20"
-                     android:textColor="#FFFFFF"
+                     android:textColor="#000000"
                      android:textSize="20sp" />
              </RadioGroup>
 
-        <Button
+       
+
+    </LinearLayout>
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
+        android:gravity="center|bottom" > 
+        
+             <Button
             android:id="@+id/bTopUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Top Up"
-            android:textColor="#FFFFFF"  />
-
-    </LinearLayout>
+            android:textColor="#FFFFFF" />
+        
+            </LinearLayout>
 
  </RelativeLayout>

@@ -28,22 +28,26 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TopUp extends Activity implements OnItemSelectedListener
+public class TopUp extends Activity
 {
 	String topUpAmt, currentBal, returnString ;
 	String result2 ;
-	Spinner topUp ;
 	static TextView userBal ;
 	Button topUpButton ;
 	static int topUpInt ;
 	ProgressDialog mDialog ;
 	Boolean internetCheck ;
+	private RadioGroup radioTopUpGroup;
+	private RadioButton radio5, radio10, radio15, radio20;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -51,18 +55,15 @@ public class TopUp extends Activity implements OnItemSelectedListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_top_up);		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-
-		topUp = (Spinner) findViewById(R.id.spinnerTopUp);				
-		topUp.setOnItemSelectedListener(this);
+		addRadioGroupListeners() ;
 		topUpButton = (Button) findViewById(R.id.bTopUp);
 		ArrayAdapter<CharSequence> topUpAdapter = ArrayAdapter.createFromResource(this,
 				R.array.top_up, android.R.layout.simple_spinner_item);	
 		
 		topUpAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		
-		topUp.setAdapter(topUpAdapter);	
 		userBal = (TextView) findViewById(R.id.tvTopUpBal);
-		mDialog = new ProgressDialog(this);
+		mDialog = new ProgressDialog(TopUp.this);
 		
     	//new GetBal().execute("");  
         internetCheck = isOnline() ;
@@ -86,6 +87,38 @@ public class TopUp extends Activity implements OnItemSelectedListener
 		}
 		});			
 	}	
+	public void addRadioGroupListeners() 
+	 {
+		radioTopUpGroup = (RadioGroup) findViewById(R.id.radioTOPUP);
+		int selectedId = radioTopUpGroup.getCheckedRadioButtonId();
+	    radio5 = (RadioButton) findViewById(selectedId);
+	    radio10 = (RadioButton) findViewById(selectedId);
+	    radio15 = (RadioButton) findViewById(selectedId);
+	    radio20 = (RadioButton) findViewById(selectedId);
+	    
+	    radioTopUpGroup.setOnCheckedChangeListener(new OnCheckedChangeListener()
+       {
+       	@Override
+       	public void onCheckedChanged(RadioGroup group, int checkedId)
+       	{
+       		switch(checkedId)
+       		{
+       		case R.id.radioTOPUP5:	
+       			topUpAmt = "5";
+       			break;
+       		case R.id.radioTOPUP10:  
+       			topUpAmt = "10";
+       			break;
+       		case R.id.radioTOPUP15:  
+       			topUpAmt = "15";
+       			break;	
+       		case R.id.radioTOPUP20:  
+       			topUpAmt = "20";	
+       			break;	       		
+       		}
+       	}});	
+	 
+	 }
 	public boolean isOnline() 
 	{
 	    ConnectivityManager cm =
@@ -103,14 +136,10 @@ public class TopUp extends Activity implements OnItemSelectedListener
         protected String doInBackground(String... params) 
         {
         	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-        	StringBuilder sb = new StringBuilder();
-    		sb.append("");
-    		sb.append(topUpAmt);
-    		String topUpAmtConv = sb.toString();
-    				
+        	
             // define the parameter        cardnumber, expmonth, expyear, cv
             postParameters.add(new BasicNameValuePair("email", getEmail()));
-            postParameters.add(new BasicNameValuePair("topUpAmt", topUpAmtConv));
+            postParameters.add(new BasicNameValuePair("topUpAmt", topUpAmt));
 
             String response1 = null;
            // boolean success = false ;
@@ -132,13 +161,11 @@ public class TopUp extends Activity implements OnItemSelectedListener
         protected void onPostExecute(String result) 
         {          
         	 mDialog.dismiss();
-        	 //String remoteBal = Get Balance from Remote
-        	 // updateLocalBal() ; 
-        	 
+        	        	 
         	 if  (result.contains("Success"))
              {
              	Toast.makeText(getApplicationContext(), "You have topped up by "+"€"+topUpAmt+"", Toast.LENGTH_LONG).show(); 
-            	final Intent i = new Intent(getApplicationContext(), MainActivity.class);
+             	final Intent i = new Intent(getApplicationContext(), MainActivity.class);
              	startActivity(i);
              	finish();
              }
@@ -229,22 +256,4 @@ public class TopUp extends Activity implements OnItemSelectedListener
 		myDB.close();
 		return emailReturn;
 	}
-	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) 
-	{
-		topUpAmt = topUp.getSelectedItem().toString();
-		topUpInt = Integer.parseInt(topUpAmt);	
-		
-		//int year1 = Integer.parseInt(month);	
-	}
-
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-		// deduct from card topUpInt if card balance > topUpInt
-		//(Update cards SET Balance = Balance - topUpInt
-	    //WHERE Email = post(email)		
-
-
 }

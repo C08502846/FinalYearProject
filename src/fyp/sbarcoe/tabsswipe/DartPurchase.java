@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -48,13 +49,14 @@ public class DartPurchase extends Activity
 	ProgressDialog mDialog;
 	Button buyBtn ;
 	Boolean internetCheck ;
-
-	Button buy ;
+	Button buy, dialogButtonOK, dialogButtonNO  ;
 	int zoneFromInt, zoneToInt, zoneDiff ;
 	private RadioGroup radioLineGroup, radioTypeGroup;
 	private RadioButton radioLineButton, radioTypeButton;
 	public ArrayAdapter<String> dart_adp ;
 	double costOfJourney, userBalance;
+	Dialog dialog;
+	Context context ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -62,6 +64,8 @@ public class DartPurchase extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dart_purchase);	
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		mDialog = new ProgressDialog(DartPurchase.this);
+		context = this;
 		
 		dartFrom = (Spinner) findViewById(R.id.spinnerDartFrom);
 		dartTo = (Spinner) findViewById(R.id.spinnerDartTo);
@@ -84,10 +88,11 @@ public class DartPurchase extends Activity
 		dartFrom.setAdapter(dart_adp);  
 		ticketType = "Child";
 		type2 = "Return";
+		setUpDialogs();
 		addRadioGroupListenersdart();
 		setSpinnerListenersdart() ;
 		btnClickeddart() ;
-        
+
 		internetCheck = isOnline() ;
     	if(internetCheck)
     	{
@@ -97,6 +102,40 @@ public class DartPurchase extends Activity
     	{
        	    Toast.makeText(getApplicationContext(), "No Internet Connection. Please check your network settings and try again.", Toast.LENGTH_SHORT).show();
     	}
+	}
+	private void setUpDialogs() 
+	{
+		dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog);
+        dialog.setTitle("Insufficient Funds.");		
+		
+		// set the custom dialog components - text and button
+		TextView text = (TextView) dialog.findViewById(R.id.DialogText);
+		text.setText("Would You Like to top up?");
+		
+		dialogButtonOK = (Button) dialog.findViewById(R.id.dialogButtonOK);
+		dialogButtonNO = (Button) dialog.findViewById(R.id.dialogButtonNO);	
+		
+		// if button is clicked, close the custom dialog
+				dialogButtonOK.setOnClickListener(new OnClickListener() 
+				{
+					@Override
+					public void onClick(View v) 
+					{
+						final Intent i = new Intent(getApplicationContext(), TopUp.class);
+		             	startActivity(i);
+		        		dialog.dismiss();
+					}
+				});
+				dialogButtonNO.setOnClickListener(new OnClickListener() 
+				{
+					@Override
+					public void onClick(View v) 
+					{
+						dialog.dismiss();
+					}
+				});	// TODO Auto-generated method stub
+		
 	}
 	public boolean isOnline() 
 	{
@@ -126,7 +165,7 @@ public class DartPurchase extends Activity
 		    		}
 		    		else
 		    		{
-			       	    Toast.makeText(getApplicationContext(), "You do not have sufficient funds please top up.", Toast.LENGTH_SHORT).show();
+		    			dialog.show();
 		    		}
 		    	}
 		    	else

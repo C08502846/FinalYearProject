@@ -202,13 +202,17 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 					
 			    	if(internetCheck)
 			    	{
-			    		if(costOfJourney < userBalance)
+			    		if(costOfJourney == 0 )
+			    		{
+			           	    Toast.makeText(getApplicationContext(), "Invalid Selection", Toast.LENGTH_SHORT).show();
+			    		}
+			    		else if(costOfJourney > userBalance)
+			    		{
+			    			dialog.show();
+			    		}	
+			    		else
 			    		{
 							new PurchaseTicket().execute(""); 
-			    		}
-			    		else
-			    		{ 
-			    			dialog.show();
 			    		}
 			    	}	
 			} 

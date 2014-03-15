@@ -54,7 +54,7 @@
             android:inputType="textEmailAddress"
             android:hint="Email"
             android:textColor="#FFFFFF" >            
-        </EditText>
+        </EditText>      
 
         <EditText
             android:id="@+id/pw"
@@ -64,12 +64,21 @@
             android:inputType="textPassword"
             android:hint="Password"
             android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Password must be 8 characters long, contain ONE letter ONE number and ONE CAPS letter."
+            android:textColor="#FFFFFF" />
+                
         <Button
             android:id="@+id/continueB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Continue" />
+            android:text="Continue"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 

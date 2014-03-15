@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000042"
+    android:background="#B2B247"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -36,8 +36,8 @@
             android:id="@+id/tvPaymentOption"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="left"
             android:text="Register New Credit Card:"
             android:textColor="#FFFFFF" />
 
@@ -68,14 +68,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Month" />
+                android:hint="Month"
+                android:textColor="#FFFFFF"
+                android:spinnerMode="dropdown"  />
 
             <Spinner
                 android:id="@+id/spinYear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Year" />
+                android:hint="Year"
+                android:textColor="#FFFFFF"
+                android:spinnerMode="dropdown"  />
 
         </LinearLayout>
 
@@ -88,18 +92,22 @@
             android:hint="CV2"
             android:textColor="#FFFFFF"  />
 
+    </LinearLayout>  
+        
+     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
+        android:gravity="center|bottom" > 
+        
         <Button
             android:id="@+id/buttonPayment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Add Card" />
-
-<!--         <ImageButton -->
-<!--             android:id="@+id/paypal" -->
-<!--             android:layout_width="match_parent" -->
-<!--             android:layout_height="match_parent" -->
-<!--             android:src="@drawable/paypal_logo" /> -->
-
-    </LinearLayout>
+        
+            </LinearLayout>
+    
 
 </RelativeLayout>

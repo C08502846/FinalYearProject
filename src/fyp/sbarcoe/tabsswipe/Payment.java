@@ -134,9 +134,9 @@ public class Payment extends Activity implements OnItemSelectedListener
              	startActivity(i);
              	finish();
              }
-             else if(result.contains("Exists"))
+             else if(result.contains("BadNumber"))
              {
-             	Toast.makeText(getApplicationContext(), "Invalid Card", Toast.LENGTH_SHORT).show();
+             	Toast.makeText(getApplicationContext(), "Invalid Card Number", Toast.LENGTH_SHORT).show();
              }
              else
              {
