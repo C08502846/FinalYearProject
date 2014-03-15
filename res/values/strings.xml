@@ -11,6 +11,12 @@
     <string name="radio_return">Return</string>
     <string name="radio_adult">Adult</string>
     <string name="radio_child">Child</string>
+    
+    <string name="radio_topup5">€5</string>
+    <string name="radio_topup10">€10</string>
+    <string name="radio_topup15">€15</string>
+    <string name="radio_topup20">€20</string>
+    <string name="radio_topup50">€50</string>
 
     <string-array name="ticket_type">
         <item>Adult</item>
@@ -212,7 +218,7 @@
         <item>747</item>
     </string-array>
     <string-array name="busStops">
-        <item>1</item>
+<item>1</item>
 <item>2</item>
 <item>3</item>
 <item>4</item>

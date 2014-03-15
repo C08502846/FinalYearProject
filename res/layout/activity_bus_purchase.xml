@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#047504"
+    android:background="#FED813"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -32,21 +32,24 @@
             android:layout_height="wrap_content"
             android:text="Current Balance: €"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             android:fontFamily="sans-serif-condensed" 
-            android:background="@drawable/balbg" />
+            android:background="@drawable/busbg" />
 
         <TextView
             android:id="@+id/tvChoose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Choose Your Preferences:"
-            android:textColor="#FFFFFF" />
-
+            android:textColor="#000000" />
+        
+			
+			
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:focusable="true" android:focusableInTouchMode="true" >
 
             <RadioGroup
                 android:id="@+id/radioADCHI"
@@ -70,69 +73,65 @@
 
           
             </RadioGroup>
-            <TextView
-                android:id="@+id/tvChooseBusNum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Route:"
-                android:textColor="#FFFFFF" />
             
-        <Spinner
-            android:id="@+id/spinnerBusNumber"
+            
+        <AutoCompleteTextView
+            android:id="@+id/busRoute"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:popupBackground="#3f3f3f"
-            android:spinnerMode="dropdown" />
+            android:layout_height="fill_parent"
+            android:ems="10"
+            android:inputType="number"
+            android:textColor="#FFFFFF"
+            android:hint="Bus Route Number"
+            android:background="#000000"
+            android:textColorHint="#FFFFFF"
+            android:layout_marginBottom="15dp"
+            android:padding="13dp"
+            android:focusable="true">           
+        </AutoCompleteTextView>           
+        
         </LinearLayout>  
         
-        <TextView
-            android:id="@+id/tvFromBus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="From Stop:"
-            android:textColor="#FFFFFF" />
 
         <AutoCompleteTextView
             android:id="@+id/autoBusFrom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:ems="10"
-            android:inputType="number" >
-
-            <requestFocus />
-        </AutoCompleteTextView>
-
-        <Spinner
-            android:id="@+id/spinnerBusFrom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:popupBackground="#3f3f3f"
-            android:spinnerMode="dropdown"  />
-
-        <TextView
-            android:id="@+id/tvToBus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="To Stop:"
+            android:inputType="number"
             android:textColor="#FFFFFF"
-             />
-
-        <Spinner
-            android:id="@+id/spinnerBusTo"
+            android:hint="From Bus Stop Number"
+            android:background="#000000"
+            android:textColorHint="#FFFFFF"
+            android:layout_marginBottom="15dp"
+            android:padding="13dp"
+            android:focusable="true" >           
+        </AutoCompleteTextView>
+        
+        <AutoCompleteTextView
+            android:id="@+id/autoBusTo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:popupBackground="#3f3f3f"
-            android:spinnerMode="dropdown" />
+            android:layout_height="fill_parent"
+            android:ems="10"
+            android:inputType="number"
+            android:textColor="#FFFFFF"
+            android:hint="To Bus Stop Number"
+            android:background="#000000"
+            android:textColorHint="#FFFFFF"
+            android:layout_marginBottom="15dp"
+            android:padding="13dp"
+            android:focusable="true"  >           
+        </AutoCompleteTextView>       
 
         <TextView
             android:id="@+id/tvCostBus"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="Cost: €"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#000000"
+            android:textColor="#FFFFFF"
             android:fontFamily="sans-serif-condensed" 
-            android:background="@drawable/balbg" />
+            android:background="@drawable/busbg" />
 
         <LinearLayout
             android:layout_width="match_parent"

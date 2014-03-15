@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -38,8 +39,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 
 public class BusPurchase extends Activity 
 {	
-	Spinner busFrom, busTo, busNum ;
-	String returnString, result2, line, fromStop, toStop, zoneFrom, route, totalCost, zoneTo, resultBal, resultBuy, ticketType;
+	String returnString, result2, busRoute2, busStopFrom2, busStopTo2, totalCost, zoneTo, resultBal, resultBuy, ticketType;
 	String[] busStops, busRoutes; 
 	TextView userBal, costBus  ;
 	ProgressDialog mDialog;
@@ -52,7 +52,7 @@ public class BusPurchase extends Activity
 	double costOfJourney, userBalance;	
 	Dialog dialog;
 	Context context ;
-	AutoCompleteTextView busStops2;
+	AutoCompleteTextView busRoute, busStopFrom, busStopTo;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -62,11 +62,13 @@ public class BusPurchase extends Activity
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		mDialog = new ProgressDialog(BusPurchase.this);
 		context = this;
-		busStops2 = (AutoCompleteTextView) findViewById(R.id.autoBusFrom);
 		
-		busFrom = (Spinner) findViewById(R.id.spinnerBusFrom);
-		busTo = (Spinner) findViewById(R.id.spinnerBusTo);
-		busNum = (Spinner) findViewById(R.id.spinnerBusNumber);
+		busRoute = (AutoCompleteTextView) findViewById(R.id.busRoute);
+		busStopFrom = (AutoCompleteTextView) findViewById(R.id.autoBusFrom);
+		busStopTo = (AutoCompleteTextView) findViewById(R.id.autoBusTo);
+
+		//busFrom = (Spinner) findViewById(R.id.spinnerBusFrom);
+		//busTo = (Spinner) findViewById(R.id.spinnerBusTo);
 		userBal = (TextView) findViewById(R.id.userBal);
 		buyBtn = (Button) findViewById(R.id.btnBuyBusTick);
 		costBus = (TextView) findViewById(R.id.tvCostBus);		
@@ -77,7 +79,7 @@ public class BusPurchase extends Activity
 		internetCheck = isOnline() ;
 		costOfJourney = 2.10;
 		totalCost = String.valueOf(costOfJourney);
-		
+		busRoute2 = "";
     	if(internetCheck)
     	{
     	    new GetBal().execute(""); 
@@ -93,13 +95,14 @@ public class BusPurchase extends Activity
     	bus_num_adp = new ArrayAdapter<String> (getApplicationContext(),android.R.layout.simple_dropdown_item_1line,busRoutes);
     	bus_num_adp.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);    	
     	
-    	busStops2.setAdapter(bus_adp);
-		busTo.setAdapter(bus_adp);
-		busFrom.setAdapter(bus_adp);  
-		busNum.setAdapter(bus_num_adp);  
+    	busRoute.setAdapter(bus_num_adp);
+    	busStopFrom.setAdapter(bus_adp);
+    	busStopTo.setAdapter(bus_adp);
+		//busTo.setAdapter(bus_adp);
+		//busFrom.setAdapter(bus_adp);  
 
 		addRadioGroupListenersBus();
-		setSpinnerListenersBus() ;
+		//setAutoCompleteListenersBus();
 		btnClickedBus() ;
 		setUpDialogs();
 		ticketType = "Child";
@@ -163,6 +166,9 @@ public class BusPurchase extends Activity
 			    	{
 			    		if(costOfJourney < userBalance)
 			    		{
+			    			busRoute2 = busRoute.getText().toString() ;//Assign values from Autos Here
+			    			busStopFrom2 = busStopFrom.getText().toString() ;//Assign values from Autos Here
+			    			busStopTo2 = busStopTo.getText().toString() ;//Assign values from Autos Here
 							new PurchaseBusTicket().execute(""); 
 			    		}
 			    		else
@@ -195,41 +201,110 @@ public class BusPurchase extends Activity
 	                }
 	            }}); 
     }
+//	 private void setAutoCompleteListenersBus() 
+//	 {
+//		 busRoute.setOnItemSelectedListener(new OnItemSelectedListener() 
+//		 {	   
+//
+//			@Override
+//			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) 
+//			{
+//				Object item = arg0.getItemAtPosition(arg2);
+//				busRoute2 = item.toString();	
+//              	Toast.makeText(getApplicationContext(), "Route: "+busRoute2, Toast.LENGTH_SHORT).show(); 
+//				
+//			}
+//
+//			@Override
+//			public void onNothingSelected(AdapterView<?> arg0) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		    
+//		 });
+//		 busRoute.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
+//		 {
+//				@Override
+//				public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
+//				{
+//					Object item = parent.getItemAtPosition(pos);
+//					busRoute2 = item.toString();	
+//	              	Toast.makeText(getApplicationContext(), "Route: "+busRoute2, Toast.LENGTH_SHORT).show();                      
+//
+//				}
+//
+//				@Override
+//				public void onNothingSelected(AdapterView<?> arg0) 
+//				{					
+//				}
+//		    });
+//		 busStopFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
+//		 {
+//				@Override
+//				public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
+//				{
+//					Object item = parent.getItemAtPosition(pos);
+//					busStopFrom2 = item.toString();				
+//				}
+//
+//				@Override
+//				public void onNothingSelected(AdapterView<?> arg0) 
+//				{					
+//				}
+//		    });
+//		 busStopTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
+//		 {
+//				@Override
+//				public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
+//				{
+//					Object item = parent.getItemAtPosition(pos);
+//					busStopTo2 = item.toString();			
+//				}
+//
+//				@Override
+//				public void onNothingSelected(AdapterView<?> arg0) 
+//				{					
+//				}
+//		    });
+//		 }
+//	 
+	 
+	
 	 private void setSpinnerListenersBus() 
 	 {
-		 busFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
-			{
-			    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
-			    {
-			        Object item = parent.getItemAtPosition(pos);
-			        fromStop = item.toString() ;			        
-					//costBus.setText("Journey Cost: €" +totalCost);
-			    }
-			    public void onNothingSelected(AdapterView<?> parent) {
-			    }
-			});
-		 busTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
-			{
-			    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
-			    {
-			        Object item = parent.getItemAtPosition(pos);
-			        toStop = item.toString() ;			       
-					//costBus.setText("Journey Cost: €" +totalCost);
-			    }
-			    public void onNothingSelected(AdapterView<?> parent) {
-			    }
-			});
-		 busNum.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
-		 {
-			 public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
-			 {
-				 Object item = parent.getItemAtPosition(pos);
-				 route = item.toString() ;			       
-			     //costBus.setText("Journey Cost: €" +totalCost);
-			 }
-			 public void onNothingSelected(AdapterView<?> parent) {
-			 }
-		 });
+//		 busFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
+//			{
+//			    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
+//			    {
+//			        Object item = parent.getItemAtPosition(pos);
+//			        fromStop = item.toString() ;			        
+//					//costBus.setText("Journey Cost: €" +totalCost);
+//			    }
+//			    public void onNothingSelected(AdapterView<?> parent) {
+//			    }
+//			});
+//		 busTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
+//			{
+//			    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
+//			    {
+//			        Object item = parent.getItemAtPosition(pos);
+//			        toStop = item.toString() ;			       
+//					//costBus.setText("Journey Cost: €" +totalCost);
+//			    }
+//			    public void onNothingSelected(AdapterView<?> parent) {
+//			    }
+//			});
+//		 busNum.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() 
+//		 {
+//			 public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) 
+//			 {
+//				 Object item = parent.getItemAtPosition(pos);
+//				 route = item.toString() ;			       
+//			     //costBus.setText("Journey Cost: €" +totalCost);
+//			 }
+//			 public void onNothingSelected(AdapterView<?> parent) {
+//			 }
+//		 });
 
 	}	
 	@Override
@@ -357,10 +432,10 @@ public class BusPurchase extends Activity
             // define the parameter        cardnumber, expmonth, expyear, cv
         	
             postParameters.add(new BasicNameValuePair("email", getEmail()));
-            postParameters.add(new BasicNameValuePair("route", route));
+            postParameters.add(new BasicNameValuePair("route", busRoute2));
             postParameters.add(new BasicNameValuePair("tickettype", ticketType));
-            postParameters.add(new BasicNameValuePair("stopfrom", fromStop));
-            postParameters.add(new BasicNameValuePair("stopto", toStop));
+            postParameters.add(new BasicNameValuePair("stopfrom", busStopFrom2));
+            postParameters.add(new BasicNameValuePair("stopto", busStopTo2));
             postParameters.add(new BasicNameValuePair("cost", costBus.getText().toString()));
 
             String response2 = null;

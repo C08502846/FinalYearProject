@@ -24,36 +24,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TopUpFragment extends Fragment implements OnItemSelectedListener
+public class TopUpFragment extends Fragment
 {
 	String topUpAmt, currentBal, returnString ;
 	String result2 ;
-	Spinner topUp ;
 	static TextView userBal ;
 	Button topUpButton ;
 	static int topUpInt ;
 	ProgressDialog mDialog ;
+	private RadioGroup radioTopUpGroup;
+	private RadioButton radio5, radio10, radio15, radio20;
+	View rootView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
 	{		
-		View rootView = inflater.inflate(R.layout.fragment_topup, container, false);	
-	
-		topUp = (Spinner) rootView.findViewById(R.id.spinnerTopUp);				
-		topUp.setOnItemSelectedListener(this);
+		rootView = inflater.inflate(R.layout.fragment_topup, container, false);	
+		
 		topUpButton = (Button) rootView.findViewById(R.id.bTopUp);
 		ArrayAdapter<CharSequence> topUpAdapter = ArrayAdapter.createFromResource(getActivity(),
 				R.array.top_up, android.R.layout.simple_spinner_item);	
 		
 		topUpAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		addRadioGroupListeners() ;
 		
-		topUp.setAdapter(topUpAdapter);	
 		userBal = (TextView) rootView.findViewById(R.id.tvTopUpBal);
 		mDialog = new ProgressDialog(getActivity());
 		
@@ -73,21 +76,50 @@ public class TopUpFragment extends Fragment implements OnItemSelectedListener
 		
 		return rootView;
 	}	
+	public void addRadioGroupListeners() 
+	 {
+		radioTopUpGroup = (RadioGroup) rootView.findViewById(R.id.radioTOPUP);
+		int selectedId = radioTopUpGroup.getCheckedRadioButtonId();
+	    radio5 = (RadioButton) rootView.findViewById(selectedId);
+	    radio10 = (RadioButton) rootView.findViewById(selectedId);
+	    radio15 = (RadioButton) rootView.findViewById(selectedId);
+	    radio20 = (RadioButton) rootView.findViewById(selectedId);
+	    
+	    radioTopUpGroup.setOnCheckedChangeListener(new OnCheckedChangeListener()
+        {
+        	@Override
+        	public void onCheckedChanged(RadioGroup group, int checkedId)
+        	{
+        		switch(checkedId)
+        		{
+        		case R.id.radioTOPUP5:	
+        			topUpAmt = "5";
+        			break;
+        		case R.id.radioTOPUP10:  
+        			topUpAmt = "10";
+        			break;
+        		case R.id.radioTOPUP15:  
+        			topUpAmt = "15";	        			
+        			break;	
+        		case R.id.radioTOPUP20:  
+        			topUpAmt = "20";	        			
+        			break;	        		
+        		}
+        		//topUpInt = Integer.parseInt(topUpAmt);	
+        	}});	
+	 
+	 }
 	class TopUp extends AsyncTask<String, Void, String> 
 	{		
 
         @Override
         protected String doInBackground(String... params) 
         {
-        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-        	StringBuilder sb = new StringBuilder();
-    		sb.append("");
-    		sb.append(topUpAmt);
-    		String topUpAmtConv = sb.toString();
+        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();        	
     				
             // define the parameter        cardnumber, expmonth, expyear, cv
             postParameters.add(new BasicNameValuePair("email", getEmail()));
-            postParameters.add(new BasicNameValuePair("topUpAmt", topUpAmtConv));
+            postParameters.add(new BasicNameValuePair("topUpAmt", topUpAmt));
 
             String response1 = null;
            // boolean success = false ;
@@ -208,21 +240,6 @@ public class TopUpFragment extends Fragment implements OnItemSelectedListener
 		myDB.close();
 		return emailReturn;
 	}
-	@Override
-	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) 
-	{
-		topUpAmt = topUp.getSelectedItem().toString();
-		topUpInt = Integer.parseInt(topUpAmt);	
-		
-		//int year1 = Integer.parseInt(month);	
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
 		// deduct from card topUpInt if card balance > topUpInt
 		//(Update cards SET Balance = Balance - topUpInt
 	    //WHERE Email = post(email)		

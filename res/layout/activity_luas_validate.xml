@@ -7,7 +7,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LuasValidate"
-    android:background="#047504" >
+    android:background="#542F92" >
 
         <LinearLayout
             android:layout_width="wrap_content"

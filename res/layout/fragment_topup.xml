@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#047504" >
+    android:background="#000042" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
             android:id="@+id/tvTopUpBal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/balbg"
+            android:background="@drawable/topupbg"
             android:text="Current Balance: €"
             android:fontFamily="sans-serif-condensed"            
             android:textColor="#000000"
@@ -31,17 +31,54 @@
             android:textColor="#FFFFFF"
             android:paddingBottom="40dp"  />
 
-        <Spinner
-            android:id="@+id/spinnerTopUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#FFFFFF" />
+        <RadioGroup
+                 android:id="@+id/radioTOPUP"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:orientation="horizontal"
+                 android:paddingBottom="5dp" >
+
+                 <RadioButton
+                     android:id="@+id/radioTOPUP5"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="@string/radio_topup5"
+                     android:textColor="#FFFFFF"
+                     android:textSize="20sp" />
+
+                 <RadioButton
+                     android:id="@+id/radioTOPUP10"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:checked="true"
+                     android:text="@string/radio_topup10"
+                     android:textColor="#FFFFFF"
+                     android:textSize="20sp" />
+                 
+                  <RadioButton
+                     android:id="@+id/radioTOPUP15"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="@string/radio_topup15"
+                     android:textColor="#FFFFFF"
+                     android:textSize="20sp" />
+
+                 <RadioButton
+                     android:id="@+id/radioTOPUP20"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:checked="true"
+                     android:text="@string/radio_topup20"
+                     android:textColor="#FFFFFF"
+                     android:textSize="20sp" />
+             </RadioGroup>
 
         <Button
             android:id="@+id/bTopUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Buy" />
+            android:text="Top Up"
+            android:textColor="#FFFFFF"  />
 
     </LinearLayout>
 
