@@ -58,6 +58,10 @@ public class Welcome extends Activity
                 {
                	    Toast.makeText(getApplicationContext(), "Please fill in all fields.", Toast.LENGTH_SHORT).show();
                 }
+                else if(pw1.length()<6)
+                {
+               	    Toast.makeText(getApplicationContext(), "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+                }
                 else
                 {
                 	Boolean internetCheck = isOnline() ;
@@ -103,7 +107,7 @@ public class Welcome extends Activity
             // call executeHttpPost method passing necessary parameters 
             try 
              {
-            	response = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/insert2.php", postParameters);              
+            	response = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/registerUser.php", postParameters);              
             	result = response.toString();  
               }
               catch (Exception e) 
@@ -116,12 +120,7 @@ public class Welcome extends Activity
 
         @Override
         protected void onPostExecute(String result) 
-        {
-            //TextView txt = (TextView) findViewById(R.id.output);
-           // txt.setText("Executed"); // txt.setText(result);
-            // might want to change "executed" for the returned string passed
-            // into onPostExecute() but that is upto you
-        
+        { 
             mDialog.dismiss();
 
         	 if  (result.contains("Success"))
@@ -142,6 +141,18 @@ public class Welcome extends Activity
              {
              	Toast.makeText(getApplicationContext(), "User Already Exists.", Toast.LENGTH_SHORT).show();
              }
+             else if(result.contains("BadEmail"))
+             {
+             	Toast.makeText(getApplicationContext(), "Please enter a valid email address.", Toast.LENGTH_SHORT).show();
+             }
+             else if(result.contains("GoodPW"))
+             {
+             	Toast.makeText(getApplicationContext(), "Valid password", Toast.LENGTH_SHORT).show();
+             }
+             else if(result.contains("BadPW"))
+             {
+             	Toast.makeText(getApplicationContext(), "You must enter a Password with at least one letter, one number and one CAPS!", Toast.LENGTH_SHORT).show();
+             }
              else
              {
             	 Toast.makeText(getApplicationContext(), "No Result.", Toast.LENGTH_SHORT).show();
@@ -152,8 +163,7 @@ public class Welcome extends Activity
         protected void onPreExecute() 
         {
         	mDialog.setMessage("Registering...");
-            mDialog.show();       
-            
+            mDialog.show();
         }
 
         @Override
@@ -219,9 +229,6 @@ public class Welcome extends Activity
 		DBManager myDB = new DBManager(this);
 		myDB.open();
 
-		//myDB.populateLuasData();		
-		//myDB.addLuasStops(stopName, stopZone)		
-
 		//Green Line
 		myDB.addLuasStops("Stephens Green","Green", 1);
 		myDB.addLuasStops("Harcourt","Green", 1);
@@ -281,11 +288,4 @@ public class Welcome extends Activity
 		
 		myDB.close();	
 	}
-//	public int createID()
-//	{
-//		Random r = new Random();
-//		int i1 = r.nextInt(100000-0);
-//		return i1;		
-//	}
-
 }
