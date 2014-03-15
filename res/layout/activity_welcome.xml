@@ -53,7 +53,7 @@
             android:ems="10"
             android:inputType="textEmailAddress"
             android:hint="Email"
-            android:textColor="#FFFFFF" >            
+            android:textColor="#FFFFFF">            
         </EditText>      
 
         <EditText

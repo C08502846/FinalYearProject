@@ -138,6 +138,10 @@ public class Payment extends Activity implements OnItemSelectedListener
              {
              	Toast.makeText(getApplicationContext(), "Invalid Card Number", Toast.LENGTH_SHORT).show();
              }
+             else if(result.contains("Exists"))
+             {
+             	Toast.makeText(getApplicationContext(), "Card Already Registered", Toast.LENGTH_SHORT).show();
+             }
              else
              {
             	 Toast.makeText(getApplicationContext(), "No Result.", Toast.LENGTH_SHORT).show();

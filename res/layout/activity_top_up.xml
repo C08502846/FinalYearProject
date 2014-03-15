@@ -21,12 +21,23 @@
             android:textColor="#000000"
             android:textSize="20dp" />
 
-        <TextView
+       
+       
+
+    </LinearLayout>
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
+        android:gravity="center|bottom" > 
+        
+             <TextView
             android:id="@+id/tvTopUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:text="Top Up By:"
+            android:text="Top Up Amount:"
             android:textSize="20dp"
             android:textColor="#FFFFFF"
             android:paddingBottom="10dp"  />
@@ -73,16 +84,7 @@
                      android:textColor="#000000"
                      android:textSize="20sp" />
              </RadioGroup>
-
-       
-
-    </LinearLayout>
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:orientation="vertical"
-        android:gravity="center|bottom" > 
+            
         
              <Button
             android:id="@+id/bTopUp"

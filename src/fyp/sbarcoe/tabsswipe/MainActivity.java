@@ -59,7 +59,7 @@ public class MainActivity extends FragmentActivity implements
     final String welcomeScreenShownPref = "welcomeScreenShown";
     
 	// Tab titles
-	private String[] tabs = { "Buy New", "Top Up", "Validate" };	
+	private String[] tabs = { "Buy New", "Validate", "Top Up" };	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 

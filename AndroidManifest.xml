@@ -29,6 +29,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+           
         </activity>
         <activity
             android:name="fyp.sbarcoe.tabsswipe.BusPurchase"
@@ -57,6 +58,7 @@
             android:name="fyp.sbarcoe.tabsswipe.Payment"
             android:label="@string/title_activity_payment"
             android:screenOrientation="portrait" >
+             
         </activity>
         <activity
             android:name="fyp.sbarcoe.tabsswipe.Validate"

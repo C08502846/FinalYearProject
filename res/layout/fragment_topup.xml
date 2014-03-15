@@ -4,14 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#000042" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:orientation="vertical" >    
-
-        <TextView
+    
+ <TextView
             android:id="@+id/tvTopUpBal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,18 +14,36 @@
             android:fontFamily="sans-serif-condensed"            
             android:textColor="#000000"
             android:textSize="20dp" />
-
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
+        android:gravity="center|center" > 
+        
+            
+        
+        
+          
+        
+            </LinearLayout>
+       <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
+        android:gravity="center|bottom" > 
         <TextView
             android:id="@+id/tvTopUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:text="Top Up By:"
+            android:text="Top Up Amount:"
             android:textSize="20dp"
             android:textColor="#FFFFFF"
             android:paddingBottom="10dp"  />
-
-        <RadioGroup
+        
+         <RadioGroup
                  android:id="@+id/radioTOPUP"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
@@ -73,24 +85,13 @@
                      android:textColor="#000000"
                      android:textSize="20sp" />
              </RadioGroup>
-
-       
-
-    </LinearLayout>
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:orientation="vertical"
-        android:gravity="center|bottom" > 
-        
-             <Button
+       <Button
             android:id="@+id/bTopUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Top Up"
             android:textColor="#FFFFFF" />
         
-            </LinearLayout>
+        </LinearLayout>
 
  </RelativeLayout>

@@ -26,10 +26,11 @@ public class TabsPagerAdapter extends FragmentPagerAdapter
 			return new BuyTicket();
 		case 1:
 			// TopUp fragment activity
-			return new TopUpFragment();
+			return new Validate();
 		case 2:
 			// Validate fragment activity
-			return new Validate();
+			return new TopUpFragment();
+
 
 		}
 		return null;	}
