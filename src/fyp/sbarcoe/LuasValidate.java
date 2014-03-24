@@ -1,4 +1,4 @@
-package fyp.sbarcoe.tabsswipe;
+package fyp.sbarcoe;
 
 import java.util.ArrayList;
 
@@ -8,7 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fyp.sbarcoe.tabsswipe.DartPurchase.PurchasedartTicket;
+import fyp.sbarcoe.DartPurchase.PurchasedartTicket;
 import info.androidhive.tabsswipe.R;
 import info.androidhive.tabsswipe.adapter.ImageLoader;
 import android.app.Activity;
@@ -30,8 +30,8 @@ import android.widget.Toast;
 public class LuasValidate extends Activity 
 {
     Button validate ;
-	String resultBuy, result2 ;
-	String stopName, returnString, returnString2, returnURL ;
+	String resultBuy,resultData, result2, stopName, returnString, returnString2, returnURL ;
+	String retAdChi, retSinRet, retline, retFrom, retTo, retCost, retExp, response3, result3 ;
 	Dialog mDialog;
 	Boolean internetCheck ;
 
@@ -52,7 +52,7 @@ public class LuasValidate extends Activity
 		{			
 	        public void onClick(View v) 
 	        {                 
-	          Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();	                                                 	         	    
+	          new GetJourneyData().execute("");
 	        }
 	    });
     	internetCheck = isOnline() ;
@@ -84,6 +84,87 @@ public class LuasValidate extends Activity
 		getMenuInflater().inflate(R.menu.luas_validate, menu);
 		return true;
 	}
+	class GetJourneyData extends AsyncTask<String, Void, String> 
+	{	
+
+        @Override
+        protected String doInBackground(String... params) 
+        {
+        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+
+            // define the parameter        cardnumber, expmonth, expyear, cv
+            postParameters.add(new BasicNameValuePair("email", getEmail()));
+
+            String response3 = null;
+           // boolean success = false ;
+                
+            // call executeHttpPost method passing necessary parameters 
+            try 
+             {            	
+            	response3 = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/getLuasData.php", postParameters);                         
+            	result3 = response3.toString();             	
+              }
+              catch (Exception e) 
+              {
+                   Log.e("log_tag","Error in http connection!!" + e.toString());               
+              	   Toast.makeText(getApplicationContext(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
+              }
+			  return response3; 
+        }
+        @Override
+        protected void onPostExecute(String result) 
+        {          
+        	 mDialog.dismiss();
+        	 //String remoteBal = Get Balance from Remote
+        	 // updateLocalBal() ;
+        	 
+        	//parse json data
+        	 try
+             {
+            	 returnString = "";
+                 JSONArray jArray = new JSONArray(result);
+                 Log.i("tagconvertstr", "["+result3+"]");
+                     for(int i=0;i<jArray.length();i++)
+                     {
+                             JSONObject json_data = jArray.getJSONObject(i);                            
+                             retAdChi += json_data.getString("type1");
+                             retSinRet += json_data.getString("type2");
+                             retline += json_data.getString("line");
+                             retFrom += json_data.getString("stopFrom");
+                             retTo += json_data.getString("stopTo");
+                             retCost += json_data.getString("cost");
+                             retExp += json_data.getString("exptime");
+                            // userBalance = Double.parseDouble(returnString);                            
+                     }
+                     
+                Toast.makeText(getApplicationContext(), "Ticket Info:"+"\n" +retAdChi+"\n"+retSinRet+"\n"+retline+"\n", Toast.LENGTH_LONG).show();                      
+
+              }
+             catch(JSONException e)
+             {
+                     Log.e("log_tag", "Error parsing data "+e.toString());
+             }    
+            // userBal.setText("Current Balance: €"+returnString+"");
+             //userBal.setText("Current Balance: €"+returnString+"");               	
+        }
+
+        @Override
+        protected void onPreExecute() 
+        {
+        	retAdChi = "";
+            retSinRet = "";
+            retline = "";
+            retFrom = "";
+            retTo = "";
+            retCost = "";
+            retExp = "";
+
+	          // Make Dialog
+	         
+        	((AlertDialog) mDialog).setMessage("Retrieving Ticket Details...");
+            mDialog.show();             
+        }
+}
 	class GetImageName extends AsyncTask<String, Void, String> 
 	{	
 

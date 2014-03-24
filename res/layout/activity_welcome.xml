@@ -8,25 +8,19 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Welcome" >
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+<ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentTop="true" >
+        
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
         android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Welcome to Leap Me"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:gravity="center"
-            android:textColor="#FFFFFF" />
 
         <ImageView
             android:id="@+id/imageView1"
@@ -41,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="36dp"
             android:layout_marginRight="25dp"
-            android:text="Please Register Below: "
+            android:text="@string/regBelow"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFFFFF" />
@@ -52,7 +46,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textEmailAddress"
-            android:hint="Email"
+            android:hint="@string/emailHint"
             android:textColor="#FFFFFF">            
         </EditText>      
 
@@ -62,24 +56,24 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword"
-            android:hint="Password"
+            android:hint="@string/pwordHint"
             android:textColor="#FFFFFF" />
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Password must be 8 characters long, contain ONE letter ONE number and ONE CAPS letter."
+            android:text="@string/welcomePwordText"
             android:textColor="#FFFFFF" />
                 
         <Button
             android:id="@+id/continueB"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Continue"
+            android:text="@string/welcomeButtonTxt"
             android:textColor="#FFFFFF" />
 
     </LinearLayout>
-
+   </ScrollView>
 </RelativeLayout>

@@ -1,5 +1,5 @@
-package fyp.sbarcoe.tabsswipe;
-import fyp.sbarcoe.tabsswipe.LuasPurchase.PurchaseTicket;
+package fyp.sbarcoe;
+import fyp.sbarcoe.LuasPurchase.PurchaseTicket;
 import info.androidhive.tabsswipe.R;
 import java.util.ArrayList;
 import org.apache.http.NameValuePair;
@@ -73,6 +73,8 @@ public class BusPurchase extends Activity
 		buyBtn = (Button) findViewById(R.id.btnBuyBusTick);
 		costBus = (TextView) findViewById(R.id.tvCostBus);		
 		costBus.setText("2.10");
+		costBus.setText("Journey Cost: €2.10");               	
+
 		Resources res = getResources();
 		busStops = res.getStringArray(R.array.busStops);
 		busRoutes  = res.getStringArray(R.array.busNums);
@@ -303,7 +305,6 @@ public class BusPurchase extends Activity
                              JSONObject json_data = jArray.getJSONObject(i);                            
                              returnString +=  json_data.getInt("Balance");
                              userBalance = Double.parseDouble(returnString);
-
                      }                     
               }
              catch(JSONException e)

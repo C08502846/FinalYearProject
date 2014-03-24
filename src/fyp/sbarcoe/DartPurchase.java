@@ -1,8 +1,8 @@
-package fyp.sbarcoe.tabsswipe;
+package fyp.sbarcoe;
 
 
-import fyp.sbarcoe.tabsswipe.BusPurchase.GetBal;
-import fyp.sbarcoe.tabsswipe.LuasPurchase.PurchaseTicket;
+import fyp.sbarcoe.BusPurchase.GetBal;
+import fyp.sbarcoe.LuasPurchase.PurchaseTicket;
 import info.androidhive.tabsswipe.R;
 import java.util.ArrayList;
 

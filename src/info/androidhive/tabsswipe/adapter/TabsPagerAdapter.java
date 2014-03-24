@@ -1,9 +1,9 @@
 package info.androidhive.tabsswipe.adapter;
 
-import fyp.sbarcoe.tabsswipe.BuyTicket;
-import fyp.sbarcoe.tabsswipe.Favourites;
-import fyp.sbarcoe.tabsswipe.TopUpFragment;
-import fyp.sbarcoe.tabsswipe.Validate;
+import fyp.sbarcoe.BuyTicket;
+import fyp.sbarcoe.Favourites;
+import fyp.sbarcoe.TopUpFragment;
+import fyp.sbarcoe.Validate;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;

@@ -1,4 +1,4 @@
-package fyp.sbarcoe.tabsswipe;
+package fyp.sbarcoe;
 
 import java.util.ArrayList;
 
@@ -8,7 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fyp.sbarcoe.tabsswipe.BusPurchase.GetBal;
+import fyp.sbarcoe.BusPurchase.GetBal;
 import info.androidhive.tabsswipe.R;
 import info.androidhive.tabsswipe.adapter.ImageLoader;
 import android.app.Activity;

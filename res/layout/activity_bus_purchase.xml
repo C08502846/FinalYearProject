@@ -127,7 +127,7 @@
             android:id="@+id/tvCostBus"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Cost: €"
+            android:text="Current Balance: €"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#FFFFFF"
             android:fontFamily="sans-serif-condensed" 

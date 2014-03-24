@@ -1,6 +1,6 @@
-package fyp.sbarcoe.tabsswipe;
+package fyp.sbarcoe;
 
-import fyp.sbarcoe.tabsswipe.BusPurchase.GetBal;
+import fyp.sbarcoe.BusPurchase.GetBal;
 import info.androidhive.tabsswipe.R;
 import java.util.ArrayList;
 import org.apache.http.NameValuePair;

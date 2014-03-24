@@ -1,4 +1,4 @@
-package fyp.sbarcoe.tabsswipe;
+package fyp.sbarcoe;
 
 import java.util.ArrayList;
 
@@ -8,7 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fyp.sbarcoe.tabsswipe.LuasPurchase.GetBal;
+import fyp.sbarcoe.LuasPurchase.GetBal;
 
 
 import info.androidhive.tabsswipe.R;
@@ -135,9 +135,8 @@ public class TopUp extends Activity
         @Override
         protected String doInBackground(String... params) 
         {
-        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-        	
-            // define the parameter        cardnumber, expmonth, expyear, cv
+        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();        	
+            // pass in email and otp up ammount to be added to account / deducted from card
             postParameters.add(new BasicNameValuePair("email", getEmail()));
             postParameters.add(new BasicNameValuePair("topUpAmt", topUpAmt));
 
@@ -216,11 +215,7 @@ public class TopUp extends Activity
         @Override
         protected void onPostExecute(String result2) 
         {          
-        	 mDialog.dismiss();
-        	 //String remoteBal = Get Balance from Remote
-        	 // updateLocalBal() ;
-        	 
-        	//parse json data
+        	 mDialog.dismiss();        
              try
              {
             	 returnString = "";

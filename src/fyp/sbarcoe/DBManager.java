@@ -1,4 +1,4 @@
-package fyp.sbarcoe.tabsswipe;
+package fyp.sbarcoe;
 
 import java.util.ArrayList;
 import android.content.ContentValues;
@@ -45,13 +45,6 @@ public class DBManager
             KEY_DART_STOP+ " TEXT NOT NULL, " +
 	        KEY_STOP_ZONE + " INTEGER NOT NULL);" ;	
 	
-	//private static final String INSERT_DATA = "INSERT INTO LuasStop VALUES(1, 'Stephens Green', 1);";
-	//private static final String INSERT_DATA1 = "INSERT INTO LuasStop VALUES(2, 'Harcourt', 1);";
-	/*private static final String INSERT_DATA2 = "INSERT INTO LuasStop ( StopName, StopZone ) VALUES " +
-			"( 'Stephens Green', 1 ), " +
-			"( 'Harcourt', 1 )" +
-			"( 'Charlemont', 1)";*/
-	
 	private DbHelper myHelper;
 	private final Context myContext ;
 	private static SQLiteDatabase myDB;
@@ -70,7 +63,6 @@ public class DBManager
 			db.execSQL(CREATE_DATABASE);
 			db.execSQL(CREATE_USER_TABLE);
 			db.execSQL(CREATE_DART_TABLE);
-			//db.execSQL(INSERT_DATA);			
 			System.out.println("Database Created!") ;
 			Log.w("myApp", "no network");				
 		}
@@ -101,11 +93,6 @@ public class DBManager
 		myHelper.close(); // To close DbHelper
 	}
 	
-	public void populateBusData()
-	{
-		//db.execSQL("INSERT INTO ...");	
-		// Insert INTO DublinBus KEY_TICKET_TYPE, KEY_STAGES
-	}
 	public long addLuasStops(String stopName, String line, int zone)
 	{
 		ContentValues cv = new ContentValues();
@@ -124,7 +111,6 @@ public class DBManager
 	public String[] getLuasStops(String line) 
 	{
 		String[] columns = new String[]{KEY_STOP_NAME};
-		//Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, null, null, null, null, null);
 		Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, "Line"+" LIKE '"+line+"%'", null, null, null, null);
 		ArrayList<String> stopNames = new ArrayList<String>();
 		while(c.moveToNext())
@@ -139,7 +125,6 @@ public class DBManager
 	public String[] getDartStops() 
 	{
 		String[] columns = new String[]{KEY_DART_STOP};
-		//Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, null, null, null, null, null);
 		Cursor c = myDB.query(DATABASE_TABLE_DART, columns, null, null, null, null, null);
 		ArrayList<String> stopNames = new ArrayList<String>();
 		while(c.moveToNext())
@@ -154,7 +139,6 @@ public class DBManager
 	public String[] getBusStops(String line) 
 	{
 		String[] columns = new String[]{KEY_STOP_NAME};
-		//Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, null, null, null, null, null);
 		Cursor c = myDB.query(DATABASE_TABLE_LUAS, columns, "Line"+" LIKE '"+line+"%'", null, null, null, null);
 		ArrayList<String> stopNames = new ArrayList<String>();
 		while(c.moveToNext())
@@ -168,10 +152,8 @@ public class DBManager
 	}
 	public String getLuasZone(String stopName) 
 	{
-		//String[] columns = new String[]{KEY_STOP_ZONE};
 		String selectQuery = "SELECT StopZone FROM LuasStop WHERE StopName = '" +stopName+ "'" ;
 		Cursor c = myDB.rawQuery(selectQuery, null);
-		//Cursor c = myDB.query(DATABASE_TABLE_USER, columns, "Select Email From User", null, null, null, null);
 		String returnZone = "" ;
 		while(c.moveToNext())
 		{
@@ -182,10 +164,8 @@ public class DBManager
 	}
 	public String getDartZone(String stopName) 
 	{
-		//String[] columns = new String[]{KEY_STOP_ZONE};
 		String selectQuery = "SELECT StopZone FROM DartStop WHERE StopName = '" +stopName+ "'" ;
 		Cursor c = myDB.rawQuery(selectQuery, null);
-		//Cursor c = myDB.query(DATABASE_TABLE_USER, columns, "Select Email From User", null, null, null, null);
 		String returnZone = "" ;
 		while(c.moveToNext())
 		{
@@ -196,10 +176,8 @@ public class DBManager
 	}
 	public String getBusZone(String stopName) 
 	{
-		//String[] columns = new String[]{KEY_STOP_ZONE};
 		String selectQuery = "SELECT StopZone FROM BusStop WHERE StopName = '" +stopName+ "'" ;
 		Cursor c = myDB.rawQuery(selectQuery, null);
-		//Cursor c = myDB.query(DATABASE_TABLE_USER, columns, "Select Email From User", null, null, null, null);
 		String returnZone = "" ;
 		while(c.moveToNext())
 		{
@@ -210,11 +188,8 @@ public class DBManager
 	}
 	public String getEmail()
 	{		
-		String[] columns = new String[]{KEY_EMAIL};
 		String selectQuery = "SELECT Email FROM User";
-
 		Cursor c = myDB.rawQuery(selectQuery, null);
-		//Cursor c = myDB.query(DATABASE_TABLE_USER, columns, "Select Email From User", null, null, null, null);
 		String rTitle = "" ;
 		while(c.moveToNext())
 		{
@@ -229,111 +204,6 @@ public class DBManager
 		cv.put(KEY_EMAIL, email);
 		cv.put(KEY_PASSWORD, password);
 		myDB.insert(DATABASE_TABLE_USER, null, cv);	
-	}
-	
-}
-    
-	
-    // This method adds(using insert) an assignment by passing in title, module and duedate to a new ContentValues.
-//	public long addAssignment(String title, String module, String duedate) 
-//	{
-//		ContentValues cv = new ContentValues();
-//		cv.put(KEY_TITLE, title);
-//		cv.put(KEY_MODULE, module);
-//		cv.put(KEY_DUEDATE, duedate);
-//		return myDB.insert(DATABASE_TABLE, null, cv);			
-//	}
-	
-	// This method passes in a  string and queries assignment title according to that string using LIKE SQL statement
-//	public String getTitle(String title) 
-//	{
-//		String[] columns = new String[]{ KEY_ROWID, KEY_TITLE, KEY_MODULE, KEY_DUEDATE};
-//		Cursor c = myDB.query(DATABASE_TABLE, columns, "assign_title"+" LIKE '"+title+"%'", null, null, null, null);
-//		String rTitle = "" ;
-//		while(c.moveToNext())
-//		{
-//			rTitle = c.getString(1);
-//		}
-//		return rTitle;
-//	}
-	
-	// This method queries the Modules column and places them in an ArrayList which is then converted to a String array
-	// Source: http://stackoverflow.com/questions/8938847/android-transform-each-column-of-a-cursor-into-a-string-array
-//	public String[] getModuleForList() 
-//	{
-//		String[] columns = new String[]{ KEY_ROWID, KEY_MODULE};
-//		Cursor c = myDB.query(DATABASE_TABLE, columns, null, null, null, null, null);
-//		String[] module = null  ;
-//		int i = 0 ;
-//		ArrayList<String> modules = new ArrayList<String>();
-//		while(c.moveToNext())
-//		        {			
-//			        modules.add(c.getString(1));
-//		        }
-//		String[] modulesReturn = (String[]) modules.toArray(new String[modules.size()]);
-//
-//		return modulesReturn;
-//	}	
-	
-    // Returns a string when a Title is passed in and is found in the Title column
-//	public String getModule(String title) 
-//	{
-//		String[] columns = new String[]{ KEY_ROWID, KEY_TITLE, KEY_MODULE, KEY_DUEDATE};
-//		Cursor c = myDB.query(DATABASE_TABLE, columns, "assign_title"+" LIKE '"+title+"%'", null, null, null, null);
-//		String rTitle = "" ;
-//		while(c.moveToNext())
-//		{
-//			rTitle = c.getString(2);
-//		}
-//		return rTitle;
-//	}
-	
-	// Returns a string when a Title is passed in and is found in the Title column
-//	public String getDueDate(String title) 
-//	{
-//		String[] columns = new String[]{ KEY_ROWID, KEY_TITLE, KEY_MODULE, KEY_DUEDATE};
-//		Cursor c = myDB.query(DATABASE_TABLE, columns, "assign_title"+" LIKE '"+title+"%'", null, null, null, null);
-//		String rTitle = "" ;
-//		while(c.moveToNext())
-//		{
-//			rTitle = c.getString(3);
-//		}
-//		return rTitle;
-//	}
-//	
-//	// Updates Assignments Table by passing in 3 values, using SQL Update
-//	public void updateAssignments(String eTitle, String eModule, String eDueDate) 
-//	{
-//		ContentValues cv = new ContentValues();
-//		cv.put(KEY_TITLE, eTitle);
-//		cv.put(KEY_MODULE, eModule);
-//		cv.put(KEY_DUEDATE, eDueDate);
-//		myDB.update(DATABASE_TABLE, cv, "assign_title"+" LIKE '"+eTitle+"%'", null);		
-//	}
-//	
-//    // Simply deletes a row when title passed in, matches a title in the Title column
-//	public void delete(String title) 
-//	{
-//		myDB.delete(DATABASE_TABLE, "assign_title"+" LIKE '"+title+"%'", null); 
-//	}
-//	
-//	// When a user clicks an item in the list, pass in the module selected and return data from Title and Duedate Columns
-//	public String getDataByModule(String myString)
-//	{
-//		String[] columns = new String[]{ KEY_TITLE, KEY_DUEDATE};
-//		Cursor c = myDB.query(DATABASE_TABLE, columns, "assign_module"+" LIKE '"+myString+"%'", null, null, null, null);
-//		String myData = "" ;
-//		while(c.moveToNext())
-//		{
-//			myData +="------------------------------------------------" +"\n" + "Title: " + c.getString(0) + "\n" + "Due Date: " + c.getString(1) + "\n"
-//					+"------------------------------------------------"
-//					+ "Assignment Completed?\n"; //+ c.getString(2) + "\n"; 
-//		}
-//		return myData;
-//	}
-//	// Function to delete row by module when user clicks Complete in Dialog in ViewAssignments
-//	public void complete(String deleteData) 
-//	{
-//		myDB.delete(DATABASE_TABLE, "assign_module"+" LIKE '"+deleteData+"%'", null);
-//	}
+	}	
+}  
 

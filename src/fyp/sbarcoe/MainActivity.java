@@ -1,4 +1,4 @@
-package fyp.sbarcoe.tabsswipe;
+package fyp.sbarcoe;
 
 
 import info.androidhive.tabsswipe.R;
@@ -279,7 +279,7 @@ public class MainActivity extends FragmentActivity implements
              {
                      Log.e("log_tag", "Error parsing data "+e.toString());
              }    
-             fyp.sbarcoe.tabsswipe.TopUpFragment.userBal.setText("Current Balance: €"+returnString);                  	
+             fyp.sbarcoe.TopUpFragment.userBal.setText("Current Balance: €"+returnString);                  	
         }
 
         @Override

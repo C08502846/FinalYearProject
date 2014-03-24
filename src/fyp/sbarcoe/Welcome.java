@@ -1,4 +1,4 @@
-package fyp.sbarcoe.tabsswipe;
+package fyp.sbarcoe;
 
 import info.androidhive.tabsswipe.R;
 
@@ -90,16 +90,11 @@ public class Welcome extends Activity
         @Override
         protected String doInBackground(String... params) 
         {
-        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-            
-            // define the parameter        
+        	String response = null; String result = null;   
+        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();            
+            // define the parameters to be posted to the PHP Script        
             postParameters.add(new BasicNameValuePair("email", email.getText().toString()));
-            postParameters.add(new BasicNameValuePair("pw", pw.getText().toString()));
-
-            String response = null;
-            String result = null ;
-           // boolean success = false ;
-                
+            postParameters.add(new BasicNameValuePair("pw", pw.getText().toString()));                           
             // call executeHttpPost method passing necessary parameters 
             try 
              {

@@ -1,4 +1,4 @@
-package fyp.sbarcoe.tabsswipe;
+package fyp.sbarcoe;
 
 import info.androidhive.tabsswipe.R;
 import android.content.Intent;

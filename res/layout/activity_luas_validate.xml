@@ -30,7 +30,7 @@
                 android:id="@+id/validateLuasBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Validate User"
+                android:text="@string/valBtn"
                 android:layout_gravity="center" />
 
         </LinearLayout>

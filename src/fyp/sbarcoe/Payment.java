@@ -1,6 +1,6 @@
-package fyp.sbarcoe.tabsswipe;
+package fyp.sbarcoe;
 
-import fyp.sbarcoe.tabsswipe.LuasValidate.GetImageName;
+import fyp.sbarcoe.LuasValidate.GetImageName;
 import info.androidhive.tabsswipe.R;
 
 import java.util.ArrayList;
@@ -70,7 +70,19 @@ public class Payment extends Activity implements OnItemSelectedListener
             	internetCheck = isOnline() ;
             	if(internetCheck)
             	{
-                	new RegisterCard().execute("");  
+            		if (cv.length() < 3)
+            		{
+                   	    Toast.makeText(getApplicationContext(), "CV2 Number must be a 3 digit number.", Toast.LENGTH_SHORT).show();
+
+            		}
+            		else if (cv.length() > 3)
+            		{
+                   	    Toast.makeText(getApplicationContext(), "CV2 Number must be a 3 digit number.", Toast.LENGTH_SHORT).show();
+            		}
+            		else
+            		{
+                    	new RegisterCard().execute("");  
+            		}
             	}
             	else
             	{
