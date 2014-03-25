@@ -16,6 +16,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -23,17 +24,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class LuasValidate extends Activity 
 {
-    Button validate ;
+    Button validate, dialogButtonOK ;
+
 	String resultBuy,resultData, result2, stopName, returnString, returnString2, returnURL ;
-	String retAdChi, retSinRet, retline, retFrom, retTo, retCost, retExp, response3, result3 ;
-	Dialog mDialog;
+	TextView dialogText ;
+	String retAdChi, retSinRet, retline, retFrom, retTo, retCost, retExp, result3 ;
+	Dialog mDialog, detailsDialog;
 	Boolean internetCheck ;
+	Context context ;
 
 	static String image_url;
 	public static ImageView image;
@@ -47,12 +53,13 @@ public class LuasValidate extends Activity
 		validate = (Button) findViewById(R.id.validateLuasBtn);
 		mDialog = new ProgressDialog(LuasValidate.this);        
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-
+		context = this;
+		setUpDialogs();
 		validate.setOnClickListener(new View.OnClickListener() 
 		{			
 	        public void onClick(View v) 
 	        {                 
-	          new GetJourneyData().execute("");
+	          new GetJourneyData().execute("");	
 	        }
 	    });
     	internetCheck = isOnline() ;
@@ -75,6 +82,27 @@ public class LuasValidate extends Activity
 	        return true;
 	    }
 	    return false;
+	}
+	private void setUpDialogs() 
+	{
+		detailsDialog = new Dialog(context);
+		detailsDialog.setContentView(R.layout.dialog_validation_details);
+		detailsDialog.setTitle("Journey Details");		
+		
+		dialogText = (TextView) detailsDialog.findViewById(R.id.DialogText);
+		
+		
+		dialogButtonOK = (Button) detailsDialog.findViewById(R.id.dialogButtonOK);
+		
+		// if button is clicked, close the custom dialog
+				dialogButtonOK.setOnClickListener(new OnClickListener() 
+				{
+					@Override
+					public void onClick(View v) 
+					{					
+		             	detailsDialog.dismiss();
+					}
+				});		
 	}
 
 	@Override
@@ -115,6 +143,7 @@ public class LuasValidate extends Activity
         protected void onPostExecute(String result) 
         {          
         	 mDialog.dismiss();
+
         	 //String remoteBal = Get Balance from Remote
         	 // updateLocalBal() ;
         	 
@@ -135,17 +164,14 @@ public class LuasValidate extends Activity
                              retCost += json_data.getString("cost");
                              retExp += json_data.getString("exptime");
                             // userBalance = Double.parseDouble(returnString);                            
-                     }
-                     
-                Toast.makeText(getApplicationContext(), "Ticket Info:"+"\n" +retAdChi+"\n"+retSinRet+"\n"+retline+"\n", Toast.LENGTH_LONG).show();                      
-
+                     }  
+                     dialogText.setText(retAdChi+ "\n"+retSinRet+ "\n"+"Line: "+retline+"\n"+"From: "+retFrom+"\n"+"To: "+retTo+"\n"+"Cost: "+retCost+"\n"+"Expires: "+retExp);
+                     detailsDialog.show();
               }
              catch(JSONException e)
              {
                      Log.e("log_tag", "Error parsing data "+e.toString());
-             }    
-            // userBal.setText("Current Balance: €"+returnString+"");
-             //userBal.setText("Current Balance: €"+returnString+"");               	
+             }          	           	
         }
 
         @Override
@@ -158,7 +184,6 @@ public class LuasValidate extends Activity
             retTo = "";
             retCost = "";
             retExp = "";
-
 	          // Make Dialog
 	         
         	((AlertDialog) mDialog).setMessage("Retrieving Ticket Details...");

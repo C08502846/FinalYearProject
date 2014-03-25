@@ -104,7 +104,7 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 	private void setUpDialogs() 
 	{
 		dialog = new Dialog(context);
-        dialog.setContentView(R.layout.dialog);
+        dialog.setContentView(R.layout.dialog_insufficient_funds);
         dialog.setTitle("Insufficient Funds.");		
 		
 		// set the custom dialog components - text and button
@@ -123,7 +123,6 @@ public class LuasPurchase extends Activity implements OnItemSelectedListener
 						final Intent i = new Intent(getApplicationContext(), TopUp.class);
 		             	startActivity(i);
 		        		dialog.dismiss();
-
 					}
 				});
 				dialogButtonNO.setOnClickListener(new OnClickListener() 

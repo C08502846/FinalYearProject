@@ -73,7 +73,7 @@ public class BusPurchase extends Activity
 		buyBtn = (Button) findViewById(R.id.btnBuyBusTick);
 		costBus = (TextView) findViewById(R.id.tvCostBus);		
 		costBus.setText("2.10");
-		costBus.setText("Journey Cost: €2.10");               	
+		costBus.setText("Journey Cost: 2.10");               	
 
 		Resources res = getResources();
 		busStops = res.getStringArray(R.array.busStops);
@@ -113,7 +113,7 @@ public class BusPurchase extends Activity
 	private void setUpDialogs() 
 	{
 		dialog = new Dialog(context);
-        dialog.setContentView(R.layout.dialog);
+        dialog.setContentView(R.layout.dialog_insufficient_funds);
         dialog.setTitle("Insufficient Funds.");		
 		
 		// set the custom dialog components - text and button

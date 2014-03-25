@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import fyp.sbarcoe.BusPurchase.GetBal;
+import fyp.sbarcoe.LuasValidate.GetJourneyData;
 import info.androidhive.tabsswipe.R;
 import info.androidhive.tabsswipe.adapter.ImageLoader;
 import android.app.Activity;
@@ -23,17 +24,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class DartValidate extends Activity 
 {
-    Button validate ;
+    Button validate, dialogButtonOK ;
+	TextView dialogText ;
 	String resultBuy, result2 ;
 	String stopName, returnString, returnString2, returnURL ;
-	Dialog mDialog;
+	
+	String retAdChi, retSinRet, retline, retFrom, retTo, retCost, retExp, result3 ;
+
+	Dialog mDialog, detailsDialog;
 	Boolean internetCheck ;
+	Context context ;
 
 	static String image_url;
 	public static ImageView image;
@@ -47,12 +55,13 @@ public class DartValidate extends Activity
 		validate = (Button) findViewById(R.id.validateDartBtn);
 		mDialog = new ProgressDialog(DartValidate.this);        
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-
+		context = this;
+		setUpDialogs();
 		validate.setOnClickListener(new View.OnClickListener() 
 		{			
 	        public void onClick(View v) 
 	        {                 
-	          Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();	                                                 	         	    
+		          new GetJourneyData().execute("");	
 	        }
 	    });
         internetCheck = isOnline() ;
@@ -76,6 +85,27 @@ public class DartValidate extends Activity
 	        return true;
 	    }
 	    return false;
+	}
+	private void setUpDialogs() 
+	{
+		detailsDialog = new Dialog(context);
+		detailsDialog.setContentView(R.layout.dialog_validation_details);
+		detailsDialog.setTitle("Journey Details");		
+		
+		dialogText = (TextView) detailsDialog.findViewById(R.id.DialogText);
+		
+		
+		dialogButtonOK = (Button) detailsDialog.findViewById(R.id.dialogButtonOK);
+		
+		// if button is clicked, close the custom dialog
+				dialogButtonOK.setOnClickListener(new OnClickListener() 
+				{
+					@Override
+					public void onClick(View v) 
+					{					
+		             	detailsDialog.dismiss();
+					}
+				});		
 	}
 
 	@Override
@@ -150,6 +180,83 @@ public class DartValidate extends Activity
     		image = (ImageView) findViewById(R.id.imageDart);
 
         	((AlertDialog) mDialog).setMessage("Retrieving Ticket...");
+            mDialog.show();             
+        }
+}
+class GetJourneyData extends AsyncTask<String, Void, String> 
+	{	
+
+        @Override
+        protected String doInBackground(String... params) 
+        {
+        	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+
+            // define the parameter        cardnumber, expmonth, expyear, cv
+            postParameters.add(new BasicNameValuePair("email", getEmail()));
+
+            String response3 = null;
+           // boolean success = false ;
+                
+            // call executeHttpPost method passing necessary parameters 
+            try 
+             {            	
+            	response3 = CustomHttpClient.executeHttpPost("http://sbarcoe.net23.net/Android/getDartData.php", postParameters);                         
+            	result3 = response3.toString();             	
+              }
+              catch (Exception e) 
+              {
+                   Log.e("log_tag","Error in http connection!!" + e.toString());               
+              	   Toast.makeText(getApplicationContext(), "No Internet Connection.", Toast.LENGTH_SHORT).show();                      
+              }
+			  return response3; 
+        }
+        @Override
+        protected void onPostExecute(String result) 
+        {          
+        	 mDialog.dismiss();
+
+        	 //String remoteBal = Get Balance from Remote
+        	 // updateLocalBal() ;
+        	 
+        	//parse json data
+        	 try
+             {
+            	 returnString = "";
+                 JSONArray jArray = new JSONArray(result);
+                 Log.i("tagconvertstr", "["+result3+"]");
+                     for(int i=0;i<jArray.length();i++)
+                     {
+                             JSONObject json_data = jArray.getJSONObject(i);                            
+                             retAdChi += json_data.getString("tickettype");
+                             retSinRet += json_data.getString("type2");
+                             retFrom += json_data.getString("stopfrom");
+                             retTo += json_data.getString("stopto");
+                             retCost += json_data.getString("cost");
+                             retExp += json_data.getString("exptime");
+                            // userBalance = Double.parseDouble(returnString);                            
+                     }  
+                     dialogText.setText(retAdChi+ "\n"+retSinRet+ "\n"+"From: "+retFrom+"\n"+"To: "+retTo+"\n"+"Cost: "+retCost+"\n"+"Expires: "+retExp);
+                     detailsDialog.show();
+              }
+             catch(JSONException e)
+             {
+                     Log.e("log_tag", "Error parsing data "+e.toString());
+             }          	           	
+        }
+
+        @Override
+        protected void onPreExecute() 
+        {
+        	retAdChi = "";
+            retSinRet = "";
+            retline = "";
+            retFrom = "";
+            retTo = "";
+            retCost = "";
+            retExp = "";
+	          // Make Dialog
+	         
+        	((AlertDialog) mDialog).setMessage("Retrieving Ticket Details...");
             mDialog.show();             
         }
 }

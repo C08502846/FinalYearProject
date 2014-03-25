@@ -73,7 +73,6 @@ public class Payment extends Activity implements OnItemSelectedListener
             		if (cv.length() < 3)
             		{
                    	    Toast.makeText(getApplicationContext(), "CV2 Number must be a 3 digit number.", Toast.LENGTH_SHORT).show();
-
             		}
             		else if (cv.length() > 3)
             		{

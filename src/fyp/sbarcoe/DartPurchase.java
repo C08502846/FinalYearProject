@@ -106,7 +106,7 @@ public class DartPurchase extends Activity
 	private void setUpDialogs() 
 	{
 		dialog = new Dialog(context);
-        dialog.setContentView(R.layout.dialog);
+        dialog.setContentView(R.layout.dialog_insufficient_funds);
         dialog.setTitle("Insufficient Funds.");		
 		
 		// set the custom dialog components - text and button
